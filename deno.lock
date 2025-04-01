@@ -2,9 +2,11 @@
   "version": "4",
   "specifiers": {
     "npm:@deno/vite-plugin@^1.0.4": "1.0.4_vite@6.2.3",
+    "npm:@prisma/client@^6.5.0": "6.5.0_prisma@6.5.0",
     "npm:@types/react-dom@^19.0.4": "19.0.4_@types+react@19.0.12",
     "npm:@types/react@^19.0.10": "19.0.12",
     "npm:@vitejs/plugin-react@^4.3.4": "4.3.4_vite@6.2.3_@babel+core@7.26.10",
+    "npm:prisma@latest": "6.5.0",
     "npm:react-dom@19": "19.1.0_react@19.1.0",
     "npm:react@19": "19.1.0",
     "npm:vite@*": "6.2.3",
@@ -256,6 +258,48 @@
         "@jridgewell/sourcemap-codec"
       ]
     },
+    "@prisma/client@6.5.0_prisma@6.5.0": {
+      "integrity": "sha512-M6w1Ql/BeiGoZmhMdAZUXHu5sz5HubyVcKukbLs3l0ELcQb8hTUJxtGEChhv4SVJ0QJlwtLnwOLgIRQhpsm9dw==",
+      "dependencies": [
+        "prisma"
+      ]
+    },
+    "@prisma/config@6.5.0_esbuild@0.25.1": {
+      "integrity": "sha512-sOH/2Go9Zer67DNFLZk6pYOHj+rumSb0VILgltkoxOjYnlLqUpHPAN826vnx8HigqnOCxj9LRhT6U7uLiIIWgw==",
+      "dependencies": [
+        "esbuild",
+        "esbuild-register"
+      ]
+    },
+    "@prisma/debug@6.5.0": {
+      "integrity": "sha512-fc/nusYBlJMzDmDepdUtH9aBsJrda2JNErP9AzuHbgUEQY0/9zQYZdNlXmKoIWENtio+qarPNe/+DQtrX5kMcQ=="
+    },
+    "@prisma/engines-version@6.5.0-73.173f8d54f8d52e692c7e27e72a88314ec7aeff60": {
+      "integrity": "sha512-iK3EmiVGFDCmXjSpdsKGNqy9hOdLnvYBrJB61far/oP03hlIxrb04OWmDjNTwtmZ3UZdA5MCvI+f+3k2jPTflQ=="
+    },
+    "@prisma/engines@6.5.0": {
+      "integrity": "sha512-FVPQYHgOllJklN9DUyujXvh3hFJCY0NX86sDmBErLvoZjy2OXGiZ5FNf3J/C4/RZZmCypZBYpBKEhx7b7rEsdw==",
+      "dependencies": [
+        "@prisma/debug",
+        "@prisma/engines-version",
+        "@prisma/fetch-engine",
+        "@prisma/get-platform"
+      ]
+    },
+    "@prisma/fetch-engine@6.5.0": {
+      "integrity": "sha512-3LhYA+FXP6pqY8FLHCjewyE8pGXXJ7BxZw2rhPq+CZAhvflVzq4K8Qly3OrmOkn6wGlz79nyLQdknyCG2HBTuA==",
+      "dependencies": [
+        "@prisma/debug",
+        "@prisma/engines-version",
+        "@prisma/get-platform"
+      ]
+    },
+    "@prisma/get-platform@6.5.0": {
+      "integrity": "sha512-xYcvyJwNMg2eDptBYFqFLUCfgi+wZLcj6HDMsj0Qw0irvauG4IKmkbywnqwok0B+k+W+p+jThM2DKTSmoPCkzw==",
+      "dependencies": [
+        "@prisma/debug"
+      ]
+    },
     "@rollup/rollup-android-arm-eabi@4.38.0": {
       "integrity": "sha512-ldomqc4/jDZu/xpYU+aRxo3V4mGCV9HeTgUBANI3oIQMOL+SsxB+S2lxMpkFp5UamSS3XuTMQVbsS24R4J4Qjg=="
     },
@@ -398,6 +442,13 @@
     "electron-to-chromium@1.5.128": {
       "integrity": "sha512-bo1A4HH/NS522Ws0QNFIzyPcyUUNV/yyy70Ho1xqfGYzPUme2F/xr4tlEOuM6/A538U1vDA7a4XfCd1CKRegKQ=="
     },
+    "esbuild-register@3.6.0_esbuild@0.25.1": {
+      "integrity": "sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg==",
+      "dependencies": [
+        "debug",
+        "esbuild"
+      ]
+    },
     "esbuild@0.25.1": {
       "integrity": "sha512-BGO5LtrGC7vxnqucAe/rmvKdJllfGaYWdyABvyMoXQlfYMb2bbRuReWR5tEGE//4LcNJj9XrkovTqNYRFZHAMQ==",
       "dependencies": [
@@ -475,6 +526,14 @@
         "source-map-js"
       ]
     },
+    "prisma@6.5.0": {
+      "integrity": "sha512-yUGXmWqv5F4PByMSNbYFxke/WbnyTLjnJ5bKr8fLkcnY7U5rU9rUTh/+Fja+gOrRxEgtCbCtca94IeITj4j/pg==",
+      "dependencies": [
+        "@prisma/config",
+        "@prisma/engines",
+        "fsevents"
+      ]
+    },
     "react-dom@19.1.0_react@19.1.0": {
       "integrity": "sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==",
       "dependencies": [
@@ -548,6 +607,7 @@
   "workspace": {
     "dependencies": [
       "npm:@deno/vite-plugin@^1.0.4",
+      "npm:@prisma/client@^6.5.0",
       "npm:@types/react-dom@^19.0.4",
       "npm:@types/react@^19.0.10",
       "npm:@vitejs/plugin-react@^4.3.4",
