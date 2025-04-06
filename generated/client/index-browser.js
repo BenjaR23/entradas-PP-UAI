@@ -119,17 +119,57 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  email: 'email',
   name: 'name',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  role: 'role',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.VenueScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  city: 'city',
+  country: 'country',
+  capacity: 'capacity'
+};
+
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  venueId: 'venueId',
+  categoryId: 'categoryId',
+  eventDate: 'eventDate',
+  createdAt: 'createdAt',
+  status: 'status',
+  category: 'category'
 };
 
 exports.Prisma.TicketScalarFieldEnum = {
   id: 'id',
-  event: 'event',
+  eventId: 'eventId',
+  type: 'type',
   price: 'price',
+  stock: 'stock',
+  sold: 'sold'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
   userId: 'userId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  total: 'total',
+  status: 'status'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  ticketId: 'ticketId',
+  quantity: 'quantity',
+  priceEach: 'priceEach'
 };
 
 exports.Prisma.SortOrder = {
@@ -150,7 +190,11 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Ticket: 'Ticket'
+  Venue: 'Venue',
+  Event: 'Event',
+  Ticket: 'Ticket',
+  Order: 'Order',
+  OrderItem: 'OrderItem'
 };
 
 /**
