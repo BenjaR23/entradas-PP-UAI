@@ -149,14 +149,38 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  name: 'name',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  role: 'role'
 };
 
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.VenueOrderByRelevanceFieldEnum = {
+  name: 'name',
+  address: 'address',
+  city: 'city',
+  country: 'country'
+};
+
+exports.Prisma.EventOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  category: 'category'
+};
+
+exports.Prisma.TicketOrderByRelevanceFieldEnum = {
+  type: 'type'
+};
+
+exports.Prisma.OrderOrderByRelevanceFieldEnum = {
+  status: 'status'
 };
 
 
@@ -208,8 +232,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "postgresql",
-  "postinstall": false,
+  "activeProvider": "mysql",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -218,8 +241,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../generated/client\"\n  previewFeatures = [\"deno\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           Int      @id @default(autoincrement())\n  name         String\n  email        String   @unique\n  passwordHash String\n  role         String   @default(\"user\")\n  createdAt    DateTime @default(now())\n  orders       Order[]\n}\n\nmodel Venue {\n  id       Int     @id @default(autoincrement())\n  name     String\n  address  String\n  city     String?\n  country  String?\n  capacity Int?\n  events   Event[]\n}\n\nmodel Event {\n  id          Int      @id @default(autoincrement())\n  title       String\n  description String?\n  venueId     Int\n  categoryId  Int\n  eventDate   DateTime\n  createdAt   DateTime @default(now())\n  status      String   @default(\"active\")\n  category    String\n  venue       Venue    @relation(fields: [venueId], references: [id])\n  tickets     Ticket[]\n}\n\nmodel Ticket {\n  id         Int         @id @default(autoincrement())\n  eventId    Int\n  type       String\n  price      Decimal     @db.Decimal(10, 2)\n  stock      Int\n  sold       Int         @default(0)\n  orderItems OrderItem[]\n  event      Event       @relation(fields: [eventId], references: [id])\n}\n\nmodel Order {\n  id        Int         @id @default(autoincrement())\n  userId    Int\n  createdAt DateTime    @default(now())\n  total     Decimal     @db.Decimal(10, 2)\n  status    String      @default(\"pending\")\n  user      User        @relation(fields: [userId], references: [id])\n  items     OrderItem[]\n}\n\nmodel OrderItem {\n  id        Int     @id @default(autoincrement())\n  orderId   Int\n  ticketId  Int\n  quantity  Int\n  priceEach Decimal @db.Decimal(10, 2)\n  order     Order   @relation(fields: [orderId], references: [id])\n  ticket    Ticket  @relation(fields: [ticketId], references: [id])\n}\n",
-  "inlineSchemaHash": "07b0f9221d1d698bdbecef1fdc9a71a3deccc602cd846d46af6df3ae99102565",
+  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../generated/client\"\n  previewFeatures = [\"deno\"]\n}\n\ndatasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           Int      @id @default(autoincrement())\n  name         String\n  email        String   @unique\n  passwordHash String\n  role         String   @default(\"user\")\n  createdAt    DateTime @default(now())\n  orders       Order[]\n}\n\nmodel Venue {\n  id       Int     @id @default(autoincrement())\n  name     String\n  address  String\n  city     String?\n  country  String?\n  capacity Int?\n  events   Event[]\n}\n\nmodel Event {\n  id          Int      @id @default(autoincrement())\n  title       String\n  description String?\n  venueId     Int\n  categoryId  Int\n  eventDate   DateTime\n  createdAt   DateTime @default(now())\n  status      String   @default(\"active\")\n  category    String\n  venue       Venue    @relation(fields: [venueId], references: [id])\n  tickets     Ticket[]\n}\n\nmodel Ticket {\n  id         Int         @id @default(autoincrement())\n  eventId    Int\n  type       String\n  price      Decimal     @db.Decimal(10, 2)\n  stock      Int\n  sold       Int         @default(0)\n  orderItems OrderItem[]\n  event      Event       @relation(fields: [eventId], references: [id])\n}\n\nmodel Order {\n  id        Int         @id @default(autoincrement())\n  userId    Int\n  createdAt DateTime    @default(now())\n  total     Decimal     @db.Decimal(10, 2)\n  status    String      @default(\"pending\")\n  user      User        @relation(fields: [userId], references: [id])\n  items     OrderItem[]\n}\n\nmodel OrderItem {\n  id        Int     @id @default(autoincrement())\n  orderId   Int\n  ticketId  Int\n  quantity  Int\n  priceEach Decimal @db.Decimal(10, 2)\n  order     Order   @relation(fields: [orderId], references: [id])\n  ticket    Ticket  @relation(fields: [ticketId], references: [id])\n}\n",
+  "inlineSchemaHash": "1b5f2e74af6ee02e430fbfac9a96002d95f281c892ec8b48ee90de44713710a4",
   "copyEngine": true
 }
 config.dirname = '/'
