@@ -1,0 +1,29 @@
+[33mcommit 2cf8a792ae54e80585da9fde5a598c2df6247ea5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mVEC_UI[m[33m)[m
+Author: BenjaR23 <brodriguezfu@gmail.com>
+Date:   Fri Apr 4 15:41:45 2025 -0300
+
+    Interface with a page for each concert
+
+[33mcommit 6ce877727b1ab5e2c429c2db3400febf1014ba87[m[33m ([m[1;31morigin/VEC_UI[m[33m)[m
+Author: BenjaR23 <brodriguezfu@gmail.com>
+Date:   Tue Apr 1 21:43:20 2025 -0300
+
+    Preliminary version of the interface
+
+[33mcommit 0ccebde8b48a8468c4c03a1ff59325685c08dbf7[m
+Author: BenjaR23 <brodriguezfu@gmail.com>
+Date:   Tue Apr 1 21:31:00 2025 -0300
+
+    Initialize React Project
+
+[33mcommit de08ffaa85696a43a60369e7201e47b55df4de35[m[33m ([m[1;31morigin/VEC-2[m[33m, [m[1;32mVEC-2[m[33m)[m
+Author: ZetaBeeM <thisnameisnotpermitted@gmail.com>
+Date:   Tue Apr 1 17:09:05 2025 -0300
+
+    Implemented basic database functionality using Prisma and PostgreSQL, including API functions to create and store users and tickets for events.
+
+[33mcommit d462ef4ecaa73eecb40d74508a16c4c4a3754ba8[m
+Author: ZetaBeeM <thisnameisnotpermitted@gmail.com>
+Date:   Sat Mar 29 16:38:25 2025 -0300
+
+    First commit

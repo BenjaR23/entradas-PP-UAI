@@ -1,0 +1,134 @@
+/* General styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom right, #eef2ff, #ffffff);
+  margin: 0;
+  padding: 0;
+}
+
+/* Home Page (only changes for this page) */
+.home-container {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.home-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #3730a3;
+  margin-bottom: 2rem;
+}
+
+/* Cambio: Hacer que cada concierto ocupe una fila completa */
+.concert-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Solo una columna por fila */
+  gap: 1.5rem;
+}
+
+.concert-card {
+  background-color: white;
+  border: 1px solid #c7d2fe;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  padding: 1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 1.5rem; /* Añadir espacio entre las filas */
+}
+
+.concert-card:hover {
+  border-color: #6366f1;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+/* Botón de retroceso a la página principal */
+.back-button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: background 0.3s ease;
+  text-align: center;
+  display: block;
+}
+
+.back-button:hover {
+  background-color: #4338ca;
+}
+
+/* Concert Page - sin cambios */
+.concert-container {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.concert-box {
+  max-width: 700px;
+  margin: auto;
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.concert-title {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+}
+
+.concert-subinfo {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.ticket-type {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ticket-label {
+  font-size: 1rem;
+  color: #374151;
+}
+
+.ticket-price {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.ticket-select {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+}
+
+.purchase-button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.purchase-button:hover {
+  background-color: #4338ca;
+}
+
