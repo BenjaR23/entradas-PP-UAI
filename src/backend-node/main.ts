@@ -6,6 +6,6 @@ const app = new Application()
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-console.log("🚀 Backend corriendo en http://localhost:8080")
+console.log("Backend http://localhost:8080")
 await app.listen({ port: 8080 })
 
