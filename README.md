@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Vite + Deno + React + TypeScript
 
 ## Running
@@ -18,7 +17,6 @@ Build production assets:
 ```
 $ deno task build
 ```
-=======
 Proyecto semestral de Felipe Alonso Madrid Jaramillo (ZetaBeeM) y Benjamín Octavio Rodríguez Fuentes (BenjaR23) para TICS420 (Programación Profesional), siguiendo la tematica P10.- Ventas de entradas a eventos y conciertos.
 
 El proyecto busca incluir las siguientes funcionalidades:
@@ -37,4 +35,3 @@ El proyecto busca incluir las siguientes funcionalidades:
    - Generación de vouchers o cupones para ser canjeados durante el evento. Ejemplo: evento PAES UAI, cupón válido por un snack.
 5) Opcional: Check-Out
    - Para eventos donde sea necesario entrar y salir de distintas zonas. Idealmente con reconocimiento automático / detección de personas mediante una cámara.
->>>>>>> VEC_UI
