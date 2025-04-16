@@ -1,0 +1,9 @@
+{
+    "imports": {
+      "prisma": "npm:prisma@^6.5.0",
+      "esbuild": "npm:esbuild@^0.14.0",
+      "@prisma/client": "npm:@prisma/client@^6.5.0",
+      "react": "npm:react@^19.0.0",
+      "react-dom": "npm:react-dom@^19.0.0"
+    }
+  }

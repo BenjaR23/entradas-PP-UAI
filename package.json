@@ -1,0 +1,20 @@
+{
+  "name": "entradas-pp-uai",
+  "version": "1.0.0",
+  "description": "## Running",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenjaR23/entradas-PP-UAI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenjaR23/entradas-PP-UAI/issues"
+  },
+  "homepage": "https://github.com/BenjaR23/entradas-PP-UAI#readme"
+}
