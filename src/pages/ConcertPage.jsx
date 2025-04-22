@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';  // Import useParams to retrieve dynamic route parameters
-import concerts from '../data/concerts';  // Import concert data from the concerts.js file
+import concerts from '../../public/data/concerts.js';  // Import concert data from the concerts.js file
 import { useState } from 'react';  // Import useState hook to manage component state
 
 function ConcertPage() {

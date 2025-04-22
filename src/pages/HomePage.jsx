@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';  // Import Link component for navigation between pages
-import concerts from '../data/concerts';  // Import concerts data from the concerts.js file
+import concerts from '../../public/data/concerts.js';  // Import concerts data from the concerts.js file
 
 function HomePage() {
   return (

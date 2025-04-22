@@ -179,7 +179,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/feli_bm/PycharmProjects/homework/UAI/Programación Profesional/proy/entradas-PP-UAI/generated/client",
+      "value": "C:\\Users\\felim\\Downloads\\progprof\\entradas-pp-uai\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -188,14 +188,14 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [
       "deno"
     ],
-    "sourceFilePath": "/Users/feli_bm/PycharmProjects/homework/UAI/Programación Profesional/proy/entradas-PP-UAI/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\felim\\Downloads\\progprof\\entradas-pp-uai\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
