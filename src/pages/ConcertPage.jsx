@@ -1,9 +1,10 @@
 import { useParams } from 'react-router-dom';  // Import useParams to retrieve dynamic route parameters
 import concerts from '../../public/data/concerts.js';  // Import concert data from the concerts.js file
-import { useState } from 'react';  // Import useState hook to manage component state
+import { useState, useEffect } from 'react';  // Import useState hook to manage component state
 
 function ConcertPage() {
   // Use useParams to get the dynamic 'id' from the URL
+  
   const { id } = useParams();
   
   // Find the concert object that matches the 'id' from the concerts array

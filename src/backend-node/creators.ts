@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { prisma } from '../client.ts';
+import { prisma } from '../client.ts'
 
 export const createUser = async (ctx: any) => {
     const body = await ctx.request.body({ type: "json" }).value
