@@ -1,0 +1,75 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/client"
+  previewFeatures = ["deno"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("user")
+  createdAt    DateTime @default(now())
+  orders       Order[]
+}
+
+model Venue {
+  id       Int     @id @default(autoincrement())
+  name     String
+  address  String
+  city     String?
+  country  String?
+  capacity Int?
+  events   Event[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  venueId     Int
+  categoryId  Int
+  eventDate   DateTime
+  createdAt   DateTime @default(now())
+  status      String   @default("active")
+  category    String
+  venue       Venue    @relation(fields: [venueId], references: [id])
+  tickets     Ticket[]
+}
+
+model Ticket {
+  id         Int         @id @default(autoincrement())
+  eventId    Int
+  type       String
+  price      Decimal     @db.Decimal(10, 2)
+  stock      Int
+  sold       Int         @default(0)
+  orderItems OrderItem[]
+  event      Event       @relation(fields: [eventId], references: [id])
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  createdAt DateTime    @default(now())
+  total     Decimal     @db.Decimal(10, 2)
+  status    String      @default("pending")
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  ticketId  Int
+  quantity  Int
+  priceEach Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id])
+  ticket    Ticket  @relation(fields: [ticketId], references: [id])
+}
