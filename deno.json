@@ -1,7 +1,7 @@
 {
   "nodeModulesDir":"auto",
   "tasks": {
-    "dev": "deno run -A --node-modules-dir npm:vite",
+    "dev": "deno run -A --node-modules-dir npm:vite & deno run -A --env-file src/backend-node/main.ts",
     "build": "deno run -A --node-modules-dir npm:vite build",
     "preview": "deno run -A --node-modules-dir npm:vite preview",
     "serve": "deno run --allow-net --allow-read jsr:@std/http@1/file-server dist/"

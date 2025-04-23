@@ -4,7 +4,7 @@
 
 You need to have Deno v2.0.0 or later installed to run this repo.
 
-Start a dev server:
+Start a dev server where localhost:5173 will host the frontend and localhost:8080 will host the backend that connects to the database:
 
 ```
 $ deno task dev
@@ -17,7 +17,7 @@ Build production assets:
 ```
 $ deno task build
 ```
-Proyecto semestral de Felipe Alonso Madrid Jaramillo (ZetaBeeM) y Benjamín Octavio Rodríguez Fuentes (BenjaR23) para TICS420 (Programación Profesional), siguiendo la tematica P10.- Ventas de entradas a eventos y conciertos.
+Proyecto semestral de Felipe Alonso Madrid Jaramillo (ZetaBeeM), Benjamín Octavio Rodríguez Fuentes (BenjaR23), y Diego Jiménez Riveros (Diegojimnz53) para TICS420 (Programación Profesional), siguiendo la tematica P10.- Ventas de entradas a eventos y conciertos.
 
 El proyecto busca incluir las siguientes funcionalidades:
 
