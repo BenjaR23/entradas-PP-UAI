@@ -1,7 +1,7 @@
 /* General styles */
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(to bottom right, #eef2ff, #ffffff);
+  background: linear-gradient(to bottom right, #323338, #000000);
   margin: 0;
   padding: 0;
 }
@@ -132,3 +132,35 @@ body {
   background-color: #4338ca;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  position: fixed;
+}
+
+.navbar-container a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.navbar-container a:hover {
+  background-color: #575757;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.navbar-login {
+  margin-top: 1rem;
+  margin-left: 0;
+  width: 100%;
+  text-align: center;
+}
