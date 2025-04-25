@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';  // Import Link component for navigation between pages
 import { useEffect, useState } from 'react'; // Add useEffect and useState hooks to manage loading and displaying data fetched from the backend
+import Loader from '../components/Loader'; // Import Loader
+import '../components/Loader.css';
 
 function HomePage() {
   const [concerts, setConcerts] = useState([]);
@@ -15,7 +17,7 @@ function HomePage() {
       .catch(err => setError(err.message));
   }, []);
   if (error) return <p>Error: {error}</p>; // More error handling that displays the error message if the fetch fails
-  if (!concerts.length) return <p>Loading...</p>; // Display a loading message while the data is being fetched
+  if (!concerts.length) return <Loader />; // Display a loading message while the data is being fetched
   
   return (
     <div className="home-container">
