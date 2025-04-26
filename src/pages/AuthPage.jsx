@@ -58,7 +58,7 @@ function AuthPage() {
                 <p className="text-lg mb-8">User Email: {userAtributes.usermail}</p>
                 <p className="text-lg mb-8">User ID: {userAtributes.userID}</p>
                 <p className="text-lg mb-8">User Name: {userAtributes.userName}</p>
-                <Link to="/home" className="mb-4 text-blue-500 hover:underline">Go to Home</Link>
+                <Link to="/" className="mb-4 text-blue-500 hover:underline">Go to Home</Link>
                 <button onClick={logout} className="mb-4 text-red-500 hover:underline">Logout</button>
             </div>
         );

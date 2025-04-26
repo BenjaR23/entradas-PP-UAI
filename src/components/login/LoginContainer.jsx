@@ -25,7 +25,7 @@ function LoginContainer() {
             })
         })
 
-        
+
         const data = await response.json()
         console.log(data.message)
         return data
@@ -34,26 +34,19 @@ function LoginContainer() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const server_response = await checkLogin(usermail, password)
-        if (server_response.status === "success") {  // Change condition to match the status key
-            setIsLoggedIn(true); // Set logged in state to true
-            setError(null); // Clear any previous error messages
-            console.log(server_response.userToken);
-            localStorage.setItem('userToken', server_response.userToken); // Store the token in local storage
-            
-            // Show a success toast
-            toast.success(`¡Bienvenido, ${server_response.UserFullName}!`);
-
-            // Redirect to homepage after a short delay
-            setTimeout(() => {
-                navigate('/'); // Redirect to the homepage
-            }, 2000); // Wait for 2 seconds before redirecting
+        if (server_response.message === 'Login successful') {
+          setIsLoggedIn(true);
+          setError(null);
+          localStorage.setItem('userToken', server_response.userToken); // Guardar el token
+          localStorage.setItem('userName', server_response.UserFullName); // Guardar el nombre del usuario
+          toast.success("Login successful!");
+          navigate('/'); // Redirigir a la página de inicio
         } else {
-            setError("Invalid credentials. Please try again."); // Set error message if login fails
-            setIsLoggedIn(false); // Set logged in state to false
-            
-            // Show error toast
-            toast.error(server_response.message || "Invalid credentials. Please try again.");
+          setError('Invalid credentials. Please try again.');
+          setIsLoggedIn(false);
+          toast.error("Invalid credentials! Please try again.");
         }
+
     };
 
     return (
