@@ -34,7 +34,7 @@ function LoginContainer() {
             setIsLoggedIn(true); // Set logged in state to true
             setError(null); // Clear any previous error messages
             console.log(server_response.userToken)
-            sessionStorage.setItem('userToken', server_response.userToken) // Store the token in local storage
+            localStorage.setItem('userToken', server_response.userToken) // Store the token in local storage
         } else {
             setError("Invalid credentials. Please try again."); // Set error message if login fails
             setIsLoggedIn(false); // Set logged in state to false
