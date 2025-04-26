@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';  // Import Link component for navigation between pages
+// Import Link component for navigation between pages
 import { useEffect, useState } from 'react'; // Add useEffect and useState hooks to manage loading and displaying data fetched from the backend
-import Loader from '../components/Loader'; // Import Loader
+import Loader from '../components/Loader.jsx'; // Import Loader
 import '../components/Loader.css';
+import ConcertCard from '../components/ConcertCard.jsx';
+
 
 function HomePage() {
   const [concerts, setConcerts] = useState([]);
@@ -23,19 +25,11 @@ function HomePage() {
     <div className="home-container">
       {/* Display the title of the homepage */}
       <h1 className="home-title">Upcoming Concerts</h1>
-      
       {/* Create a grid layout to display all concerts */}
       <div className="concert-grid">
-        {concerts.map((concert) => ( // Loop through the fetched events and create links for each one using the map method
-          // Each concert is linked to a detailed page using the concert's id in the URL
-          <Link to={`/concert/${concert.id}`} key={concert.id} className="concert-card">
-            {/* Display concert name */}
-            <h2>{concert.title}</h2>
-            {/* Display concert date */}
-            <p>{concert.eventDate}</p>
-            {/* Display concert location */}
-            <p>{concert.venueId}</p>
-          </Link>
+        {concerts.map((concert) => ( // Loop through the fetched events and create ConcertCards for each event, passing the event data as concert and key as concert.id
+          // Each concert is linked to a page ConcertPage.jsx page using the concert's id in the URL
+          <ConcertCard concert={concert} key={concert.id} />
         ))}
       </div>
     </div>

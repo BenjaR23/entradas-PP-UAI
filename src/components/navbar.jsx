@@ -22,8 +22,8 @@ function Navbar() {
             <p1 className="navbar-title">Compraventa Entradas UAI</p1>
             <Link to = "/">Home</Link>
             <a href="/about">About</a>
-            <a href="/contact">Contact</a>
             <Link to = "/login" className="navbar-login">Login</Link>
+            <Link to = "/auth">Test authorization page</Link>
         </div>
         <form className="event-seacher" onSubmit= {handleSearchSubmit}>
             <input type="text" placeholder="Search for events..." className="eventSearch" value={events} onChange={(e) => setEvents(e.target.value)}></input>

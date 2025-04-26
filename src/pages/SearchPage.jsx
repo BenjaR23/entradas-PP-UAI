@@ -1,5 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import ConcertCard from '../components/ConcertCard.jsx'; // Import the ConcertCard component to display concert details
+import Loader from '../components/Loader.jsx'; // Import Loader
 
 function SearchPage() {
     const { query } = useParams(); // Use useParams to get the query parameter (event name) from the URL
@@ -15,19 +17,16 @@ function SearchPage() {
     }, []);
 
     if (error) return <p>Error: {error}</p>;
-    if (!concerts.length) return <p>Loading...</p>;
+    if (!concerts.length) return <Loader />;
     if (concerts.length === 0) return <p>No events found!</p>
 
+    // Read HomePage.jsx for comments on how ConcertCard gets mapped to the concerts
     return (
         <div className="search-container">
             <h1 className="search-title">Search Results for "{query}"</h1>
             <div className="concert-grid">
                 {concerts.map((concert) => (
-                    <Link to={`/concert/${concert.id}`} key={concert.id} className="concert-card">
-                        <h2>{concert.title}</h2>
-                        <p>{concert.eventDate}</p>
-                        <p>{concert.venueId}</p>
-                    </Link>
+                    <ConcertCard concert={concert} key={concert.id} />
                 ))}
             </div>
         </div>

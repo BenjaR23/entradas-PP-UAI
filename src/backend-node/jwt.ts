@@ -6,25 +6,30 @@ const secret = createSecretKey(process.env.secretKey, 'utf-8');
 
 interface UserPayload {
   userEmail: string;
-  userPassword: string;
+  userName: string;
+  userId: any;
+  userRole: string;
+  timeGenerated: Date; 
 }
 
 
-export async function generateToken({userEmail, userPassword}: UserPayload): Promise<string> {
-  return await new SignJWT({userEmail, userPassword })
+export async function generateToken(payload: UserPayload): Promise<string> {
+  const { userEmail, userName, userId, userRole, timeGenerated } = payload;
+  if (!userEmail || !userName || !userId || !userRole || !timeGenerated) {
+    throw new Error("Missing required user information to generate token.");
+  }
+  return await new SignJWT({userEmail, userName, userId, userRole, timeGenerated: timeGenerated.toISOString()})
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("2h")
     .sign(secret);
 }
 
-export async function verifyToken(token: string): Promise<JWTPayload | null> {
-    try {
-      const { payload } = await jwtVerify(token, secret);
-      console.log("JWT is valid:", payload);
-      return payload;
-    } catch (error) {
-      console.error("Invalid JWT:", error);
-      return null;
-    }
-  };
+export const verifyToken = async (ctx: any) =>{
+      const tokenbody = await ctx.request.body().value;
+      const tokenstring = tokenbody.token;
+      const { payload } = await jwtVerify(tokenstring, secret);
+      ctx.response.body = {items: payload, status: "success"};
+      ctx.response.status = 200;
+      ctx.response.message = "Token is valid";
+}
