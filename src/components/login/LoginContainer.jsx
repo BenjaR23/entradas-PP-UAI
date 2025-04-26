@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify'; // Importar el toast
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate para redirigir
 import './LoginContainer.css'; // Import the CSS file for styling
 
 function LoginContainer() {
@@ -6,6 +8,7 @@ function LoginContainer() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track if the user is logged in
+    const navigate = useNavigate(); // Hook to handle redirection
 
     async function checkLogin(usermail, password) {
         const name = usermail
@@ -30,23 +33,34 @@ function LoginContainer() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const server_response = await checkLogin(usermail, password)
-        if (server_response.message === "Login successful") {
+        if (server_response.status === "success") {  // Change condition to match the status key
             setIsLoggedIn(true); // Set logged in state to true
             setError(null); // Clear any previous error messages
-            console.log(server_response.userToken)
-            localStorage.setItem('userToken', server_response.userToken) // Store the token in local storage
+            console.log(server_response.userToken);
+            localStorage.setItem('userToken', server_response.userToken); // Store the token in local storage
+            
+            // Show a success toast
+            toast.success(`¡Bienvenido, ${server_response.UserFullName}!`);
+
+            // Redirect to homepage after a short delay
+            setTimeout(() => {
+                navigate('/'); // Redirect to the homepage
+            }, 2000); // Wait for 2 seconds before redirecting
         } else {
             setError("Invalid credentials. Please try again."); // Set error message if login fails
             setIsLoggedIn(false); // Set logged in state to false
+            
+            // Show error toast
+            toast.error(server_response.message || "Invalid credentials. Please try again.");
         }
     };
 
-    return(
+    return (
         <div className="login-container">
-            <h1>Login </h1>
+            <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="usermail">Mail </label>
+                    <label htmlFor="usermail">Mail</label>
                     <input
                         type="text"
                         id="usermail"
@@ -56,7 +70,7 @@ function LoginContainer() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password </label>
+                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         id="password"
@@ -68,7 +82,7 @@ function LoginContainer() {
                 {error && <p className="error">{error}</p>}
                 <button type="submit">Login</button>
             </form>
-            {isLoggedIn && <p className="success">Login successful!</p>} {/* Display success message if logged in */}
+            {isLoggedIn && <p className="success">Login successful!</p>} {/* Optional: Display success message if logged in */}
         </div>
     )
 }
