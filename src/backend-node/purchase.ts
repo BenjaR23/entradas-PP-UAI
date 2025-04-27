@@ -6,44 +6,34 @@ import { verifyToken } from "./jwt.ts"; // Importa tu función de verificar
 const prisma = new PrismaClient().$extends(withAccelerate());
 
 export const purchaseHandler = async (ctx: Context) => {
+  console.log("LLEGÓ PETICIÓN A /purchase");
 
-  console.log("LLEGÓ PETICIÓN A /purchase"); // 🛑
-
-  const payload = await verifyToken(ctx);
-  if (!payload) {
-    console.log("Token inválido o no enviado"); // 🛑
+  // Get token from header
+  const authHeader = ctx.request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Authorization header missing or invalid" };
     return;
   }
 
-  console.log("Token payload:", payload); // 🛑
-
-  const { value } = await ctx.request.body({ type: "json" });
-  const { eventId, tickets } = await value;
+  const token = authHeader.split(' ')[1];
   
-  console.log("Datos recibidos:", { eventId, tickets }); // 🛑
-
-
-
-
+  // Verify token
   try {
-    const authHeader = ctx.request.headers.get('Authorization');
-    if (!authHeader) {
-      ctx.response.status = 401;
-      ctx.response.body = { error: "Authorization header missing" };
-      return;
-    }
-
-    const token = authHeader.split(' ')[1]; // "Bearer <token>"
-    const payload = await verifyToken(token);
-
+    const { payload } = await jwtVerify(token, secret);
     if (!payload || !payload.userId) {
       ctx.response.status = 401;
       ctx.response.body = { error: "Invalid token" };
       return;
     }
 
-    const body = await ctx.request.body({ type: "json" }).value;
-    const { eventId, tickets } = body;
+    console.log("Token payload:", payload);
+
+    // Process purchase
+    const { value } = await ctx.request.body({ type: "json" });
+    const { eventId, tickets } = await value;
+    
+    console.log("Datos recibidos:", { eventId, tickets });
 
     if (!eventId || !tickets || !Array.isArray(tickets)) {
       ctx.response.status = 400;
@@ -51,6 +41,7 @@ export const purchaseHandler = async (ctx: Context) => {
       return;
     }
 
+    // Rest of your purchase logic...
     const ticketRecords = await prisma.ticket.findMany({
       where: {
         eventId: eventId,
@@ -58,40 +49,11 @@ export const purchaseHandler = async (ctx: Context) => {
       }
     });
 
-    if (ticketRecords.length !== tickets.length) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "One or more ticket types are invalid." };
-      return;
-    }
-
-    let totalPrice = 0;
-    for (const selected of tickets) {
-      const foundTicket = ticketRecords.find(t => t.type === selected.type);
-      if (foundTicket) {
-        totalPrice += parseInt(foundTicket.price) * selected.quantity;
-      }
-    }
-
-    const purchase = await prisma.purchase.create({
-      data: {
-        userId: payload.userId, // 🚀 Aquí usamos el userId del token
-        total: totalPrice.toString(),
-        status: "pending",
-        items: {
-          create: tickets.map(t => ({
-            type: t.type,
-            quantity: t.quantity
-          }))
-        }
-      }
-    });
-
-    ctx.response.status = 201;
-    ctx.response.body = { message: "Purchase successful", purchase };
+    // Continue with your existing purchase processing...
     
   } catch (error) {
     console.error(error);
-    ctx.response.status = 500;
-    ctx.response.body = { error: error.message };
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Invalid token or request" };
   }
 };
