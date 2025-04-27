@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';  // Import useParams to retrieve dynamic route parameters
 import { useState, useEffect } from 'react';  // Import useState and useEffect hooks
+import Loader from '../components/Loader';  // Import the Loader component
 
 function ConcertPage() {
   const { id } = useParams();  // Use useParams to get the dynamic 'id' from the URL
@@ -35,22 +36,24 @@ function ConcertPage() {
   const handleChange = (type, value) => {
     setQuantities(prev => ({
       ...prev,
-      [type]: parseInt(value),  // Update the quantity for the selected ticket type
+      [type]: value ? parseInt(value, 10) : 0,  // Ensure value is parsed as an integer, default to 0
     }));
   };
 
   // Handle the purchase logic by calculating the total price of the selected tickets
   const handlePurchase = () => {
     const total = concert.tickets.reduce((acc, ticket) => {
-      return acc + ticket.price * quantities[ticket.type];  // Calculate total by multiplying price with selected quantity
+      const quantity = quantities[ticket.type] || 0;  // Get quantity for each ticket type (default to 0)
+      return acc + ticket.price * quantity;  // Calculate total by multiplying price with selected quantity
     }, 0);
+
     // Alert the total price formatted as currency
     alert(`Total: $${total.toLocaleString()}`);
   };
 
-  // Loading state: show message while fetching data
+  // Loading state: show loader while fetching data
   if (loading) {
-    return <p>Loading event details...</p>;
+    return <Loader />;  // Show the loader while data is being fetched
   }
 
   // Error handling: show error message if fetch fails
