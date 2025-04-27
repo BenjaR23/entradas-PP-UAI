@@ -25,26 +25,23 @@ export async function generateToken(payload: UserPayload): Promise<string> {
     .sign(secret);
 }
 
-// ✅ Verificar token
+// ✅ Verificar token (CORREGIDO)
 export const verifyToken = async (ctx: any) => {
   const authHeader = ctx.request.headers.get('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    ctx.response.status = 401;
-    ctx.response.body = { error: "Token inválido o no enviado" };
-    return;
+    console.log("Authorization header faltante o mal formado");
+    return null;
   }
 
   const token = authHeader.split(' ')[1];
 
   try {
     const { payload } = await jwtVerify(token, secret);
-    ctx.state.user = payload; // guardamos el payload por si lo necesitas después
-    ctx.response.status = 200;
-    ctx.response.body = { items: payload, status: "success" };
+    ctx.state.user = payload; // opcional si quieres guardarlo en el contexto
+    return payload;
   } catch (err) {
-    console.error(err);
-    ctx.response.status = 401;
-    ctx.response.body = { error: "Token inválido" };
+    console.error("Error verificando token:", err);
+    return null;
   }
 };

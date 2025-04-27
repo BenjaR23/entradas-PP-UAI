@@ -43,7 +43,7 @@ function ConcertPage() {
     const selectedTickets = concert.tickets
       .filter(ticket => quantities[ticket.type] > 0)
       .map(ticket => ({
-        type: ticket.type,
+        ticketId: ticket.id, // 👈 corregido: usamos ticketId en vez de type
         quantity: quantities[ticket.type],
       }));
 
@@ -74,7 +74,7 @@ function ConcertPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Error al realizar la compra.');
+        throw new Error(data.error || 'Error al realizar la compra.');
       }
 
       alert(data.message || "¡Compra exitosa!");
