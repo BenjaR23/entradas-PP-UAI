@@ -1,47 +1,44 @@
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 import { PrismaClient } from "../../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
-import { verifyToken } from "./jwt.ts"; // Importa tu función de verificar
+import { verifyToken } from "./jwt.ts"; // Import your existing verifyToken function
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
 export const purchaseHandler = async (ctx: Context) => {
   console.log("LLEGÓ PETICIÓN A /purchase");
 
-  // Get token from header
-  const authHeader = ctx.request.headers.get('Authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    ctx.response.status = 401;
-    ctx.response.body = { error: "Authorization header missing or invalid" };
+  // 1. Verify token using existing function
+  const payload = await verifyToken(ctx);
+  if (!payload) {
+    // verifyToken already sets the response, just return
     return;
   }
 
-  const token = authHeader.split(' ')[1];
+  // 2. Parse request body
+  let eventId: string;
+  let tickets: Array<{ type: string; quantity: number }>;
   
-  // Verify token
   try {
-    const { payload } = await jwtVerify(token, secret);
-    if (!payload || !payload.userId) {
-      ctx.response.status = 401;
-      ctx.response.body = { error: "Invalid token" };
-      return;
-    }
-
-    console.log("Token payload:", payload);
-
-    // Process purchase
     const { value } = await ctx.request.body({ type: "json" });
-    const { eventId, tickets } = await value;
-    
+    ({ eventId, tickets } = await value);
     console.log("Datos recibidos:", { eventId, tickets });
+  } catch (error) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Invalid request body" };
+    return;
+  }
 
-    if (!eventId || !tickets || !Array.isArray(tickets)) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "Invalid request body" };
-      return;
-    }
+  // 3. Validate required fields
+  if (!eventId || !tickets || !Array.isArray(tickets)) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Missing eventId or tickets" };
+    return;
+  }
 
-    // Rest of your purchase logic...
+  // 4. Process purchase
+  try {
+    // Check ticket availability
     const ticketRecords = await prisma.ticket.findMany({
       where: {
         eventId: eventId,
@@ -49,11 +46,50 @@ export const purchaseHandler = async (ctx: Context) => {
       }
     });
 
-    // Continue with your existing purchase processing...
-    
+    if (ticketRecords.length !== tickets.length) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "One or more ticket types are invalid" };
+      return;
+    }
+
+    // Calculate total price
+    let totalPrice = 0;
+    for (const selected of tickets) {
+      const foundTicket = ticketRecords.find(t => t.type === selected.type);
+      if (foundTicket) {
+        totalPrice += parseInt(foundTicket.price) * selected.quantity;
+      }
+    }
+
+    // Create purchase record
+    const purchase = await prisma.purchase.create({
+      data: {
+        userId: payload.userId, // From verified token
+        total: totalPrice.toString(),
+        status: "completed",
+        items: {
+          create: tickets.map(t => ({
+            type: t.type,
+            quantity: t.quantity
+          }))
+        }
+      }
+    });
+
+    ctx.response.status = 201;
+    ctx.response.body = { 
+      message: "Purchase successful", 
+      purchase: {
+        id: purchase.id,
+        total: purchase.total,
+        status: purchase.status,
+        items: tickets
+      }
+    };
+
   } catch (error) {
-    console.error(error);
-    ctx.response.status = 401;
-    ctx.response.body = { error: "Invalid token or request" };
+    console.error("Purchase error:", error);
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Internal server error" };
   }
 };
