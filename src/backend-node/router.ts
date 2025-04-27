@@ -1,23 +1,26 @@
-//route definition
-import { Router } from "https://deno.land/x/oak@v12.6.0/mod.ts"
-import { getUsers, getEvents, getEventByName } from "./controller.ts"
-import { compareLogins } from "./logins.ts"
-import { verifyToken } from "./jwt.ts"
+import { Router } from "https://deno.land/x/oak@v12.6.0/mod.ts";
+import { 
+  getUsers, 
+  getEvents, 
+  getEventByName,
+  getEventById 
+} from "./controller.ts";
+import { compareLogins } from "./logins.ts";
+import { verifyToken } from "./jwt.ts";
 import { purchaseHandler } from "./purchase.ts";
 
-router.post("/purchase", purchaseHandler);
-
-
-const router = new Router()
+const router = new Router();
 
 router
   .get("/", (ctx) => {
-    ctx.response.body = " API working"
+    ctx.response.body = "API working";
   })
   .get("/users", getUsers)
   .get("/events", getEvents)
-  .get("/events/:eventname", getEventByName)
+  .get("/events/id/:id", getEventById) // This should come first
+  .get("/events/:eventname", getEventByName) // This comes second
   .post("/login", compareLogins)
   .post("/verify", verifyToken)
+  .post("/purchase", purchaseHandler);
 
-export { router }
+export { router };

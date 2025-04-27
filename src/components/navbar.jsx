@@ -19,7 +19,7 @@ function Navbar() {
     return (
         <nav className="navbar">
         <div className="navbar-container">
-            <p1 className="navbar-title">Compraventa Entradas UAI</p1>
+            <p className="navbar-title">Compraventa Entradas UAI</p>
             <Link to = "/">Home</Link>
             <a href="/about">About</a>
             <Link to = "/login" className="navbar-login">Login</Link>
