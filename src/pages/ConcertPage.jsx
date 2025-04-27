@@ -1,9 +1,11 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // 👈 Agregado useNavigate
 import { useState, useEffect } from 'react';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 function ConcertPage() {
   const { id } = useParams();
+  const navigate = useNavigate(); // 👈 Hook para navegar
   const [concert, setConcert] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [loading, setLoading] = useState(true);
@@ -43,19 +45,19 @@ function ConcertPage() {
     const selectedTickets = concert.tickets
       .filter(ticket => quantities[ticket.type] > 0)
       .map(ticket => ({
-        ticketId: ticket.id, // 👈 corregido: usamos ticketId en vez de type
+        ticketId: ticket.id,
         quantity: quantities[ticket.type],
       }));
 
     if (selectedTickets.length === 0) {
-      alert("Por favor selecciona al menos un ticket.");
+      toast.error("Por favor selecciona al menos un ticket.");
       return;
     }
 
     try {
       const token = localStorage.getItem('userToken');
       if (!token) {
-        alert("Debes iniciar sesión para comprar entradas.");
+        toast.error("Debes iniciar sesión para comprar entradas.");
         return;
       }
 
@@ -77,10 +79,16 @@ function ConcertPage() {
         throw new Error(data.error || 'Error al realizar la compra.');
       }
 
-      alert(data.message || "¡Compra exitosa!");
+      toast.success(data.message || "¡Compra exitosa!");
+
+      // 👇 Después de 2 segundos, volver al Home
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+
     } catch (error) {
       console.error("Error en la compra:", error);
-      alert(error.message || "Error procesando la compra. Intenta nuevamente.");
+      toast.error(error.message || "Error procesando la compra. Intenta nuevamente.");
     }
   };
 

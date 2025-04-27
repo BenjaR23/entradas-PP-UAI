@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
-
   return (
     <Router>
       <Navbar />
@@ -22,8 +21,18 @@ function App() {
         <Route path="/login" element={<Loginpage />} />
         <Route path="/auth" element={<Authpage />} />
       </Routes>
-      {/* Agregar el ToastContainer para mostrar los toasts */}
-      <ToastContainer />
+      {/* Toasts container, solo lo pones una vez en tu app */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000} // ⏱️ duración del toast
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored" // 🎨 colores más lindos
+      />
     </Router>
   );
 }

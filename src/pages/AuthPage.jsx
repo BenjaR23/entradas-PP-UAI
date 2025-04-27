@@ -22,39 +22,24 @@ function AuthPage() {
     };
 
     useEffect(() => {
-        const verifyToken = async () => {
+        const verifyToken = () => {
             const userToken = localStorage.getItem('userToken');
             
             if (userToken) {
                 try {
-                    const response = await fetch('http://localhost:8080/verify', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${userToken}`
-                        },
-                        body: JSON.stringify({ token: userToken }),
+                    // ✅ Decodificar el payload del JWT
+                    const base64Url = userToken.split('.')[1];
+                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                    const decodedPayload = JSON.parse(atob(base64));
+
+                    setIsLoggedIn(true);
+                    setUserAttributes({
+                        usermail: decodedPayload.userEmail,
+                        userID: decodedPayload.userId,
+                        userName: decodedPayload.userName,
                     });
-
-                    if (!response.ok) {
-                        console.error("Verification failed with status:", response.status);
-                        localStorage.removeItem('userToken');
-                        return;
-                    }
-
-                    const tokendata = await response.json();
-                    console.log('Response data:', tokendata);
-                    
-                    if (tokendata.status === 'success') {
-                        setIsLoggedIn(true);
-                        setUserAttributes({
-                            usermail: tokendata.items.userEmail,
-                            userID: tokendata.items.userId,
-                            userName: tokendata.items.userName,
-                        });
-                    }
                 } catch (error) {
-                    console.error("Token verification failed:", error);
+                    console.error("Token decoding failed:", error);
                     localStorage.removeItem('userToken');
                 }
             }

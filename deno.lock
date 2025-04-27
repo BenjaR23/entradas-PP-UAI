@@ -28,6 +28,7 @@
     "npm:prisma@^6.6.0": "6.6.0",
     "npm:prisma@latest": "6.5.0",
     "npm:react-dom@19": "19.1.0_react@19.1.0",
+    "npm:react-hot-toast@^2.5.2": "2.5.2_react@19.1.0_react-dom@19.1.0__react@19.1.0_csstype@3.1.3",
     "npm:react-router-dom@^7.5.1": "7.5.1_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:react-toastify@^11.0.5": "11.0.5_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:react@19": "19.1.0",
@@ -942,6 +943,12 @@
     "globals@11.12.0": {
       "integrity": "sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA=="
     },
+    "goober@2.1.16_csstype@3.1.3": {
+      "integrity": "sha512-erjk19y1U33+XAMe1VTvIONHYoSqE4iS7BYUZfHaqeohLmnC0FdxEh7rQU+6MZ4OajItzjZFSRtVANrQwNq6/g==",
+      "dependencies": [
+        "csstype"
+      ]
+    },
     "isexe@2.0.0": {
       "integrity": "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw=="
     },
@@ -1021,6 +1028,15 @@
       "dependencies": [
         "react",
         "scheduler"
+      ]
+    },
+    "react-hot-toast@2.5.2_react@19.1.0_react-dom@19.1.0__react@19.1.0_csstype@3.1.3": {
+      "integrity": "sha512-Tun3BbCxzmXXM7C+NI4qiv6lT0uwGh4oAfeJyNOjYUejTsm35mK9iCaYLGv8cBz9L5YxZLx/2ii7zsIwPtPUdw==",
+      "dependencies": [
+        "csstype",
+        "goober",
+        "react",
+        "react-dom"
       ]
     },
     "react-refresh@0.14.2": {
@@ -1427,6 +1443,7 @@
         "npm:@prisma/extension-accelerate@^1.3.0",
         "npm:dotenv-cli@8",
         "npm:prisma@^6.6.0",
+        "npm:react-hot-toast@^2.5.2",
         "npm:react-router-dom@^7.5.1",
         "npm:react-toastify@^11.0.5"
       ]
