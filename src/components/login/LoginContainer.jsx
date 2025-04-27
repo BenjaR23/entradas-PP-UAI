@@ -35,17 +35,19 @@ function LoginContainer() {
         e.preventDefault();
         const server_response = await checkLogin(usermail, password)
         if (server_response.message === 'Login successful') {
-          setIsLoggedIn(true);
-          setError(null);
-          localStorage.setItem('userToken', server_response.userToken); // Guardar el token
-          localStorage.setItem('userName', server_response.UserFullName); // Guardar el nombre del usuario
-          toast.success("Login successful!");
-          navigate('/'); // Redirigir a la página de inicio
-        } else {
-          setError('Invalid credentials. Please try again.');
-          setIsLoggedIn(false);
-          toast.error("Invalid credentials! Please try again.");
-        }
+            setIsLoggedIn(true);
+            setError(null);
+            localStorage.setItem('userToken', server_response.userToken); // Guardar el token
+            localStorage.setItem('userName', server_response.UserFullName); // Guardar el nombre del usuario
+            localStorage.setItem('userId', server_response.userId); // 🔥 NUEVO: guardar el userId
+            toast.success("Login successful!");
+            navigate('/'); // Redirigir a la página de inicio
+          } else {
+            setError('Invalid credentials. Please try again.');
+            setIsLoggedIn(false);
+            toast.error("Invalid credentials! Please try again.");
+          }
+          
 
     };
 

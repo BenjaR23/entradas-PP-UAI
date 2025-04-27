@@ -12,24 +12,39 @@ interface UserPayload {
   timeGenerated: Date; 
 }
 
-
+// ✅ Generar token
 export async function generateToken(payload: UserPayload): Promise<string> {
   const { userEmail, userName, userId, userRole, timeGenerated } = payload;
   if (!userEmail || !userName || !userId || !userRole || !timeGenerated) {
     throw new Error("Missing required user information to generate token.");
   }
-  return await new SignJWT({userEmail, userName, userId, userRole, timeGenerated: timeGenerated.toISOString()})
+  return await new SignJWT({ userEmail, userName, userId, userRole, timeGenerated: timeGenerated.toISOString() })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("2h")
     .sign(secret);
 }
 
-export const verifyToken = async (ctx: any) =>{
-      const tokenbody = await ctx.request.body().value;
-      const tokenstring = tokenbody.token;
-      const { payload } = await jwtVerify(tokenstring, secret);
-      ctx.response.body = {items: payload, status: "success"};
-      ctx.response.status = 200;
-      ctx.response.message = "Token is valid";
-}
+// ✅ Verificar token
+export const verifyToken = async (ctx: any) => {
+  const authHeader = ctx.request.headers.get('Authorization');
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Token inválido o no enviado" };
+    return;
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    ctx.state.user = payload; // guardamos el payload por si lo necesitas después
+    ctx.response.status = 200;
+    ctx.response.body = { items: payload, status: "success" };
+  } catch (err) {
+    console.error(err);
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Token inválido" };
+  }
+};

@@ -12,7 +12,10 @@ app.use(async (ctx, next) => {
   await next();
 });
 
+// Use CORS for cross-origin requests
 app.use(oakCors());
+
+// Use the router
 app.use(router.routes());
 app.use(router.allowedMethods());
 

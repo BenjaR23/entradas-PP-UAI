@@ -48,6 +48,7 @@ export const compareLogins = async (ctx: any) => {
     ctx.response.body = {
       status: "success",
       message: "Login successful",
+      userId: user.id,
       UserFullName: user.name,
       userToken: token,
     };

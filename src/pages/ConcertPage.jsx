@@ -1,103 +1,117 @@
-import { useParams } from 'react-router-dom';  // Import useParams to retrieve dynamic route parameters
-import { useState, useEffect } from 'react';  // Import useState and useEffect hooks
-import Loader from '../components/Loader';  // Import the Loader component
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import Loader from '../components/Loader';
 
 function ConcertPage() {
-  const { id } = useParams();  // Use useParams to get the dynamic 'id' from the URL
-  const [concert, setConcert] = useState(null);  // State to store concert data
-  const [quantities, setQuantities] = useState({});  // State to store ticket quantities
-  const [loading, setLoading] = useState(true);  // State to manage loading state
-  const [error, setError] = useState(null);  // State to manage error state
+  const { id } = useParams();
+  const [concert, setConcert] = useState(null);
+  const [quantities, setQuantities] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch concert and ticket data from the backend based on the 'id'
   useEffect(() => {
     const fetchConcertAndTickets = async () => {
       try {
-        // Fetch event and ticket data (ensure this endpoint returns both Event and Tickets)
-        const response = await fetch(`http://localhost:8080/events/id/${id}`);  // Ensure the URL is correct
+        const response = await fetch(`http://localhost:8080/events/id/${id}`);
         
         if (!response.ok) {
           throw new Error('Evento no encontrado');
         }
-        
-        const data = await response.json();  // Parse response to JSON
-        setConcert(data);  // Store concert data (which includes tickets) in state
-        setLoading(false);  // Set loading to false after data is fetched
+
+        const data = await response.json();
+        setConcert(data);
       } catch (error) {
-        setError(error.message);  // Set error message if something goes wrong
-        setLoading(false);  // Set loading to false if there's an error
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchConcertAndTickets();  // Call the function to fetch concert and ticket data
-  }, [id]);  // Re-run the effect when the 'id' changes
+    fetchConcertAndTickets();
+  }, [id]);
 
-  // Handle changes in the ticket quantity selector
   const handleChange = (type, value) => {
     setQuantities(prev => ({
       ...prev,
-      [type]: value ? parseInt(value, 10) : 0,  // Ensure value is parsed as an integer, default to 0
+      [type]: value ? parseInt(value, 10) : 0,
     }));
   };
 
-  // Handle the purchase logic by calculating the total price of the selected tickets
-  const handlePurchase = () => {
-    const total = concert.tickets.reduce((acc, ticket) => {
-      const quantity = quantities[ticket.type] || 0;  // Get quantity for each ticket type (default to 0)
-      return acc + ticket.price * quantity;  // Calculate total by multiplying price with selected quantity
-    }, 0);
+  const handlePurchase = async () => {
+    if (!concert) return;
 
-    // Alert the total price formatted as currency
-    alert(`Total: $${total.toLocaleString()}`);
+    const selectedTickets = concert.tickets
+      .filter(ticket => quantities[ticket.type] > 0)
+      .map(ticket => ({
+        type: ticket.type,
+        quantity: quantities[ticket.type],
+      }));
+
+    if (selectedTickets.length === 0) {
+      alert("Por favor selecciona al menos un ticket.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('userToken');
+      if (!token) {
+        alert("Debes iniciar sesión para comprar entradas.");
+        return;
+      }
+
+      const response = await fetch('http://localhost:8080/purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          eventId: concert.id,
+          tickets: selectedTickets,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al realizar la compra.');
+      }
+
+      alert(data.message || "¡Compra exitosa!");
+    } catch (error) {
+      console.error("Error en la compra:", error);
+      alert(error.message || "Error procesando la compra. Intenta nuevamente.");
+    }
   };
 
-  // Loading state: show loader while fetching data
-  if (loading) {
-    return <Loader />;  // Show the loader while data is being fetched
-  }
+  if (loading) return <Loader />;
+  if (error) return <div>Error: {error}</div>;
 
-  // Error handling: show error message if fetch fails
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
-  // Render the concert details and ticket selection
   return (
-    <div className="concert-container">
-      <div className="concert-box">
-        {/* Display concert name and details */}
-        <h1 className="concert-title">{concert.name}</h1>
-        <p className="concert-subinfo">{concert.date} – {concert.location}</p>
+    <div className="concert-page">
+      <h1>{concert.title}</h1>
+      <p>{concert.description}</p>
+      <p><strong>Venue:</strong> {concert.venue.name}</p>
+      <p><strong>Fecha:</strong> {new Date(concert.eventDate).toLocaleDateString()}</p>
 
-        <h2 className="concert-subinfo">Select Your Tickets</h2>
-        <div>
-          {/* Loop through concert ticket types and display a select input for each */}
-          {concert.tickets.map(ticket => (
-            <div key={ticket.type} className="ticket-type">
-              <div className="ticket-label">
-                {/* Display ticket type and price */}
-                {ticket.type} – <span className="ticket-price">${ticket.price.toLocaleString()}</span>
-              </div>
-              {/* Dropdown selector to choose the quantity of tickets */}
-              <select
-                className="ticket-select"
-                value={quantities[ticket.type] || 0}  // Bind the select value to the quantities state
-                onChange={(e) => handleChange(ticket.type, e.target.value)}  // Update state on change
-              >
-                {/* Provide options for selecting ticket quantity (0 to 5) */}
-                {[0, 1, 2, 3, 4, 5].map(num => (
-                  <option key={num} value={num}>{num}</option>
-                ))}
-              </select>
-            </div>
-          ))}
-        </div>
-
-        {/* Button to confirm the purchase and calculate total price */}
-        <button className="purchase-button" onClick={handlePurchase}>
-          Confirm Purchase
-        </button>
+      <h2>Entradas:</h2>
+      <div className="tickets">
+        {concert.tickets.map(ticket => (
+          <div key={ticket.id} className="ticket-option">
+            <h3>{ticket.type}</h3>
+            <p>Precio: ${ticket.price}</p>
+            <p>Disponibles: {ticket.stock - ticket.sold}</p>
+            <input
+              type="number"
+              min="0"
+              value={quantities[ticket.type] || ''}
+              onChange={(e) => handleChange(ticket.type, e.target.value)}
+            />
+          </div>
+        ))}
       </div>
+
+      <button onClick={handlePurchase}>Comprar</button>
     </div>
   );
 }

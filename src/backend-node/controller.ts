@@ -111,3 +111,32 @@ export const getEventByName = async (ctx: Context) => {
     };
   }
 };
+
+
+// 🚀 createPurchase (nuevo)
+export const createPurchase = async (ctx: Context) => {
+  try {
+    const { eventId, tickets } = await ctx.request.body().value;
+
+    for (const ticket of tickets) {
+      await prisma.ticket.updateMany({
+        where: {
+          eventId: eventId,
+          type: ticket.type,
+          stock: { gte: ticket.quantity }
+        },
+        data: {
+          stock: { decrement: ticket.quantity },
+          sold: { increment: ticket.quantity }
+        }
+      });
+    }
+
+    ctx.response.status = 201;
+    ctx.response.body = { message: "Purchase successful" };
+  } catch (error) {
+    console.error(error);
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Error processing purchase", details: error.message };
+  }
+};

@@ -3,7 +3,8 @@ import {
   getUsers, 
   getEvents, 
   getEventByName,
-  getEventById 
+  getEventById,
+  createPurchase 
 } from "./controller.ts";
 import { compareLogins } from "./logins.ts";
 import { verifyToken } from "./jwt.ts";
@@ -11,16 +12,27 @@ import { purchaseHandler } from "./purchase.ts";
 
 const router = new Router();
 
-router
-  .get("/", (ctx) => {
-    ctx.response.body = "API working";
-  })
-  .get("/users", getUsers)
-  .get("/events", getEvents)
-  .get("/events/id/:id", getEventById) // This should come first
-  .get("/events/:eventname", getEventByName) // This comes second
-  .post("/login", compareLogins)
-  .post("/verify", verifyToken)
-  .post("/purchase", purchaseHandler);
+// Definimos cada ruta en líneas separadas (no encadenadas)
+router.get("/", (ctx) => {
+  ctx.response.body = "API working";
+});
+
+router.get("/users", getUsers);
+
+router.get("/events", getEvents);
+
+router.get("/events/id/:id", getEventById); // Primero el ID (más específico)
+
+router.get("/events/:eventname", getEventByName); // Después el nombre
+
+router.post("/login", compareLogins);
+
+router.post("/verify", verifyToken);
+
+// Si quieres usar *solo uno* de estos dos handlers de compra, elige:
+router.post("/purchase", purchaseHandler);
+
+// O si prefieres `createPurchase`:
+// router.post("/purchase", createPurchase);
 
 export { router };
