@@ -1,0 +1,69 @@
+/* Estilos base para la barra de navegación */
+.navbar {
+  background-color: #333;
+  padding: 1rem;
+  color: white;
+}
+
+/* Contenedor del contenido de la barra */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Permite que el contenido se acomode en pantallas pequeñas */
+}
+
+/* Título de la barra de navegación */
+.navbar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Botón para mostrar el menú en móviles */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Contenedor de los enlaces */
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Formulario de búsqueda */
+.event-searcher {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Campo de texto para buscar eventos */
+.event-search {
+  padding: 0.5rem;
+  width: 200px;
+}
+
+/* Botón de búsqueda */
+.event-search-button {
+  padding: 0.5rem;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block; /* Mostrar botón hamburguesa en móviles */
+  }
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+  .navbar-links.active {
+    display: flex; /* Mostrar los enlaces cuando se activa el menú */
+  }
+}

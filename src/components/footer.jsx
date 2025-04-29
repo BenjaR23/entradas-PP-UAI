@@ -2,13 +2,16 @@ function Footer() {
     return (
         <footer className="footer">
             <div className="footer-columns">
+                {/* Columna sobre nosotros */}
                 <div className="footer-column">
-                    <h3>About Us</h3>
-                    <p>We are a team of passionate students dedicated to bringing you the best way to get tickets for events.</p>
+                    <h3>Sobre Nosotros</h3>
+                    <p>Somos un equipo de estudiantes apasionados dedicados a ofrecer la mejor forma de conseguir entradas para eventos.</p>
                 </div>
+
+                {/* Columna de contacto */}
                 <div className="footer-column">
-                    <h3>Contact Us</h3>
-                    <p>Email:</p>
+                    <h3>Contáctanos</h3>
+                    <p>Correo electrónico:</p>
                 </div>
             </div>
         </footer>

@@ -1,35 +1,46 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom'; // Import Link component for navigation between pages
+import { Link } from 'react-router-dom';
+import './navbar.css'; // Importar el CSS
 
 function Navbar() {
-    const [events, setEvents] = useState('');
-    const navigate = useNavigate();
-    // Find a less scuffed way to implement handleSearchSubmit
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        const query = events.trim();
-        if (query) {
-            navigate(`/search/${query}`); // Navigate to the search page with the query parameter
-        } else {
-            alert("Please enter an event name to search for!"); // Alert if no query is entered
-        }
-    };
+  const [events, setEvents] = useState('');
+  const navigate = useNavigate();
 
-    return (
-        <nav className="navbar">
-        <div className="navbar-container">
-            <p className="navbar-title">Compraventa Entradas UAI</p>
-            <Link to = "/">Home</Link>
-            <a href="/about">About</a>
-            <Link to = "/login" className="navbar-login">Login</Link>
-            <Link to = "/auth">Test authorization page</Link>
+  // Manejar el envío del formulario de búsqueda
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const query = events.trim();
+    if (query) {
+      navigate(`/search/${query}`); // Navegar a la página de búsqueda
+    } else {
+      alert("¡Por favor ingresa un evento para buscar!"); // Alertar si no se ingresa un evento
+    }
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-container">
+        <p className="navbar-title">Compraventa Entradas UAI</p>
+        <div className="navbar-links">
+          <Link to="/">Inicio</Link>
+          <Link to="/about">Sobre Nosotros</Link>
+          <Link to="/login" className="navbar-login">Login</Link>
+          <Link to="/auth">Página de Autorización</Link>
         </div>
-        <form className="event-seacher" onSubmit= {handleSearchSubmit}>
-            <input type="text" placeholder="Search for events..." className="eventSearch" value={events} onChange={(e) => setEvents(e.target.value)}></input>
-            <button type="submit" value="Search for events!" className="eventSearchButton"></button>
-            </form>
-        </nav>
-    ); // Find a more refined way to implement the search bar and search buttons, also change the hrefs to Link components when we have those pages ready
+      </div>
+      <form className="event-searcher" onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          placeholder="Buscar eventos..."
+          className="event-search"
+          value={events}
+          onChange={(e) => setEvents(e.target.value)}
+        />
+        <button type="submit" className="event-search-button">Buscar</button>
+      </form>
+    </nav>
+  );
 }
+
 export default Navbar;
