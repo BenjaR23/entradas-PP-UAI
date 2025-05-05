@@ -18,6 +18,7 @@ model User {
   createdAt    DateTime @default(now())
   orders       Order[]
   passwordSalt String
+  RUN          String?  @unique
 }
 
 model Venue {
@@ -66,11 +67,12 @@ model Order {
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  ticketId  Int
-  quantity  Int
-  priceEach Decimal @db.Decimal(10, 2)
-  order     Order   @relation(fields: [orderId], references: [id])
-  ticket    Ticket  @relation(fields: [ticketId], references: [id])
+  id          Int     @id @default(autoincrement())
+  orderId     Int
+  ticketId    Int
+  quantity    Int
+  priceEach   Decimal @db.Decimal(10, 2)
+  order       Order   @relation(fields: [orderId], references: [id])
+  ticket      Ticket  @relation(fields: [ticketId], references: [id])
+  IsCheckedIn Boolean @default(false)
 }

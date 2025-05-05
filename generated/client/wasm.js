@@ -17,12 +17,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.5.0
- * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
+ * Prisma Client JS version: 6.6.0
+ * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
  */
 Prisma.prismaVersion = {
-  client: "6.5.0",
-  engine: "173f8d54f8d52e692c7e27e72a88314ec7aeff60"
+  client: "6.6.0",
+  engine: "f676762280b54cd07c770017ed3711ddde35f37a"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -124,7 +124,8 @@ exports.Prisma.UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   role: 'role',
   createdAt: 'createdAt',
-  passwordSalt: 'passwordSalt'
+  passwordSalt: 'passwordSalt',
+  RUN: 'RUN'
 };
 
 exports.Prisma.VenueScalarFieldEnum = {
@@ -170,7 +171,8 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   orderId: 'orderId',
   ticketId: 'ticketId',
   quantity: 'quantity',
-  priceEach: 'priceEach'
+  priceEach: 'priceEach',
+  IsCheckedIn: 'IsCheckedIn'
 };
 
 exports.Prisma.SortOrder = {
@@ -215,7 +217,7 @@ class PrismaClient {
         } else {
           message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
         }
-        
+
         message += `
 If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
 

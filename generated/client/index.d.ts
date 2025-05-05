@@ -286,8 +286,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.5.0
-   * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
+   * Prisma Client JS version: 6.6.0
+   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
    */
   export type PrismaVersion = {
     client: string
@@ -1506,6 +1506,7 @@ export namespace Prisma {
     role: string | null
     createdAt: Date | null
     passwordSalt: string | null
+    RUN: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1516,6 +1517,7 @@ export namespace Prisma {
     role: string | null
     createdAt: Date | null
     passwordSalt: string | null
+    RUN: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1526,6 +1528,7 @@ export namespace Prisma {
     role: number
     createdAt: number
     passwordSalt: number
+    RUN: number
     _all: number
   }
 
@@ -1546,6 +1549,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     passwordSalt?: true
+    RUN?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1556,6 +1560,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     passwordSalt?: true
+    RUN?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1566,6 +1571,7 @@ export namespace Prisma {
     role?: true
     createdAt?: true
     passwordSalt?: true
+    RUN?: true
     _all?: true
   }
 
@@ -1663,6 +1669,7 @@ export namespace Prisma {
     role: string
     createdAt: Date
     passwordSalt: string
+    RUN: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1692,6 +1699,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     passwordSalt?: boolean
+    RUN?: boolean
     orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1704,6 +1712,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     passwordSalt?: boolean
+    RUN?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1714,6 +1723,7 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     passwordSalt?: boolean
+    RUN?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1724,9 +1734,10 @@ export namespace Prisma {
     role?: boolean
     createdAt?: boolean
     passwordSalt?: boolean
+    RUN?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "createdAt" | "passwordSalt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "createdAt" | "passwordSalt" | "RUN", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | User$ordersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1747,6 +1758,7 @@ export namespace Prisma {
       role: string
       createdAt: Date
       passwordSalt: string
+      RUN: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2169,7 +2181,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */ 
+   */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'Int'>
     readonly name: FieldRef<"User", 'String'>
@@ -2178,6 +2190,7 @@ export namespace Prisma {
     readonly role: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly passwordSalt: FieldRef<"User", 'String'>
+    readonly RUN: FieldRef<"User", 'String'>
   }
     
 
@@ -3291,7 +3304,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Venue model
-   */ 
+   */
   interface VenueFieldRefs {
     readonly id: FieldRef<"Venue", 'Int'>
     readonly name: FieldRef<"Venue", 'String'>
@@ -4462,7 +4475,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Event model
-   */ 
+   */
   interface EventFieldRefs {
     readonly id: FieldRef<"Event", 'Int'>
     readonly title: FieldRef<"Event", 'String'>
@@ -5616,7 +5629,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Ticket model
-   */ 
+   */
   interface TicketFieldRefs {
     readonly id: FieldRef<"Ticket", 'Int'>
     readonly eventId: FieldRef<"Ticket", 'Int'>
@@ -6747,7 +6760,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Order model
-   */ 
+   */
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'Int'>
     readonly userId: FieldRef<"Order", 'Int'>
@@ -7226,6 +7239,7 @@ export namespace Prisma {
     ticketId: number | null
     quantity: number | null
     priceEach: Decimal | null
+    IsCheckedIn: boolean | null
   }
 
   export type OrderItemMaxAggregateOutputType = {
@@ -7234,6 +7248,7 @@ export namespace Prisma {
     ticketId: number | null
     quantity: number | null
     priceEach: Decimal | null
+    IsCheckedIn: boolean | null
   }
 
   export type OrderItemCountAggregateOutputType = {
@@ -7242,6 +7257,7 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: number
+    IsCheckedIn: number
     _all: number
   }
 
@@ -7268,6 +7284,7 @@ export namespace Prisma {
     ticketId?: true
     quantity?: true
     priceEach?: true
+    IsCheckedIn?: true
   }
 
   export type OrderItemMaxAggregateInputType = {
@@ -7276,6 +7293,7 @@ export namespace Prisma {
     ticketId?: true
     quantity?: true
     priceEach?: true
+    IsCheckedIn?: true
   }
 
   export type OrderItemCountAggregateInputType = {
@@ -7284,6 +7302,7 @@ export namespace Prisma {
     ticketId?: true
     quantity?: true
     priceEach?: true
+    IsCheckedIn?: true
     _all?: true
   }
 
@@ -7379,6 +7398,7 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: Decimal
+    IsCheckedIn: boolean
     _count: OrderItemCountAggregateOutputType | null
     _avg: OrderItemAvgAggregateOutputType | null
     _sum: OrderItemSumAggregateOutputType | null
@@ -7406,6 +7426,7 @@ export namespace Prisma {
     ticketId?: boolean
     quantity?: boolean
     priceEach?: boolean
+    IsCheckedIn?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
@@ -7416,6 +7437,7 @@ export namespace Prisma {
     ticketId?: boolean
     quantity?: boolean
     priceEach?: boolean
+    IsCheckedIn?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
@@ -7426,6 +7448,7 @@ export namespace Prisma {
     ticketId?: boolean
     quantity?: boolean
     priceEach?: boolean
+    IsCheckedIn?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
@@ -7436,9 +7459,10 @@ export namespace Prisma {
     ticketId?: boolean
     quantity?: boolean
     priceEach?: boolean
+    IsCheckedIn?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "ticketId" | "quantity" | "priceEach", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "ticketId" | "quantity" | "priceEach" | "IsCheckedIn", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
     ticket?: boolean | TicketDefaultArgs<ExtArgs>
@@ -7464,6 +7488,7 @@ export namespace Prisma {
       ticketId: number
       quantity: number
       priceEach: Prisma.Decimal
+      IsCheckedIn: boolean
     }, ExtArgs["result"]["orderItem"]>
     composites: {}
   }
@@ -7887,13 +7912,14 @@ export namespace Prisma {
 
   /**
    * Fields of the OrderItem model
-   */ 
+   */
   interface OrderItemFieldRefs {
     readonly id: FieldRef<"OrderItem", 'Int'>
     readonly orderId: FieldRef<"OrderItem", 'Int'>
     readonly ticketId: FieldRef<"OrderItem", 'Int'>
     readonly quantity: FieldRef<"OrderItem", 'Int'>
     readonly priceEach: FieldRef<"OrderItem", 'Decimal'>
+    readonly IsCheckedIn: FieldRef<"OrderItem", 'Boolean'>
   }
     
 
@@ -8329,7 +8355,8 @@ export namespace Prisma {
     passwordHash: 'passwordHash',
     role: 'role',
     createdAt: 'createdAt',
-    passwordSalt: 'passwordSalt'
+    passwordSalt: 'passwordSalt',
+    RUN: 'RUN'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -8390,7 +8417,8 @@ export namespace Prisma {
     orderId: 'orderId',
     ticketId: 'ticketId',
     quantity: 'quantity',
-    priceEach: 'priceEach'
+    priceEach: 'priceEach',
+    IsCheckedIn: 'IsCheckedIn'
   };
 
   export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
@@ -8421,7 +8449,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references 
+   * Field references
    */
 
 
@@ -8482,6 +8510,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -8509,6 +8544,7 @@ export namespace Prisma {
     role?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     passwordSalt?: StringFilter<"User"> | string
+    RUN?: StringNullableFilter<"User"> | string | null
     orders?: OrderListRelationFilter
   }
 
@@ -8520,12 +8556,14 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     passwordSalt?: SortOrder
+    RUN?: SortOrderInput | SortOrder
     orders?: OrderOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
+    RUN?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -8535,7 +8573,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     passwordSalt?: StringFilter<"User"> | string
     orders?: OrderListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "RUN">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8545,6 +8583,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     passwordSalt?: SortOrder
+    RUN?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -8563,6 +8602,7 @@ export namespace Prisma {
     role?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     passwordSalt?: StringWithAggregatesFilter<"User"> | string
+    RUN?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VenueWhereInput = {
@@ -8841,6 +8881,7 @@ export namespace Prisma {
     ticketId?: IntFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
     priceEach?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFilter<"OrderItem"> | boolean
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     ticket?: XOR<TicketScalarRelationFilter, TicketWhereInput>
   }
@@ -8851,6 +8892,7 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+    IsCheckedIn?: SortOrder
     order?: OrderOrderByWithRelationInput
     ticket?: TicketOrderByWithRelationInput
   }
@@ -8864,6 +8906,7 @@ export namespace Prisma {
     ticketId?: IntFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
     priceEach?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFilter<"OrderItem"> | boolean
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     ticket?: XOR<TicketScalarRelationFilter, TicketWhereInput>
   }, "id">
@@ -8874,6 +8917,7 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+    IsCheckedIn?: SortOrder
     _count?: OrderItemCountOrderByAggregateInput
     _avg?: OrderItemAvgOrderByAggregateInput
     _max?: OrderItemMaxOrderByAggregateInput
@@ -8890,6 +8934,7 @@ export namespace Prisma {
     ticketId?: IntWithAggregatesFilter<"OrderItem"> | number
     quantity?: IntWithAggregatesFilter<"OrderItem"> | number
     priceEach?: DecimalWithAggregatesFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolWithAggregatesFilter<"OrderItem"> | boolean
   }
 
   export type UserCreateInput = {
@@ -8899,6 +8944,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     passwordSalt: string
+    RUN?: string | null
     orders?: OrderCreateNestedManyWithoutUserInput
   }
 
@@ -8910,6 +8956,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     passwordSalt: string
+    RUN?: string | null
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8920,6 +8967,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
     orders?: OrderUpdateManyWithoutUserNestedInput
   }
 
@@ -8931,6 +8979,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -8942,6 +8991,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     passwordSalt: string
+    RUN?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -8951,6 +9001,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -8961,6 +9012,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VenueCreateInput = {
@@ -9233,6 +9285,7 @@ export namespace Prisma {
   export type OrderItemCreateInput = {
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
     order: OrderCreateNestedOneWithoutItemsInput
     ticket: TicketCreateNestedOneWithoutOrderItemsInput
   }
@@ -9243,11 +9296,13 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemUpdateInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
     ticket?: TicketUpdateOneRequiredWithoutOrderItemsNestedInput
   }
@@ -9258,6 +9313,7 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderItemCreateManyInput = {
@@ -9266,11 +9322,13 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemUpdateManyMutationInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderItemUncheckedUpdateManyInput = {
@@ -9279,6 +9337,7 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -9318,10 +9377,30 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type OrderListRelationFilter = {
     every?: OrderWhereInput
     some?: OrderWhereInput
     none?: OrderWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type OrderOrderByRelationAggregateInput = {
@@ -9336,6 +9415,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     passwordSalt?: SortOrder
+    RUN?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -9350,6 +9430,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     passwordSalt?: SortOrder
+    RUN?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -9360,6 +9441,7 @@ export namespace Prisma {
     role?: SortOrder
     createdAt?: SortOrder
     passwordSalt?: SortOrder
+    RUN?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -9414,7 +9496,7 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -9426,7 +9508,10 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -9444,11 +9529,6 @@ export namespace Prisma {
     every?: EventWhereInput
     some?: EventWhereInput
     none?: EventWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type EventOrderByRelationAggregateInput = {
@@ -9490,24 +9570,6 @@ export namespace Prisma {
   export type VenueSumOrderByAggregateInput = {
     id?: SortOrder
     capacity?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9715,6 +9777,11 @@ export namespace Prisma {
     total?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type OrderScalarRelationFilter = {
     is?: OrderWhereInput
     isNot?: OrderWhereInput
@@ -9731,6 +9798,7 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+    IsCheckedIn?: SortOrder
   }
 
   export type OrderItemAvgOrderByAggregateInput = {
@@ -9747,6 +9815,7 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+    IsCheckedIn?: SortOrder
   }
 
   export type OrderItemMinOrderByAggregateInput = {
@@ -9755,6 +9824,7 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+    IsCheckedIn?: SortOrder
   }
 
   export type OrderItemSumOrderByAggregateInput = {
@@ -9763,6 +9833,14 @@ export namespace Prisma {
     ticketId?: SortOrder
     quantity?: SortOrder
     priceEach?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type OrderCreateNestedManyWithoutUserInput = {
@@ -9785,6 +9863,10 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type OrderUpdateManyWithoutUserNestedInput = {
@@ -9835,10 +9917,6 @@ export namespace Prisma {
     connectOrCreate?: EventCreateOrConnectWithoutVenueInput | EventCreateOrConnectWithoutVenueInput[]
     createMany?: EventCreateManyVenueInputEnvelope
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -10065,6 +10143,10 @@ export namespace Prisma {
     connect?: TicketWhereUniqueInput
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type OrderUpdateOneRequiredWithoutItemsNestedInput = {
     create?: XOR<OrderCreateWithoutItemsInput, OrderUncheckedCreateWithoutItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutItemsInput
@@ -10115,6 +10197,20 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -10175,31 +10271,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10215,6 +10286,17 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10269,6 +10351,19 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type OrderCreateWithoutUserInput = {
@@ -10495,6 +10590,7 @@ export namespace Prisma {
   export type OrderItemCreateWithoutTicketInput = {
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
     order: OrderCreateNestedOneWithoutItemsInput
   }
 
@@ -10503,6 +10599,7 @@ export namespace Prisma {
     orderId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemCreateOrConnectWithoutTicketInput = {
@@ -10568,6 +10665,7 @@ export namespace Prisma {
     ticketId?: IntFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
     priceEach?: DecimalFilter<"OrderItem"> | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFilter<"OrderItem"> | boolean
   }
 
   export type EventUpsertWithoutTicketsInput = {
@@ -10611,6 +10709,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     passwordSalt: string
+    RUN?: string | null
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -10621,6 +10720,7 @@ export namespace Prisma {
     role?: string
     createdAt?: Date | string
     passwordSalt: string
+    RUN?: string | null
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -10631,6 +10731,7 @@ export namespace Prisma {
   export type OrderItemCreateWithoutOrderInput = {
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
     ticket: TicketCreateNestedOneWithoutOrderItemsInput
   }
 
@@ -10639,6 +10740,7 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemCreateOrConnectWithoutOrderInput = {
@@ -10669,6 +10771,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -10679,6 +10782,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     passwordSalt?: StringFieldUpdateOperationsInput | string
+    RUN?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderItemUpsertWithWhereUniqueWithoutOrderInput = {
@@ -10905,11 +11009,13 @@ export namespace Prisma {
     orderId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemUpdateWithoutTicketInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
     order?: OrderUpdateOneRequiredWithoutItemsNestedInput
   }
 
@@ -10918,6 +11024,7 @@ export namespace Prisma {
     orderId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderItemUncheckedUpdateManyWithoutTicketInput = {
@@ -10925,6 +11032,7 @@ export namespace Prisma {
     orderId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderItemCreateManyOrderInput = {
@@ -10932,11 +11040,13 @@ export namespace Prisma {
     ticketId: number
     quantity: number
     priceEach: Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: boolean
   }
 
   export type OrderItemUpdateWithoutOrderInput = {
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
     ticket?: TicketUpdateOneRequiredWithoutOrderItemsNestedInput
   }
 
@@ -10945,6 +11055,7 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
@@ -10952,6 +11063,7 @@ export namespace Prisma {
     ticketId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     priceEach?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    IsCheckedIn?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
