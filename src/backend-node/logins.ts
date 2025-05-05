@@ -41,6 +41,7 @@ export const compareLogins = async (ctx: any) => {
       userId: user.id,
       userRole: user.role,
       timeGenerated: new Date(),
+      userRUN: user.RUN
     });
 
     // Responder con éxito y el token

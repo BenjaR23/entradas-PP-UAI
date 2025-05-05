@@ -18,7 +18,7 @@ model User {
   createdAt    DateTime @default(now())
   orders       Order[]
   passwordSalt String
-  RUN String? @unique
+  RUN String @unique
 }
 
 model Venue {

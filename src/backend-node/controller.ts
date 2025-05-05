@@ -140,3 +140,49 @@ export const createPurchase = async (ctx: Context) => {
     ctx.response.body = { error: "Error processing purchase", details: error.message };
   }
 };
+
+export const getTicketsbyUserId = async (ctx: Context) => {
+  try {
+    const id = parseInt(ctx.params.id);
+    console.log("ID:", id);
+    if (isNaN(id)) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "ID must be a number" };
+      return;
+    }
+
+    console.log("Searching for the tickets of the user with ID:", id); // Agregar para depurar
+
+    const orders = await prisma.order.findMany({
+      where: { userId: id },
+      include: {
+        items: {
+          include: {
+            ticket: {
+              include: {
+                event: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!orders) {
+      ctx.response.status = 404;
+      ctx.response.body = { 
+        error: `Tickets for the user with ID ${id} have not found`,
+      };
+      return;
+    }
+
+    ctx.response.body = orders;
+  } catch (error) {
+    console.error("Error fetching order list:", error); // Agregar para depurar
+    ctx.response.status = 500;
+    ctx.response.body = {
+      error: "Server error",
+      details: error.message
+    };
+  }
+};

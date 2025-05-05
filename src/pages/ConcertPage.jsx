@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'; // 👈 Agregado useNavigate
 import { useState, useEffect } from 'react';
-import Loader from '../components/Loader';
+import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
 
 function ConcertPage() {

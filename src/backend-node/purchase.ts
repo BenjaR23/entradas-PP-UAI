@@ -1,7 +1,20 @@
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 import { PrismaClient } from "../../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
-import { verifyToken } from "./jwt.ts";
+import { JWTPayload, jwtVerify } from 'https://deno.land/x/jose@v6.0.10/index.ts';
+import { createSecretKey } from "node:crypto";
+import process from "node:process";
+
+interface UserPayload {
+  userEmail: string;
+  userName: string;
+  userId: number;
+  userRole: string;
+  timeGenerated: string;
+  userRUN: string;
+}
+
+const secret = createSecretKey(process.env.secretKey, 'utf-8');
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
@@ -9,13 +22,20 @@ export const purchaseHandler = async (ctx: Context) => {
   console.log("LLEGÓ PETICIÓN A /purchase");
 
   // 1. Verify token
-  const payload = await verifyToken(ctx);
+  const tokenheader = ctx.request.headers.get("Authorization")
+  if (!tokenheader || !tokenheader.startsWith('Bearer ')) {
+    console.log("Authorization header faltante o mal formado");
+    return null;
+  }
+  const token = tokenheader.split(' ')[1];
+  const { payload } = await jwtVerify(token, secret);
+  const userPayload = payload as unknown as UserPayload;
   if (!payload) {
     ctx.response.status = 401;
     ctx.response.body = { error: "Token inválido o no presente" };
     return;
   }
-
+  console.log("Token verificado:", payload);
   // 2. Parse request body
   let eventId: number;
   let tickets: Array<{ ticketId: number; quantity: number }>;
@@ -96,7 +116,7 @@ export const purchaseHandler = async (ctx: Context) => {
       // Create order
       const order = await tx.order.create({
         data: {
-          userId: payload.userId,
+          userId: userPayload.userId,
           total: total,
           status: "completed",
           items: {
