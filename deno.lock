@@ -10,11 +10,13 @@
     "npm:@types/react@^19.0.10": "19.1.2",
     "npm:@vitejs/plugin-react@^4.3.4": "4.4.1_vite@6.3.2__picomatch@4.0.2_@babel+core@7.26.10_@types+node@22.12.0",
     "npm:dotenv-cli@8": "8.0.0",
+    "npm:ngx-scanner-qrcode@^1.7.6": "1.7.6_@angular+common@19.2.9__@angular+core@19.2.9___rxjs@7.8.2___zone.js@0.15.0__rxjs@7.8.2_@angular+core@19.2.9__rxjs@7.8.2__zone.js@0.15.0",
     "npm:prisma@*": "6.6.0",
     "npm:prisma@6.6.0": "6.6.0",
     "npm:prisma@^6.6.0": "6.6.0",
     "npm:react-dom@19": "19.1.0_react@19.1.0",
     "npm:react-hot-toast@^2.5.2": "2.5.2_react@19.1.0_react-dom@19.1.0__react@19.1.0_csstype@3.1.3",
+    "npm:react-qr-reader@^3.0.0-beta-1": "3.0.0-beta-1_react@19.1.0_react-dom@19.1.0__react@19.1.0_@zxing+library@0.18.6",
     "npm:react-router-dom@^7.5.1": "7.5.1_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:react-toastify@^11.0.5": "11.0.5_react@19.1.0_react-dom@19.1.0__react@19.1.0",
     "npm:react@19": "19.1.0",
@@ -27,6 +29,22 @@
       "dependencies": [
         "@jridgewell/gen-mapping",
         "@jridgewell/trace-mapping"
+      ]
+    },
+    "@angular/common@19.2.9_@angular+core@19.2.9__rxjs@7.8.2__zone.js@0.15.0_rxjs@7.8.2": {
+      "integrity": "sha512-4Lio3nRp13sTU15hsVcv8Zkj+7OKZ6Pc6CIIkQYHs9KisSwwvwmRZDU1wFhKlH+ogebLgOcNurIPdqeYWWnLjQ==",
+      "dependencies": [
+        "@angular/core",
+        "rxjs",
+        "tslib"
+      ]
+    },
+    "@angular/core@19.2.9_rxjs@7.8.2_zone.js@0.15.0": {
+      "integrity": "sha512-73WMvxWll8/nQiAbigDhR27dQ+GjciODY5JVADdneNBSEwcQxi0HirlGzm5wy1TonOu4eTTWkvgV/3YlTOmo4A==",
+      "dependencies": [
+        "rxjs",
+        "tslib",
+        "zone.js"
       ]
     },
     "@babel/code-frame@7.26.2": {
@@ -453,6 +471,23 @@
         "vite@6.3.2_picomatch@4.0.2_@types+node@22.12.0"
       ]
     },
+    "@zxing/browser@0.0.7_@zxing+library@0.18.6": {
+      "integrity": "sha512-AepzMgDnD6EjxewqmXpHJsi4S3Gw9ilZJLIbTf6fWuWySEcHBodnGu3p7FWlgq1Sd5QyfPhTum5z3CBkkhMVng==",
+      "dependencies": [
+        "@zxing/library",
+        "@zxing/text-encoding"
+      ]
+    },
+    "@zxing/library@0.18.6": {
+      "integrity": "sha512-bulZ9JHoLFd9W36pi+7e7DnEYNJhljYjZ1UTsKPOoLMU3qtC+REHITeCRNx40zTRJZx18W5TBRXt5pq2Uopjsw==",
+      "dependencies": [
+        "@zxing/text-encoding",
+        "ts-custom-error"
+      ]
+    },
+    "@zxing/text-encoding@0.9.0": {
+      "integrity": "sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA=="
+    },
     "browserslist@4.24.4": {
       "integrity": "sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==",
       "dependencies": [
@@ -597,6 +632,14 @@
     "nanoid@3.3.11": {
       "integrity": "sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w=="
     },
+    "ngx-scanner-qrcode@1.7.6_@angular+common@19.2.9__@angular+core@19.2.9___rxjs@7.8.2___zone.js@0.15.0__rxjs@7.8.2_@angular+core@19.2.9__rxjs@7.8.2__zone.js@0.15.0": {
+      "integrity": "sha512-4AcRh+ozX0Arf97Xr1OmYRJUngHZDuU6b5pb9jsmM1Y/cpZX3rbI6mBQjsev65bm4UgDe+7naRgiVY07+K+vtw==",
+      "dependencies": [
+        "@angular/common",
+        "@angular/core",
+        "tslib"
+      ]
+    },
     "node-releases@2.0.19": {
       "integrity": "sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw=="
     },
@@ -641,6 +684,16 @@
         "react-dom"
       ]
     },
+    "react-qr-reader@3.0.0-beta-1_react@19.1.0_react-dom@19.1.0__react@19.1.0_@zxing+library@0.18.6": {
+      "integrity": "sha512-5HeFH9x/BlziRYQYGK2AeWS9WiKYZtGGMs9DXy3bcySTX3C9UJL9EwcPnWw8vlf7JP4FcrAlr1SnZ5nsWLQGyw==",
+      "dependencies": [
+        "@zxing/browser",
+        "@zxing/library",
+        "react",
+        "react-dom",
+        "rollup@2.79.2"
+      ]
+    },
     "react-refresh@0.17.0": {
       "integrity": "sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ=="
     },
@@ -673,6 +726,12 @@
     "react@19.1.0": {
       "integrity": "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg=="
     },
+    "rollup@2.79.2": {
+      "integrity": "sha512-fS6iqSPZDs3dr/y7Od6y5nha8dW1YnbgtsyotCVvoFGKbERG++CVRFv1meyGDE1SNItQA8BrnCw7ScdAhRJ3XQ==",
+      "dependencies": [
+        "fsevents"
+      ]
+    },
     "rollup@4.40.0": {
       "integrity": "sha512-Noe455xmA96nnqH5piFtLobsGbCij7Tu+tb3c1vYjNbTkfzGqXqQXG3wJaYXkRZuQ0vEYN4bhwg7QnIrqB5B+w==",
       "dependencies": [
@@ -698,6 +757,12 @@
         "@rollup/rollup-win32-x64-msvc",
         "@types/estree",
         "fsevents"
+      ]
+    },
+    "rxjs@7.8.2": {
+      "integrity": "sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==",
+      "dependencies": [
+        "tslib"
       ]
     },
     "scheduler@0.26.0": {
@@ -728,6 +793,12 @@
         "picomatch"
       ]
     },
+    "ts-custom-error@3.3.1": {
+      "integrity": "sha512-5OX1tzOjxWEgsr/YEUWSuPrQ00deKLh6D7OTWcvNHm12/7QPyRh8SYpyWvA4IZv8H/+GQWQEh/kwo95Q9OVW1A=="
+    },
+    "tslib@2.8.1": {
+      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="
+    },
     "turbo-stream@2.4.0": {
       "integrity": "sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g=="
     },
@@ -750,7 +821,7 @@
         "fsevents",
         "picomatch",
         "postcss",
-        "rollup",
+        "rollup@4.40.0",
         "tinyglobby"
       ]
     },
@@ -763,7 +834,7 @@
         "fsevents",
         "picomatch",
         "postcss",
-        "rollup",
+        "rollup@4.40.0",
         "tinyglobby"
       ]
     },
@@ -775,6 +846,9 @@
     },
     "yallist@3.1.1": {
       "integrity": "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="
+    },
+    "zone.js@0.15.0": {
+      "integrity": "sha512-9oxn0IIjbCZkJ67L+LkhYWRyAy7axphb3VgE2MBDlOqnmHMPWGYMxJxBYFueFq/JGY2GMwS0rU+UCLunEmy5UA=="
     }
   },
   "remote": {
@@ -987,8 +1061,10 @@
       "dependencies": [
         "npm:@prisma/extension-accelerate@^1.3.0",
         "npm:dotenv-cli@8",
+        "npm:ngx-scanner-qrcode@^1.7.6",
         "npm:prisma@^6.6.0",
         "npm:react-hot-toast@^2.5.2",
+        "npm:react-qr-reader@^3.0.0-beta-1",
         "npm:react-router-dom@^7.5.1",
         "npm:react-toastify@^11.0.5"
       ]

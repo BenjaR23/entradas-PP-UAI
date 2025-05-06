@@ -49,7 +49,6 @@ function TicketsPage() {
       }, [adminChosenID]);
       
       if (error) return <p>Error: {error}</p>; // Lanzar un error si falla la solicitud
-      if (!tickets.length) return <Loader />; // Monstrar una pantalla de carga mientras se obtienen los tickets
 
       if (user?.userRole === 'admin' && adminQRPrompted && adminChosenID === null) { // Si el usuario es admin y ha sido promptado, mostrar el prompt para que elija que hacer
         return (
