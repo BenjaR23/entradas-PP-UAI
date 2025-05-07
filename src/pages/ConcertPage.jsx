@@ -1,16 +1,18 @@
-import { useParams, useNavigate } from 'react-router-dom'; // 👈 Agregado useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
+import useJWTBoilerplate from '../backend-node/client.ts'
 
 function ConcertPage() {
-  const { id } = useParams();
-  const navigate = useNavigate(); // 👈 Hook para navegar
-  const [concert, setConcert] = useState(null);
-  const [quantities, setQuantities] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { id } = useParams(); // Obtenemos el ID del evento desde el URL
+  const navigate = useNavigate(); // Hook para navegar
+  const [concert, setConcert] = useState(null); // Usamos un useState para almacenar el evento
+  const [quantities, setQuantities] = useState({}); // Usamos un useState para almacenar las cantidades de entradas seleccionadas
+  const [loading, setLoading] = useState(true); // Usamos un useState para manejar el estado de carga
+  const [error, setError] = useState(null); // Usamos un useState para manejar errores
 
+  const user = useJWTBoilerplate(localStorage.getItem('userToken') || '');
   useEffect(() => {
     const fetchConcertAndTickets = async () => {
       try {
@@ -95,6 +97,41 @@ function ConcertPage() {
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
 
+  if (user?.userRole === 'admin') {
+    return (
+      <div className="concert-page">
+        <h1>{concert.title}</h1>
+        <p>{concert.description}</p>
+        <p><strong>Venue:</strong> {concert.venue.name}</p>
+        <p><strong>Fecha:</strong> {new Date(concert.eventDate).toLocaleDateString()}</p>
+  
+        <h2>Entradas:</h2>
+        <div className="tickets">
+          {concert.tickets.map(ticket => (
+            <div key={ticket.id} className="ticket-option">
+              <h3>{ticket.type}</h3>
+              <p>Precio: ${ticket.price}</p>
+              <p>Disponibles: {ticket.stock - ticket.sold}</p>
+              <input
+                type="number"
+                min="0"
+                value={quantities[ticket.type] || ''}
+                onChange={(e) => handleChange(ticket.type, e.target.value)}
+              />
+            </div>
+          ))}
+        <div className="capacity"> 
+          <h2>Aforo actual del evento</h2>
+          <p><strong>Capacidad total:</strong> {concert.stats.totalCapacity}</p>
+          <p><strong>Ingresados:</strong> {concert.stats.totalCheckedIn}</p>
+          <p><strong>Capacidad restante:</strong> {concert.stats.remainingCapacity}</p>
+        </div>
+        </div>
+  
+        <button onClick={handlePurchase}>Comprar</button>
+      </div>
+    );
+  }
   return (
     <div className="concert-page">
       <h1>{concert.title}</h1>
