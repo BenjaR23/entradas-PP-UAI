@@ -4,7 +4,7 @@ import {
   getEvents, 
   getEventByName,
   getEventById,
-  getTicketsbyUserId
+  getTicketsbyUserRUN
 } from "./controller.ts";
 import { compareLogins } from "./logins.ts";
 import { verifyToken } from "./jwt.ts";
@@ -32,7 +32,7 @@ router.post("/verify", verifyToken);
 // Si quieres usar *solo uno* de estos dos handlers de compra, elige:
 router.post("/purchase", purchaseHandler);
 
-router.get("/tickets/id/:id", getTicketsbyUserId);
+router.get("/tickets/RUN/:RUN", getTicketsbyUserRUN);
 // O si prefieres `createPurchase`:
 // router.post("/purchase", createPurchase);
 

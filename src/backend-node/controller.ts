@@ -141,20 +141,46 @@ export const createPurchase = async (ctx: Context) => {
   }
 };
 
-export const getTicketsbyUserId = async (ctx: Context) => {
+function formatRUN(rawRun: string): string | null {
+  // Remove all non-digit and non-'kK' characters
+  const clean = rawRun.replace(/[^0-9kK]/g, '');
+
+  // Ensure minimum length of 2 (1 digit + check digit)
+  if (clean.length < 2) return null;
+
+  const numberPart = clean.slice(0, -1);
+  const checkDigit = clean.slice(-1).toUpperCase();
+
+  // Add thousands separator
+  const reversed = numberPart.split('').reverse();
+  const chunks = [];
+  for (let i = 0; i < reversed.length; i += 3) {
+    chunks.push(reversed.slice(i, i + 3).reverse().join(''));
+  }
+  const formattedNumber = chunks.reverse().join('.');
+
+  return `${formattedNumber}-${checkDigit}`;
+}
+
+export const getTicketsbyUserRUN = async (ctx: Context) => {
   try {
-    const id = parseInt(ctx.params.id);
-    console.log("ID:", id);
-    if (isNaN(id)) {
+    const userRUN = ctx.params.RUN;
+    const parsedRUN = formatRUN(userRUN);
+    console.log("RUN:", parsedRUN);
+
+    if (!parsedRUN) {
       ctx.response.status = 400;
-      ctx.response.body = { error: "ID must be a number" };
+      ctx.response.body = { error: "Invalid RUN format" };
       return;
     }
 
-    console.log("Searching for the tickets of the user with ID:", id); // Agregar para depurar
-
+    console.log("Searching for the tickets of the user with RUN:", parsedRUN); // Agregar para depurar
+    
+    const user = await prisma.user.findFirst({
+      where: { RUN: parsedRUN }});
+    const userID = user?.id;
     const orders = await prisma.order.findMany({
-      where: { userId: id },
+      where: { userId: userID },
       include: {
         items: {
           include: {
@@ -171,7 +197,7 @@ export const getTicketsbyUserId = async (ctx: Context) => {
     if (!orders) {
       ctx.response.status = 404;
       ctx.response.body = { 
-        error: `Tickets for the user with ID ${id} have not found`,
+        error: `Tickets for the user with RUN ${parsedRUN} have not found`,
       };
       return;
     }
