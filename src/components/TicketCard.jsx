@@ -4,9 +4,18 @@ function TicketCard({ order }) { // Creamos un componente TicketCard que recibe 
     // por lo cual podemos acceder a todos los datos necesarios solo con la orden.
   const [isCheckedIn, setIsCheckedIn] = useState(order.isCheckedIn);
 
-  const handleCheckIn = async () => {
+  const handleCheckIn = async (orderId, ticketId) => {
     try {
-      const response = await fetch(`http://localhost:8080/order-items/${order.id}/check-in`, {
+
+      console.log('Order ID:', orderId);
+      console.log('Ticket ID:', ticketId);
+
+      if (!orderId || !ticketId) {
+        throw new Error("Order ID or Ticket ID is missing");
+      }
+
+
+      const response = await fetch(`http://localhost:8080/order-items/${orderId}/${ticketId}/check-in`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -15,13 +24,21 @@ function TicketCard({ order }) { // Creamos un componente TicketCard que recibe 
         throw new Error('Error al hacer check-in');
       }
 
-      const data = await response.json();
-      setIsCheckedIn(true); // Actualiza el estado local si el check-in fue exitoso
+      await response.text();
+
+
+      // Marcar solo este item como checkeado
+      setCheckedItems(prev => ({
+        ...prev,
+        [`${orderId}-${ticketId}`]: true,
+      }));
     } catch (error) {
       console.error(error);
       alert('Error al hacer check-in del ticket');
     }
   };
+
+
 
   return (
     <div className="ticket-card">
@@ -39,7 +56,7 @@ function TicketCard({ order }) { // Creamos un componente TicketCard que recibe 
                   <div>
                     <input 
                       type="checkbox" 
-                      onChange={handleCheckIn} 
+                      onChange={() => handleCheckIn(order.id, item.ticket.id)} 
                       checked={isCheckedIn}
                     /> Check-in
                   </div>

@@ -37,6 +37,7 @@ router.get("/tickets/RUN/:RUN", getTicketsbyUserRUN);
 // O si prefieres `createPurchase`:
 // router.post("/purchase", createPurchase);
 
-router.patch("/order-items/:id/check-in", checkInOrderItem);
+router.patch("/order-items/:orderId/:ticketId/check-in", checkInOrderItem);
+
 
 export { router };
