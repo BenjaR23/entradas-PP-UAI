@@ -59,6 +59,12 @@ function UserQRPrompt({ onSelf, onScan }) {
     }, [isScanning]); // Solo ejecuta este efecto cuando cambie isScanning
 
     return (
+        // Mostramos tres botones, uno para ver los tickets del admin, otro para escanear el QR y otro para ingresar la URL directamente
+        // Si el admin escanea un QR, llamamos a la función onScan con el RUN del usuario escaneado
+        // Si el admin elige ver sus propios tickets, llamamos a la función onSelf
+        // Si el admin elige ingresar la URL directamente, llamamos a la función handleSearchSubmit con el URL del registro civil
+        // Este último botón por ahora sirve de placeholder, ya que no tenemos la funcionalidad de escanear el QR implementada, pero considerar dejarlo en un futuro como alternativa
+        // para que el admin pueda ingresar la URL directamente en caso de que no funcione el escaneo del QR
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <h1 className="text-2xl font-bold mb-4">You have been identified as an Admin.</h1>
             <p className="mb-4">Please choose what you want to do:</p>
