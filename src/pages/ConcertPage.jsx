@@ -1,25 +1,23 @@
-import { useParams, useNavigate } from 'react-router-dom'; // 👈 Agregado useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
+import QrCode from '../components/adminOnly/QrCode.jsx';
 
 function ConcertPage() {
   const { id } = useParams();
-  const navigate = useNavigate(); // 👈 Hook para navegar
+  const navigate = useNavigate();
   const [concert, setConcert] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [purchaseData, setPurchaseData] = useState(null); 
 
   useEffect(() => {
     const fetchConcertAndTickets = async () => {
       try {
         const response = await fetch(`http://localhost:8080/events/id/${id}`);
-        
-        if (!response.ok) {
-          throw new Error('Evento no encontrado');
-        }
-
+        if (!response.ok) throw new Error('Evento no encontrado');
         const data = await response.json();
         setConcert(data);
       } catch (error) {
@@ -50,7 +48,7 @@ function ConcertPage() {
       }));
 
     if (selectedTickets.length === 0) {
-      toast.error("Por favor selecciona al menos un ticket.");
+      toast.error("Por favor seleccionar al menos un ticket.");
       return;
     }
 
@@ -81,10 +79,21 @@ function ConcertPage() {
 
       toast.success(data.message || "¡Compra exitosa!");
 
-      // 👇 Después de 2 segundos, volver al Home
+      // Decodifica el token para extraer el RUN del usuario
+      const decoded = JSON.parse(atob(token.split('.')[1]));
+      const userRUN = decoded.userRUN;
+
+      // Guardar datos para mostrar el QR
+      setPurchaseData({
+        orderId: data.order.id,
+        RUN: userRUN,
+      });
+
+      // Redirección a la página de inicio después de 100 segundos
+      toast.info("Redirigiendo a la página de inicio en 100 segundos...");
       setTimeout(() => {
         navigate('/');
-      }, 2000);
+      }, 100000);
 
     } catch (error) {
       console.error("Error en la compra:", error);
@@ -120,6 +129,9 @@ function ConcertPage() {
       </div>
 
       <button onClick={handlePurchase}>Comprar</button>
+
+      {/* Mostrar el código QR si la compra fue exitosa */}
+      {purchaseData && <QrCode orderId={purchaseData.orderId} RUN={purchaseData.RUN} />}
     </div>
   );
 }
