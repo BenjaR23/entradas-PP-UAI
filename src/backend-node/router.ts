@@ -9,6 +9,7 @@ import {
 import { compareLogins } from "./logins.ts";
 import { verifyToken } from "./jwt.ts";
 import { purchaseHandler } from "./purchase.ts";
+import { checkInOrderItem } from "./checkin.ts";
 
 const router = new Router();
 
@@ -35,5 +36,8 @@ router.post("/purchase", purchaseHandler);
 router.get("/tickets/RUN/:RUN", getTicketsbyUserRUN);
 // O si prefieres `createPurchase`:
 // router.post("/purchase", createPurchase);
+
+router.patch("/order-items/:orderId/:ticketId/check-in", checkInOrderItem);
+
 
 export { router };

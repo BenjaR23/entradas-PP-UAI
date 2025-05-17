@@ -23,17 +23,17 @@ function App() {
         <Route path="/auth" element={<Authpage />} />
         <Route path="/heldtickets" element={<Ticketspage />} />
       </Routes>
-      {/* Toasts container, solo lo pones una vez en tu app */}
+      {/* Toasts container */}
       <ToastContainer
         position="top-right"
-        autoClose={3000} // ⏱️ duración del toast
+        autoClose={3000} //  duración del toast
         hideProgressBar={false}
         newestOnTop={true}
         closeOnClick
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored" // 🎨 colores más lindos
+        theme="colored" //  colores más lindos
       />
     </Router>
   );
