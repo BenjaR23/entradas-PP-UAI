@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
 import QrCode from '../components/adminOnly/QrCode.jsx';
+import useJWTBoilerplate from '../backend-node/client.ts'
 
 function ConcertPage() {
   const { id } = useParams();
