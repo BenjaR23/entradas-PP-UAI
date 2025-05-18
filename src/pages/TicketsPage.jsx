@@ -69,6 +69,11 @@ function TicketsPage() {
                   key={order.id}
                   isAdmin={user?.userRole === 'admin'}
                   onCheckIn={(orderId, itemId) => {
+                    if (user?.userRole !== 'admin') {
+                      console.warn('Acceso denegado: solo los administradores pueden hacer check-in.');
+                      return;
+                    }
+
                     // Marca el item como checked-in en el estado local sin recargar
                     setTickets((prev) =>
                       prev.map((ord) => ord.id === orderId
