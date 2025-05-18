@@ -11,7 +11,6 @@ function TicketDetailPage() {
     const [ticketData, setTicketData] = useState(null);
     const [error, setError] = useState(null);
 
-    // Estados para inputs nuevos
     const [transferUserId, setTransferUserId] = useState('');
     const [transferPrice, setTransferPrice] = useState('');
 
@@ -40,6 +39,24 @@ function TicketDetailPage() {
         fetchTicketDetail();
     }, [user, orderId, ticketId]);
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const dataToSave = {
+            orderId: parseInt(orderId),
+            ticketId: parseInt(ticketId),
+            userId: transferUserId.trim() || null,  // si está vacío, null
+            price: transferPrice ? parseFloat(transferPrice) : null,
+        };
+
+        // Por ahora solo mostrar en consola
+        console.log('Datos a guardar:', JSON.stringify(dataToSave, null, 2));
+
+        // Aquí podrías agregar lógica para enviar a backend, localStorage, etc.
+        alert('Datos guardados en consola. Revisa la consola del navegador.');
+
+    };
+
     if (error) return <p>Error: {error}</p>;
     if (!ticketData) return <Loader />;
 
@@ -55,29 +72,36 @@ function TicketDetailPage() {
             <hr />
             <h2>Datos para transferencia (sin acción aún)</h2>
 
-            <label>
-                ID del usuario a transferir:
-                <input
-                    type="text"
-                    value={transferUserId}
-                    onChange={(e) => setTransferUserId(e.target.value)}
-                    placeholder="Ingrese ID o RUN"
-                />
-            </label>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    ID del usuario a transferir:
+                    <input
+                        type="text"
+                        value={transferUserId}
+                        onChange={(e) => setTransferUserId(e.target.value)}
+                        placeholder="Ingrese ID o RUN (opcional)"
+                    />
+                </label>
 
-            <br />
+                <br />
 
-            <label>
-                Precio de transferencia:
-                <input
-                    type="number"
-                    value={transferPrice}
-                    onChange={(e) => setTransferPrice(e.target.value)}
-                    placeholder="Ingrese precio"
-                    min="0"
-                    step="any"
-                />
-            </label>
+                <label>
+                    Precio de transferencia:
+                    <p>El precio no puede ser mayor al 90% del total</p>
+                    <input
+                        type="number"
+                        value={transferPrice}
+                        onChange={(e) => setTransferPrice(e.target.value)}
+                        placeholder="Ingrese precio"
+                        min="0"
+                        step="any"
+                        required
+                    />
+                </label>
+
+                <br />
+                <button type="submit">Enviar Transferencia</button>
+            </form>
 
             <br />
             <button onClick={() => navigate(-1)}>Volver</button>
