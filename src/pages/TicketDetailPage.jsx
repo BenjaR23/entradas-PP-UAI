@@ -11,6 +11,10 @@ function TicketDetailPage() {
     const [ticketData, setTicketData] = useState(null);
     const [error, setError] = useState(null);
 
+    // Estados para inputs nuevos
+    const [transferUserId, setTransferUserId] = useState('');
+    const [transferPrice, setTransferPrice] = useState('');
+
     useEffect(() => {
         const fetchTicketDetail = async () => {
             if (!user) return;
@@ -47,6 +51,35 @@ function TicketDetailPage() {
             <p><strong>Precio:</strong> ${ticketData.ticket.price}</p>
             <p><strong>Cantidad:</strong> {ticketData.quantity}</p>
             <p><strong>Total:</strong> ${ticketData.ticket.price * ticketData.quantity}</p>
+
+            <hr />
+            <h2>Datos para transferencia (sin acción aún)</h2>
+
+            <label>
+                ID del usuario a transferir:
+                <input
+                    type="text"
+                    value={transferUserId}
+                    onChange={(e) => setTransferUserId(e.target.value)}
+                    placeholder="Ingrese ID o RUN"
+                />
+            </label>
+
+            <br />
+
+            <label>
+                Precio de transferencia:
+                <input
+                    type="number"
+                    value={transferPrice}
+                    onChange={(e) => setTransferPrice(e.target.value)}
+                    placeholder="Ingrese precio"
+                    min="0"
+                    step="any"
+                />
+            </label>
+
+            <br />
             <button onClick={() => navigate(-1)}>Volver</button>
         </div>
     );
