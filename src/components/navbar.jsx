@@ -25,6 +25,7 @@ function Navbar() {
             <Link to = "/login" className="navbar-login">Login</Link>
             <Link to = "/auth">Test authorization page</Link>
             <Link to = "/heldtickets">Tickets</Link>
+            <Link to = "/transfer">Ticket Transfer</Link>
         </div>
         <form className="event-seacher" onSubmit= {handleSearchSubmit}>
             <input type="text" placeholder="Search for events..." className="eventSearch" value={events} onChange={(e) => setEvents(e.target.value)}></input>

@@ -8,7 +8,8 @@ import Searchpage from './pages/SearchPage.jsx';
 import Loginpage from './pages/LoginPage.jsx';
 import Authpage from './pages/AuthPage.jsx';
 import Ticketspage from './pages/TicketsPage.jsx'
-import 'react-toastify/dist/ReactToastify.css';
+import TicketTransferPage from './pages/TicketTransferPage.jsx';
+import TicketDetailPage from './pages/TicketDetailPage.jsx';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
         <Route path="/login" element={<Loginpage />} />
         <Route path="/auth" element={<Authpage />} />
         <Route path="/heldtickets" element={<Ticketspage />} />
+        <Route path="/transfer" element={<TicketTransferPage />} />
+        <Route path="/transfer/:orderId/:ticketId" element={<TicketDetailPage />} />
       </Routes>
       {/* Toasts container */}
       <ToastContainer
