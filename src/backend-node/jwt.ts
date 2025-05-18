@@ -13,7 +13,7 @@ interface UserPayload {
   userRUN: string;
 }
 
-// ✅ Generar token
+//  Generar token
 export async function generateToken(payload: UserPayload): Promise<string> {
   const { userEmail, userName, userId, userRole, timeGenerated, userRUN } = payload;
   if (!userEmail || !userName || !userId || !userRole || !timeGenerated || !userRUN) {

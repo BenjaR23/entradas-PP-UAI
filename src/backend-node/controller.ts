@@ -136,7 +136,7 @@ export const getEventByName = async (ctx: Context) => {
 };
 
 
-// 🚀 createPurchase (nuevo)
+//  createPurchase (nuevo)
 export const createPurchase = async (ctx: Context) => {
   try {
     const { eventId, tickets } = await ctx.request.body().value;

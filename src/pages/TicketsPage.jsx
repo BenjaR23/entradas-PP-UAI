@@ -64,7 +64,26 @@ function TicketsPage() {
         <div className="tickets-page">
             <h1>My Tickets</h1> {/* Titulo de la pagina */}
             {tickets.map((order) => (
-                <TicketCard order={order} key={order.id} /> // Iterar sobre los tickets obtenidos y crear un TicketCard para cada uno
+                <TicketCard
+                  order={order}
+                  key={order.id}
+                  isAdmin={user?.userRole === 'admin'}
+                  onCheckIn={(orderId, itemId) => {
+                    // Marca el item como checked-in en el estado local sin recargar
+                    setTickets((prev) =>
+                      prev.map((ord) => ord.id === orderId
+                        ? {
+                          ...ord,
+                            items: ord.items.map((it) =>
+                              it.id === itemId ? { ...it, isCheckedIn: true } : it
+                            ),
+                          }
+                        : ord
+                      )
+                    );
+                  }}
+                />
+ // Iterar sobre los tickets obtenidos y crear un TicketCard para cada uno
             ))}
         </div>
     )
