@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
 import QrCode from '../components/adminOnly/QrCode.jsx';
+import useJWTBoilerplate from '../backend-node/client.ts'
 
 function ConcertPage() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ function ConcertPage() {
   const [error, setError] = useState(null);
   const [purchaseData, setPurchaseData] = useState(null); 
 
+  const user = useJWTBoilerplate(localStorage.getItem('userToken') || '');
   useEffect(() => {
     const fetchConcertAndTickets = async () => {
       try {
@@ -104,6 +106,41 @@ function ConcertPage() {
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
 
+  if (user?.userRole === 'admin') {
+    return (
+      <div className="concert-page">
+        <h1>{concert.title}</h1>
+        <p>{concert.description}</p>
+        <p><strong>Venue:</strong> {concert.venue.name}</p>
+        <p><strong>Fecha:</strong> {new Date(concert.eventDate).toLocaleDateString()}</p>
+  
+        <h2>Entradas:</h2>
+        <div className="tickets">
+          {concert.tickets.map(ticket => (
+            <div key={ticket.id} className="ticket-option">
+              <h3>{ticket.type}</h3>
+              <p>Precio: ${ticket.price}</p>
+              <p>Disponibles: {ticket.stock - ticket.sold}</p>
+              <input
+                type="number"
+                min="0"
+                value={quantities[ticket.type] || ''}
+                onChange={(e) => handleChange(ticket.type, e.target.value)}
+              />
+            </div>
+          ))}
+        <div className="capacity"> 
+          <h2>Aforo actual del evento</h2>
+          <p><strong>Capacidad total:</strong> {concert.stats.totalCapacity}</p>
+          <p><strong>Ingresados:</strong> {concert.stats.totalCheckedIn}</p>
+          <p><strong>Capacidad restante:</strong> {concert.stats.remainingCapacity}</p>
+        </div>
+        </div>
+  
+        <button onClick={handlePurchase}>Comprar</button>
+      </div>
+    );
+  }
   return (
     <div className="concert-page">
       <h1>{concert.title}</h1>

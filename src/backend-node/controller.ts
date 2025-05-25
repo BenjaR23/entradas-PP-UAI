@@ -40,7 +40,7 @@ export const getEvents = async (ctx: Context) => {
 // Get event by ID (numeric)
 export const getEventById = async (ctx: Context) => {
   try {
-    const id = parseInt(ctx.params.id);
+    const id = parseInt(ctx.params.id); // Obtenemos el ID de la URL y lo convertimos a número
     
     if (isNaN(id)) {
       ctx.response.status = 400;
@@ -48,26 +48,49 @@ export const getEventById = async (ctx: Context) => {
       return;
     }
 
-    console.log("Searching for event with ID:", id); // Agregar para depurar
 
-    const event = await prisma.event.findUnique({
+    const event = await prisma.event.findUnique({ // Buscar evento en la base de datos donde el ID coincida con el ID dado
       where: { id },
       include: {
         tickets: true,
         venue: true
       }
     });
-
-    if (!event) {
+    console.log("Event found")
+    if (!event) { // En caso de que no se encuentre el evento, se tira un error 404
       ctx.response.status = 404;
-      ctx.response.body = { 
+      ctx.response.body = {
         error: `Event with ID ${id} not found`,
         suggestion: "Try checking /events to see available events"
       };
       return;
     }
 
-    ctx.response.body = event;
+    const ticketIds = event?.tickets.map(ticket => ticket.id); // Obtenemos los IDs de los tickets del evento
+
+    const checkedIn = await prisma.orderItem.aggregate({ // Para conseguir la cantidad de tickets que han pasado por el check-in hacemos un aggregate
+      where: { ticketId: { in: ticketIds }, IsCheckedIn: true }, // Donde el ticketId esté dentro de los IDs de tickets del evento y esté marcado como checked-in
+      _sum: {
+        quantity: true // Sumamos la cantidad de tickets
+      }
+    })
+
+    const totalCheckedIn = checkedIn._sum.quantity ?? 0; // Si no hay tickets checked-in, se asigna 0, en otro caso se asigna la cantidad de tickets checked-in
+
+
+    const totalCapacity = event?.tickets.reduce((sum, ticket) => {
+      return sum + ticket.sold + ticket.stock; // Para encontrar la capacidad total, sumamos la cantidad de tickets vendidos y la cantidad de tickets en stock
+    }, 0);
+
+    ctx.response.body = { // Dado todo esto, actualizamos el body de la respuesta para incluir la información del evento y los diferentes datos asociados al aforo
+      ...event,
+      stats: {
+        totalCapacity,
+        totalCheckedIn,
+        remainingCapacity: totalCapacity - totalCheckedIn // La capacidad restante se calcula restando la cantidad de tickets checked-in a la capacidad total
+      }
+    };
+
   } catch (error) {
     console.error("Error fetching event:", error); // Agregar para depurar
     ctx.response.status = 500;
