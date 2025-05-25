@@ -212,3 +212,61 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
     };
   }
 };
+
+export const getResellingOrders = async (ctx: Context) => {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { status: "reselling" },
+      include: {
+        user: true,
+        items: {
+          include: {
+            ticket: {
+              include: {
+                event: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!orders || orders.length === 0) {
+      ctx.response.status = 404;
+      ctx.response.body = { message: "No reselling orders found" };
+      return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = orders.map(order => ({
+      orderId: order.id,
+      user: {
+        id: order.user.id,
+        name: order.user.name,
+        email: order.user.email,
+        RUN: order.user.RUN,
+      },
+      items: order.items.map(item => ({
+        quantity: item.quantity,
+        priceEach: item.priceEach,
+        ticket: {
+          id: item.ticket.id,
+          type: item.ticket.type,
+          price: item.ticket.price,
+          event: {
+            id: item.ticket.event.id,
+            title: item.ticket.event.title,
+            eventDate: item.ticket.event.eventDate,
+          },
+        },
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching reselling orders:", error);
+    ctx.response.status = 500;
+    ctx.response.body = { 
+      error: "Failed to fetch reselling orders", 
+      details: error.message 
+    };
+  }
+};
