@@ -39,21 +39,42 @@ function TicketDetailPage() {
         fetchTicketDetail();
     }, [user, orderId, ticketId]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const dataToSave = {
+        const dataToSend = {
             orderId: parseInt(orderId),
             ticketId: parseInt(ticketId),
             userId: transferUserId.trim() || null,  // si está vacío, null
             price: transferPrice ? parseFloat(transferPrice) : null,
         };
 
-        // Por ahora solo mostrar en consola
-        console.log('Datos a guardar:', JSON.stringify(dataToSave, null, 2));
+        try {
+            const response = await fetch('http://localhost:8080/transfer-ticket', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ${userToken}'
+                },
+                body: JSON.stringify(dataToSend)
+            });
 
-        // Aquí podrías agregar lógica para enviar a backend, localStorage, etc.
-        alert('Datos guardados en consola. Revisa la consola del navegador.');
+            const result = await response.json().catch(() => null);
+
+            if (!response.ok) {
+                const errorMsg = (result && result.error) ? result.error : 'Error en la transferencia';
+                throw new Error(errorMsg);
+            }
+            alert(`✅ Transferencia exitosa: ${result.message}`);
+            console.log('Respuesta del backend:', result);
+            navigate('/mis-tickets'); // o redirecciona donde quieras
+       
+            navigate('/transfer');
+        } catch (err) {
+            console.error('Error completo:', err);
+            alert(`Error al transferir el ticket: ${err.message}`);
+        }
+
 
     };
 
