@@ -10,6 +10,8 @@ import { compareLogins } from "./logins.ts";
 import { verifyToken } from "./jwt.ts";
 import { purchaseHandler } from "./purchase.ts";
 import { checkInOrderItem } from "./checkin.ts";
+import { transferTicketHandler } from   "./transfer.ts";
+
 
 const router = new Router();
 
@@ -30,14 +32,12 @@ router.post("/login", compareLogins);
 
 router.post("/verify", verifyToken);
 
-// Si quieres usar *solo uno* de estos dos handlers de compra, elige:
 router.post("/purchase", purchaseHandler);
 
 router.get("/tickets/RUN/:RUN", getTicketsbyUserRUN);
-// O si prefieres `createPurchase`:
-// router.post("/purchase", createPurchase);
 
 router.patch("/order-items/:orderId/:ticketId/check-in", checkInOrderItem);
 
+router.patch("/transfer-ticket", transferTicketHandler);
 
 export { router };
