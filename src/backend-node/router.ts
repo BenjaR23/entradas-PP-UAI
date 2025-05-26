@@ -12,6 +12,7 @@ import { purchaseHandler } from "./purchase.ts";
 import { checkInOrderItem } from "./checkin.ts";
 import { transferTicketHandler } from   "./transfer.ts";
 import { getResellingOrders } from "./controller.ts";
+import { resellPurchaseOrder } from "./controller.ts";
 
 
 const router = new Router();
@@ -42,5 +43,7 @@ router.patch("/order-items/:orderId/:ticketId/check-in", checkInOrderItem);
 router.patch("/transfer-ticket", transferTicketHandler);
 
 router.get("/orders/reselling", getResellingOrders);
+
+router.post("/orders/resell-purchase", resellPurchaseOrder);
 
 export { router };

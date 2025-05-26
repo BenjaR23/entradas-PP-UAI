@@ -270,3 +270,34 @@ export const getResellingOrders = async (ctx: Context) => {
     };
   }
 };
+
+export const resellPurchaseOrder = async (ctx: Context) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { orderId, userId, total } = await body.value;
+
+
+    if (!orderId || !userId || !total) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Faltan campos requeridos: orderId, userId o total" };
+      return;
+    }
+
+    // Actualiza la orden con el nuevo comprador
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        userId: parseInt(userId),
+        total: total,
+        status: "completed", // asegúrate que este estado exista
+      },
+    });
+
+    ctx.response.status = 200;
+    ctx.response.body = updatedOrder;
+  } catch (err) {
+    console.error("Error en resellPurchaseOrder:", err);
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Error interno al procesar la compra de reventa" };
+  }
+};
