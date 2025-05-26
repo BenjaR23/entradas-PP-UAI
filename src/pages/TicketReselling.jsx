@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import Loader from '../components/Loader';
+import {toast} from 'react-toastify';
 
 const TicketReselling = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const userId = localStorage.getItem('userId');
+
+
 
   useEffect(() => {
     fetch("http://localhost:8080/orders/reselling")
@@ -21,8 +27,39 @@ const TicketReselling = () => {
       });
   }, []);
 
-  if (loading) return <p>Cargando órdenes en reventa...</p>;
+  if (loading) return <Loader />;
   if (error) return <p>Error: {error}</p>;
+
+const handleResellPurchase = async (orderId, total) => {
+  try {
+    const userId = localStorage.getItem('userId'); // ya no usamos token
+    if (!userId) {
+      alert("Usuario no identificado.");
+      return;
+    }
+
+    const response = await fetch("http://localhost:8080/orders/resell-purchase", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderId,
+        userId,
+        total,
+      }),
+    });
+
+    if (!response.ok) throw new Error("Error al comprar la orden en reventa");
+
+    const result = await response.json();
+    toast.info("¡Compra de entrada revendida realizada con éxito!");
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
+};
+
+
 
   return (
     <div>
@@ -36,8 +73,17 @@ const TicketReselling = () => {
           <ul>
             {order.items.map((item, idx) => (
               <li key={idx}>
-                <strong>Ticket:</strong> {item.ticket.type} — <strong>Evento:</strong> {item.ticket.event.title} ({new Date(item.ticket.event.eventDate).toLocaleDateString()})<br/>
-                <strong>Cantidad:</strong> {item.quantity} — <strong>Precio por unidad:</strong> ${item.priceEach}
+                <div>
+                  <strong>Ticket:</strong> {item.ticket.type} — <strong>Evento:</strong> {item.ticket.event.title} ({new Date(item.ticket.event.eventDate).toLocaleDateString()})<br/>
+                  <strong>Cantidad:</strong> {item.quantity} — <strong>Precio por unidad:</strong> ${item.priceEach}<br/>
+                  <strong>Total:</strong>  ${item.priceEach * item.quantity}
+                </div>
+                <button
+                  onClick={() => handleResellPurchase(order.orderId, item.priceEach * item.quantity)}
+                  style={{ marginTop: '0.5rem'}}
+                >
+                  Comprar Reventa
+                </button>
               </li>
             ))}
           </ul>
