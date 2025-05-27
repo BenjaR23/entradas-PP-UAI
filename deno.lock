@@ -14,6 +14,7 @@
     "npm:dotenv-cli@8": "8.0.0",
     "npm:html5-qrcode@^2.3.8": "2.3.8",
     "npm:ngx-scanner-qrcode@^1.7.6": "1.7.6_@angular+common@19.2.9__@angular+core@19.2.9___rxjs@7.8.2___zone.js@0.15.0__rxjs@7.8.2_@angular+core@19.2.9__rxjs@7.8.2__zone.js@0.15.0",
+    "npm:prisma@*": "6.7.0",
     "npm:prisma@^6.6.0": "6.7.0",
     "npm:qrcode@*": "1.5.4",
     "npm:react-dom@19": "19.1.0_react@19.1.0",

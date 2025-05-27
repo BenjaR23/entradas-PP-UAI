@@ -178,6 +178,15 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   IsCheckedIn: 'IsCheckedIn'
 };
 
+exports.Prisma.CouponScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  ticketId: 'ticketId',
+  eventId: 'eventId',
+  category: 'category',
+  description: 'description'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -200,7 +209,8 @@ exports.Prisma.ModelName = {
   Event: 'Event',
   Ticket: 'Ticket',
   Order: 'Order',
-  OrderItem: 'OrderItem'
+  OrderItem: 'OrderItem',
+  Coupon: 'Coupon'
 };
 
 /**
