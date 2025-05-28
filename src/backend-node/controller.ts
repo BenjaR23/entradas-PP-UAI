@@ -116,19 +116,46 @@ export const getEventByName = async (ctx: Context) => {
 //  createPurchase (nuevo)
 export const createPurchase = async (ctx: Context) => {
   try {
-    const { eventId, tickets } = await ctx.request.body().value;
+    const { eventId, tickets, userId } = await ctx.request.body().value;
+
+    // Chequea cantidad
+  
+    const existingTickets = await prisma.orderItem.findMany({
+      where: {
+        order: {
+          userId,
+          status: "paid",
+        },
+        ticket: {
+          eventId,
+        },
+      },
+    });
+
+    const totalOwned = existingTickets.reduce((sum, item) => sum + item.quantity, 0);
+    const totalRequested = tickets.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalOwned + totalRequested > 4) {
+      ctx.response.status = 400;
+      ctx.response.body = {
+        error: "Solo se pueden comprar 4 tickets por usuario.",
+        owned: totalOwned,
+        tryingToBuy: totalRequested,
+      };
+      return;
+    }
 
     for (const ticket of tickets) {
       await prisma.ticket.updateMany({
         where: {
           eventId: eventId,
           type: ticket.type,
-          stock: { gte: ticket.quantity }
+          stock: { gte: ticket.quantity },
         },
         data: {
           stock: { decrement: ticket.quantity },
-          sold: { increment: ticket.quantity }
-        }
+          sold: { increment: ticket.quantity },
+        },
       });
     }
 
@@ -137,7 +164,10 @@ export const createPurchase = async (ctx: Context) => {
   } catch (error) {
     console.error(error);
     ctx.response.status = 500;
-    ctx.response.body = { error: "Error processing purchase", details: error.message };
+    ctx.response.body = {
+      error: "Error processing purchase",
+      details: error.message,
+    };
   }
 };
 
