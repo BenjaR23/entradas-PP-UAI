@@ -180,7 +180,14 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
       where: { RUN: parsedRUN }});
     const userID = user?.id;
     const orders = await prisma.order.findMany({
-      where: { userId: userID },
+      where: {
+        userId: userID,
+        NOT: {
+          status: {
+            in: ["pending", "reselling"] // Exclude pending and reselling orders
+          }
+        }
+      },
       include: {
         items: {
           include: {
