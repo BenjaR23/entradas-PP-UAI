@@ -134,7 +134,7 @@ export const createPurchase = async (ctx: Context) => {
 
     const totalOwned = existingTickets.reduce((sum, item) => sum + item.quantity, 0);
     const totalRequested = tickets.reduce((sum, item) => sum + item.quantity, 0);
-
+    // Verifica si el usuario ya tiene 4 tickets o más
     if (totalOwned + totalRequested > 4) {
       ctx.response.status = 400;
       ctx.response.body = {
@@ -144,7 +144,7 @@ export const createPurchase = async (ctx: Context) => {
       };
       return;
     }
-
+    // Verifica si el evento existe
     for (const ticket of tickets) {
       await prisma.ticket.updateMany({
         where: {
@@ -158,7 +158,7 @@ export const createPurchase = async (ctx: Context) => {
         },
       });
     }
-
+    // Crea la orden
     ctx.response.status = 201;
     ctx.response.body = { message: "Purchase successful" };
   } catch (error) {
