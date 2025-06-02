@@ -62,7 +62,7 @@ const handleResellPurchase = async (orderId, total) => {
 
 
   return (
-    <div>
+    <div className="reselling-container">
       <h1>Órdenes en Reventa</h1>
       {orders.length === 0 && <p>No hay órdenes en reventa disponibles.</p>}
       {orders.map(order => (

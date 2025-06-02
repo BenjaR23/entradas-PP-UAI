@@ -233,3 +233,31 @@ body {
     font-size: 0.95rem;
   }
 }
+
+.ticket-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ticket-card li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.reselling-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reselling-container li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Centrar botones dentro de cada li */
+.reselling-container li button {
+  display: block;
+  margin: 0.5rem auto 0 auto; /* margen arriba y abajo con auto horizontal para centrar */
+}
