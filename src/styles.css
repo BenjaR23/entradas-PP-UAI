@@ -2,6 +2,7 @@
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(to bottom right, #323338, #000000);
+  color: #6a98b3;
   margin: 0;
   padding: 0;
 }
@@ -13,12 +14,14 @@ body {
   align-items: center;
   background-color: #111;
   color: white;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 1000;
   position: fixed;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .navbar-logo {
@@ -109,18 +112,6 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
-}
-
-@media (min-width: 600px) {
-  .concert-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (min-width: 1024px) {
-  .concert-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
 }
 
 .concert-card {
