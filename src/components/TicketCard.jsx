@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function TicketCard({ order }) {
+function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
   // Create a state to track checked-in status for each ticket
   const [checkedItems, setCheckedItems] = useState(
     order.items.reduce((acc, item) => {
@@ -54,8 +54,8 @@ function TicketCard({ order }) {
             <li key={item.id}>
               <p>{item.quantity}x {item.ticket.type} tickets for {item.ticket.event.title}</p>
               <p>Price: ${item.ticket.price} each. Total: ${item.ticket.price * item.quantity}</p>
-              {/* Show checkbox only if this ticket is not checked in */}
-              {!isChecked && (
+              {/* Show checkbox only if this ticket is not checked in AND user is admin */}
+              {!transferMode && isAdmin && !isChecked && (
                 <div>
                   <input 
                     type="checkbox" 
@@ -63,6 +63,15 @@ function TicketCard({ order }) {
                     checked={isChecked}
                   /> Check-in
                 </div>
+              )}
+              {/* Show transfer button instead of checkbox when transferMode is true */}
+              {transferMode && (
+                <button 
+                  onClick={() => onTransferClick(order.id, item.ticket.id)}
+                  disabled={isChecked} // Por ejemplo, no transferir si ya está check-in
+                >
+                  Transferir Ticket
+                </button>
               )}
               {/* Optionally show a message if checked in */}
               {isChecked && <p>✓ Already checked in</p>}

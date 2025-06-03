@@ -139,28 +139,58 @@ export const getEventByName = async (ctx: Context) => {
 //  createPurchase (nuevo)
 export const createPurchase = async (ctx: Context) => {
   try {
-    const { eventId, tickets } = await ctx.request.body().value;
+    const { eventId, tickets, userId } = await ctx.request.body().value;
 
+    // Chequea cantidad
+  
+    const existingTickets = await prisma.orderItem.findMany({
+      where: {
+        order: {
+          userId,
+          status: "paid",
+        },
+        ticket: {
+          eventId,
+        },
+      },
+    });
+
+    const totalOwned = existingTickets.reduce((sum, item) => sum + item.quantity, 0);
+    const totalRequested = tickets.reduce((sum, item) => sum + item.quantity, 0);
+    // Verifica si el usuario ya tiene 4 tickets o más
+    if (totalOwned + totalRequested > 4) {
+      ctx.response.status = 400;
+      ctx.response.body = {
+        error: "Solo se pueden comprar 4 tickets por usuario.",
+        owned: totalOwned,
+        tryingToBuy: totalRequested,
+      };
+      return;
+    }
+    // Verifica si el evento existe
     for (const ticket of tickets) {
       await prisma.ticket.updateMany({
         where: {
           eventId: eventId,
           type: ticket.type,
-          stock: { gte: ticket.quantity }
+          stock: { gte: ticket.quantity },
         },
         data: {
           stock: { decrement: ticket.quantity },
-          sold: { increment: ticket.quantity }
-        }
+          sold: { increment: ticket.quantity },
+        },
       });
     }
-
+    // Crea la orden
     ctx.response.status = 201;
     ctx.response.body = { message: "Purchase successful" };
   } catch (error) {
     console.error(error);
     ctx.response.status = 500;
-    ctx.response.body = { error: "Error processing purchase", details: error.message };
+    ctx.response.body = {
+      error: "Error processing purchase",
+      details: error.message,
+    };
   }
 };
 
@@ -203,7 +233,14 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
       where: { RUN: parsedRUN }});
     const userID = user?.id;
     const orders = await prisma.order.findMany({
-      where: { userId: userID },
+      where: {
+        userId: userID,
+        NOT: {
+          status: {
+            in: ["pending", "reselling"] // Exclude pending and reselling orders
+          }
+        }
+      },
       include: {
         items: {
           include: {
@@ -304,4 +341,93 @@ try {
     };
   };
 
+  };
+
+export const getResellingOrders = async (ctx: Context) => {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { status: "reselling" },
+      include: {
+        user: true,
+        items: {
+          include: {
+            ticket: {
+              include: {
+                event: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!orders || orders.length === 0) {
+      ctx.response.status = 404;
+      ctx.response.body = { message: "No reselling orders found" };
+      return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = orders.map(order => ({
+      orderId: order.id,
+      user: {
+        id: order.user.id,
+        name: order.user.name,
+        email: order.user.email,
+        RUN: order.user.RUN,
+      },
+      items: order.items.map(item => ({
+        quantity: item.quantity,
+        priceEach: item.priceEach,
+        ticket: {
+          id: item.ticket.id,
+          type: item.ticket.type,
+          price: item.ticket.price,
+          event: {
+            id: item.ticket.event.id,
+            title: item.ticket.event.title,
+            eventDate: item.ticket.event.eventDate,
+          },
+        },
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching reselling orders:", error);
+    ctx.response.status = 500;
+    ctx.response.body = { 
+      error: "Failed to fetch reselling orders", 
+      details: error.message 
+    };
+  }
+};
+
+export const resellPurchaseOrder = async (ctx: Context) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { orderId, userId, total } = await body.value;
+
+
+    if (!orderId || !userId || !total) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Faltan campos requeridos: orderId, userId o total" };
+      return;
+    }
+
+    // Actualiza la orden con el nuevo comprador
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        userId: parseInt(userId),
+        total: total,
+        status: "completed", // asegúrate que este estado exista
+      },
+    });
+
+    ctx.response.status = 200;
+    ctx.response.body = updatedOrder;
+  } catch (err) {
+    console.error("Error en resellPurchaseOrder:", err);
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Error interno al procesar la compra de reventa" };
+  }
 };

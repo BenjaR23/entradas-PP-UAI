@@ -10,6 +10,9 @@ import Authpage from './pages/AuthPage.jsx';
 import Ticketspage from './pages/TicketsPage.jsx'
 import Couponspage from './pages/CouponsPage.jsx';
 import 'react-toastify/dist/ReactToastify.css';
+import TicketTransferPage from './pages/TicketTransferPage.jsx';
+import TicketDetailPage from './pages/TicketDetailPage.jsx';
+import TicketReselling from './pages/TicketReselling.jsx';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
         <Route path="/auth" element={<Authpage />} />
         <Route path="/heldtickets" element={<Ticketspage />} />
         <Route path="/heldcoupons" element={<Couponspage />} />
+        <Route path="/transfer" element={<TicketTransferPage />} />
+        <Route path="/transfer/:orderId/:ticketId" element={<TicketDetailPage />} />
+        <Route path="/reselling" element={<TicketReselling />} />
       </Routes>
       {/* Toasts container */}
       <ToastContainer
