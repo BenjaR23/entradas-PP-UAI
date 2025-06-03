@@ -43,6 +43,7 @@ model Event {
   category    String
   venue       Venue    @relation(fields: [venueId], references: [id])
   tickets     Ticket[]
+  coupons     Coupon[]
 }
 
 model Ticket {
@@ -54,6 +55,7 @@ model Ticket {
   sold       Int         @default(0)
   orderItems OrderItem[]
   event      Event       @relation(fields: [eventId], references: [id])
+  coupons    Coupon[]
 }
 
 model Order {
@@ -75,4 +77,15 @@ model OrderItem {
   order       Order   @relation(fields: [orderId], references: [id])
   ticket      Ticket  @relation(fields: [ticketId], references: [id])
   IsCheckedIn Boolean @default(false)
+}
+
+model Coupon {
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  ticketId    Int
+  eventId     Int
+  category    String
+  description String?
+  ticket      Ticket  @relation(fields: [ticketId], references: [id])
+  event       Event   @relation(fields: [eventId], references: [id])
 }

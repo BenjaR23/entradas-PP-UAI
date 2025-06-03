@@ -8,6 +8,7 @@ import Searchpage from './pages/SearchPage.jsx';
 import Loginpage from './pages/LoginPage.jsx';
 import Authpage from './pages/AuthPage.jsx';
 import Ticketspage from './pages/TicketsPage.jsx'
+import Couponspage from './pages/CouponsPage.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Loginpage />} />
         <Route path="/auth" element={<Authpage />} />
         <Route path="/heldtickets" element={<Ticketspage />} />
+        <Route path="/heldcoupons" element={<Couponspage />} />
       </Routes>
       {/* Toasts container */}
       <ToastContainer

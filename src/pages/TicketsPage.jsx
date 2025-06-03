@@ -13,7 +13,7 @@ function TicketsPage() {
     const [adminChosenRUN, setadminChosenRUN] = useState(null); // Manejamos el RUN del usuario que el admin ha elegido ver sus tickets, este cambia depende de si el admin ha escaneado un QR o ha elegido ver sus propios tickets
 
     if (!localStorage.getItem('userToken')) { // Revisar si el token de usuario existe
-        navigate('/login'); // Redirigir al usuario a la página de inicio de sesión no existe
+        navigate('/login'); // Redirigir al usuario a la página de inicio de sesión
     }
     const user = useJWTBoilerplate(localStorage.getItem('userToken') || ''); // Obtener el token de usuario del localStorage y pasarlo a la función useJWTBoilerplate para verificar el token y obtener datos del usuario
     

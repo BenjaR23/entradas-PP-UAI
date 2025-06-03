@@ -233,5 +233,75 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
       error: "Server error",
       details: error.message
     };
-  }
+  };
+};
+
+export const getCouponsbyUserRUN = async (ctx: Context) => {
+try {
+    const userRUN = ctx.params.RUN; // Tomamos el RUN del usuario de los parámetros de la URL
+    const parsedRUN = formatRUN(userRUN); // Usamos la función para tener el RUN en el formato correcto
+    console.log("RUN:", parsedRUN); // Agregamos esto para asegurar que el RUN se está formateando correctamente
+
+    if (!parsedRUN) { // Si el RUN no es válido, devolvemos un error
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Invalid RUN format" };
+      return;
+    }
+    console.log("Searching for the user's coupons...");
+
+    const user = await prisma.user.findFirst({ // Buscamos al usuario en la base de datos ocupando el RUN
+      where: { RUN: parsedRUN }});
+    const userID = user?.id; // Setteamos el ID del usuario encontrado
+    const userName = user?.name; // Guardamos el nombre del usuario para luego generar el codigo "único" del cupon
+    const orders = await prisma.order.findMany({ // Buscamos las órdenes del usuario
+      where: { userId: userID, status: "completed" }, // Solo buscamos órdenes completadas
+      include: {
+        items: { where: { IsCheckedIn: true } }, // Donde se haya hecho el check-in
+      }
+    })
+    const ticketIds = orders.flatMap(order => order.items.map(item => item.ticketId)); // Obtenemos los IDs de los tickets de las órdenes del usuario
+    console.log("Ticket IDs:", ticketIds); // Agregamos esto para ver los IDs de los tickets
+    const coupons = await prisma.coupon.findMany({ // Buscamos los cupones asociados a los tickets que tiene el usuario
+      where: { ticketId: { in: ticketIds }},
+      include: {
+        event: {
+          select: { title: true, eventDate: true }}
+        }
+      }); // Donde el ticketId esté dentro de los IDs de tickets del usuario
+    
+    if (!coupons || coupons.length === 0) { // Si no se encuentran cupones, devolvemos un error 404
+      ctx.response.status = 404;
+      ctx.response.body = { 
+        error: `Coupons for the user with RUN ${parsedRUN} have not found`,
+      };
+      return;
+    }
+
+    ctx.response.status = 200; // Si se encuentran cupones, devolvemos un 200 OK
+    console.log("Coupons found:", coupons);  // Agregamos esto para ver los cupones encontrados
+    
+    for (const coupon of coupons) { // Iteramos sobre los cupones encontrados
+      const couponCode = `${coupon.code}_${userName}`
+      const encryptedCode = btoa(couponCode); // Usamos btoa para encriptar el código del cupón en base64
+      coupon.code = encryptedCode; // Asignamos el código encriptado al cupón
+    };
+
+    // Debido a que no podemos saber realisticamente como todos los sistemas de cupones para cada uno de los recintos funcionaran (e.j uno puede pedir codigo QR, otro puede pedir un código escrito), y que generar cupones verdaderamente únicos es un proceso
+    // que requeriría trabajar con estos recintos para que ellos tengan todos los codigos guardados en sus bases de datos para verificarlos de su parte y esto no se nos pide dentro del alcance actual del proyecto, lo que vamos a asumir es que cada recinto va a darnos un código 'base' para cada evento con una cantidad de usos maximos que ellos manejen y verifiquen,
+    // de tal forma que nosotros no vamos a tener que verificar los cupones o cuantos usos de estos quedan, sino que simplemente vamos a generar un código único para cada usuario (código base + nombre usuario), y encriptarlo en base64 para que no se vea el código base del cupón.
+    // De ahí el usuario va a poder presentar este cupón en el recinto, y el recinto va a primero descifrar el base64 del codigo, y luego verificar que el código base del cupón exista en su base de datos, registrando el nombre de la persona
+    // que lo presentó para evitar que se use el mismo cupón varias veces, también reduciendo la cantidad de usos restantes del código base.
+    
+    // Esta es la solución en la que podemos pensar en un sistema de cupones únicos para cada usuario dadas las instrucciones y el alcance del proyecto, incluso si entendemos que en casos reales esta tendría que tomar en cuenta más cosas.
+    
+    ctx.response.body = coupons; // Devolvemos una respuesta con los cupones encontrados
+  } catch (error) {
+    console.error("Error fetching coupons:", error);
+    ctx.response.status = 500;
+    ctx.response.body = {
+      error: "Server error",
+      details: error.message
+    };
+  };
+
 };
