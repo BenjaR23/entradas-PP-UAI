@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copiar archivos necesariosn
 COPY package.json package-lock.json ./
-RUN npm install
+RUN deno task build
 
 # Copia todo el código
 COPY . .
@@ -34,4 +34,4 @@ EXPOSE 8080
 
 # Comando de ejecución (ajusta si tu backend tiene otra entrada)
 CMD ["run", "-A", "--env-file=.env", "src/backend-node/main.ts"]
-
+    

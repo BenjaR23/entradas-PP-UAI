@@ -183,7 +183,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/feli_bm/PycharmProjects/homework/UAI/Programación Profesional/proy/entradas-PP-UAI/generated/client",
+      "value": "/Users/diegojimenez/Desktop/entradas-PP-UAI/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -199,11 +199,12 @@ const config = {
     "previewFeatures": [
       "deno"
     ],
-    "sourceFilePath": "/Users/feli_bm/PycharmProjects/homework/UAI/Programación Profesional/proy/entradas-PP-UAI/prisma/schema.prisma",
+    "sourceFilePath": "/Users/diegojimenez/Desktop/entradas-PP-UAI/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.6.0",

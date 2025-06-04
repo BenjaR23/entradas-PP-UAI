@@ -24,7 +24,8 @@
     "npm:react@19": "19.1.0",
     "npm:react@^19.1.0": "19.1.0",
     "npm:vite@*": "6.3.2_picomatch@4.0.2_@types+node@22.12.0",
-    "npm:vite@^6.1.1": "6.3.2_picomatch@4.0.2_@types+node@22.12.0"
+    "npm:vite@^6.1.1": "6.3.2_picomatch@4.0.2_@types+node@22.12.0",
+    "npm:vite@^6.3.5": "6.3.5_@types+node@22.12.0_picomatch@4.0.2"
   },
   "npm": {
     "@ampproject/remapping@2.3.0": {
@@ -1062,6 +1063,25 @@
       ],
       "bin": true
     },
+    "vite@6.3.5_@types+node@22.12.0_picomatch@4.0.2": {
+      "integrity": "sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==",
+      "dependencies": [
+        "@types/node",
+        "esbuild",
+        "fdir",
+        "picomatch",
+        "postcss",
+        "rollup",
+        "tinyglobby"
+      ],
+      "optionalDependencies": [
+        "fsevents"
+      ],
+      "optionalPeers": [
+        "@types/node"
+      ],
+      "bin": true
+    },
     "which-module@2.0.1": {
       "integrity": "sha512-iBdZ57RDvnOR9AGBhML2vFZf7h8vmBjhoaZqODJBFWHVtKkDmKuHai3cx5PgVMrX5YDNp27AofYbAwctSS+vhQ=="
     },
@@ -1330,7 +1350,8 @@
         "npm:react-hot-toast@^2.5.2",
         "npm:react-router-dom@^7.5.1",
         "npm:react-toastify@^11.0.5",
-        "npm:react@^19.1.0"
+        "npm:react@^19.1.0",
+        "npm:vite@^6.3.5"
       ]
     }
   }
