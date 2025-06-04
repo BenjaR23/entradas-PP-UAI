@@ -1,0 +1,22 @@
+# Evitamos cargar archivos innecesarios al contenedor de Docker
+node_modules
+npm-debug.log
+
+# construcción local
+dist
+
+# Configuraciones de editor
+.vscode
+.vite
+
+# Archivos del sistema o temporales
+.DS_Store
+Thumbs.db
+
+# Archivos de Prisma
+generated
+
+# Archivos de control de versiones
+.git
+.gitignore
+*.log

@@ -26,8 +26,12 @@ WORKDIR /app
 COPY --from=frontend-builder /app/dist ./public
 COPY . .
 
+# Instalar dependencias del backend
+COPY .env .env 
+
 # Exponer el puerto del backend
 EXPOSE 8080
 
 # Comando de ejecución (ajusta si tu backend tiene otra entrada)
-CMD ["run", "-A", "--unstable", "src/backend-node/main.ts"]
+CMD ["run", "-A", "--env-file=.env", "src/backend-node/main.ts"]
+
