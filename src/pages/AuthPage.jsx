@@ -19,6 +19,7 @@ function AuthPage() {
             userName: '',
         });
         navigate('/');
+        window.location.reload()
     };
 
     useEffect(() => {
@@ -27,7 +28,7 @@ function AuthPage() {
             
             if (userToken) {
                 try {
-                    // ✅ Decodificar el payload del JWT
+                    // Decodificar el payload del JWT
                     const base64Url = userToken.split('.')[1];
                     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                     const decodedPayload = JSON.parse(atob(base64));
