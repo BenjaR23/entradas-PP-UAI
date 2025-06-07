@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
-  // Create a state to track checked-in status for each ticket
-  const [checkedItems, setCheckedItems] = useState(
-    order.items.reduce((acc, item) => {
-      acc[`${order.id}-${item.ticket.id}`] = item.ticket.isCheckedIn;
+  const [checkedItems, setCheckedItems] = useState({});
+
+  useEffect(() => {
+    if (!order || !order.items) return;
+
+    const initialChecked = order.items.reduce((acc, item) => {
+      acc[`${order.id}-${item.ticket.id}`] = item.IsCheckedIn;  // <-- Cambiado aquí
       return acc;
-    }, {})
-  );
+    }, {});
+    setCheckedItems(initialChecked);
+  }, [order]);
 
   const handleCheckIn = async (orderId, ticketId) => {
     try {
-      console.log('Order ID:', orderId);
-      console.log('Ticket ID:', ticketId);
-
       if (!orderId || !ticketId) {
         throw new Error("Order ID or Ticket ID is missing");
       }
@@ -29,11 +31,12 @@ function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
 
       await response.text();
 
-      // Mark only this item as checked
       setCheckedItems(prev => ({
         ...prev,
         [`${orderId}-${ticketId}`]: true,
       }));
+
+      toast.success('Check-in realizado con éxito');
     } catch (error) {
       console.error(error);
       alert('Error al hacer check-in del ticket');
@@ -54,26 +57,23 @@ function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
             <li key={item.id}>
               <p>{item.quantity}x {item.ticket.type} tickets for {item.ticket.event.title}</p>
               <p>Price: ${item.ticket.price} each. Total: ${item.ticket.price * item.quantity}</p>
-              {/* Show checkbox only if this ticket is not checked in AND user is admin */}
               {!transferMode && isAdmin && !isChecked && (
                 <div>
-                  <input 
-                    type="checkbox" 
-                    onChange={() => handleCheckIn(order.id, item.ticket.id)} 
+                  <input
+                    type="checkbox"
+                    onChange={() => handleCheckIn(order.id, item.ticket.id)}
                     checked={isChecked}
                   /> Check-in
                 </div>
               )}
-              {/* Show transfer button instead of checkbox when transferMode is true */}
               {transferMode && (
-                <button 
+                <button
                   onClick={() => onTransferClick(order.id, item.ticket.id)}
-                  disabled={isChecked} // Por ejemplo, no transferir si ya está check-in
+                  disabled={isChecked}
                 >
                   Transferir Ticket
                 </button>
               )}
-              {/* Optionally show a message if checked in */}
               {isChecked && <p>✓ Already checked in</p>}
             </li>
           );
