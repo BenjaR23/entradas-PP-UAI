@@ -6,11 +6,20 @@ const prisma = new PrismaClient().$extends(withAccelerate());
 
 export const transferTicketHandler = async (ctx: Context) => {
   try {
-    const { orderId, ticketId, userId, price } = await ctx.request.body({ type: "json" }).value;
+    const body = await ctx.request.body({ type: "json" }).value;
+    let { orderId, ticketId, userId, price } = body;
 
-    if (!orderId || !ticketId || price === undefined) {
+    // Convertir IDs a número para evitar errores de tipo en Prisma
+    orderId = Number(orderId);
+    ticketId = Number(ticketId);
+    price = Number(price);
+    if (userId !== undefined) {
+      userId = Number(userId);
+    }
+
+    if (!orderId || !ticketId || price === undefined || isNaN(orderId) || isNaN(ticketId) || isNaN(price) || (userId !== undefined && isNaN(userId))) {
       ctx.response.status = 400;
-      ctx.response.body = { error: "Faltan campos obligatorios" };
+      ctx.response.body = { error: "Faltan campos obligatorios o valores inválidos" };
       return;
     }
 
@@ -34,8 +43,42 @@ export const transferTicketHandler = async (ctx: Context) => {
     }
 
     if (userId) {
-      // --- Código para transferir a otro usuario (igual que antes) ---
-      // ...
+      // Validar que el usuario destino exista
+      const targetUser = await prisma.user.findUnique({ where: { id: userId } });
+      if (!targetUser) {
+        ctx.response.status = 404;
+        ctx.response.body = { error: "Usuario destino no encontrado" };
+        return;
+      }
+    
+      // Crear nueva orden para el usuario destino con el ticket transferido
+      const transferOrder = await prisma.order.create({
+        data: {
+          userId: userId,
+          total: new Prisma.Decimal(orderItem.priceEach.toString()),
+          status: "completed",
+          items: {
+            create: {
+              ticketId: ticketId,
+              quantity: orderItem.quantity,
+              priceEach: orderItem.priceEach,
+              IsCheckedIn: false,
+            },
+          },
+        },
+      });
+    
+      // Eliminar el ticket de la orden original para evitar duplicados
+      await prisma.orderItem.delete({
+        where: { id: orderItem.id },
+      });
+    
+      ctx.response.status = 200;
+      ctx.response.body = {
+        message: "Ticket transferido correctamente a otro usuario",
+        transferOrderId: transferOrder.id,
+      };
+
     } else {
       // Reventa
       const ticket = await prisma.ticket.findUnique({ where: { id: ticketId } });
@@ -78,7 +121,7 @@ export const transferTicketHandler = async (ctx: Context) => {
     }
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error(" Error en transferTicketHandler:", err);
+    console.error("Error en transferTicketHandler:", err);
     ctx.response.status = 500;
     ctx.response.body = { error: "Error interno del servidor", details: err.message };
   }
