@@ -14,7 +14,7 @@ const TicketReselling = () => {
   useEffect(() => {
     fetch("http://localhost:8080/orders/reselling")
       .then(res => {
-        if (!res.ok) throw new Error("Failed to fetch reselling orders");
+        if (!res.ok) throw new Error("No hay tickets en reventa.");
         return res.json();
       })
       .then(data => {
@@ -32,7 +32,7 @@ const TicketReselling = () => {
 
 const handleResellPurchase = async (orderId, total) => {
   try {
-    const userId = localStorage.getItem('userId'); // ya no usamos token
+    const userId = localStorage.getItem('userId');
     if (!userId) {
       alert("Usuario no identificado.");
       return;
@@ -54,6 +54,9 @@ const handleResellPurchase = async (orderId, total) => {
 
     const result = await response.json();
     toast.info("¡Compra de entrada revendida realizada con éxito!");
+    setTimeout(() => {
+    location.reload();
+}, 3000);
   } catch (error) {
     alert(`Error: ${error.message}`);
   }

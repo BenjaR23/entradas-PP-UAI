@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import useJWTBoilerplate from '../backend-node/client.ts';
 import TicketCard from '../components/TicketCard.jsx';
 import Loader from '../components/Loader.jsx';
-
 function TicketTransferPage() {
     const navigate = useNavigate();
     const [tickets, setTickets] = useState([]);
