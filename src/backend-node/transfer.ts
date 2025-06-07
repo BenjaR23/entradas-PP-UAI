@@ -72,6 +72,18 @@ export const transferTicketHandler = async (ctx: Context) => {
       await prisma.orderItem.delete({
         where: { id: orderItem.id },
       });
+
+      // Verificar si la orden original quedó sin items
+      const remainingItems = await prisma.orderItem.findMany({
+        where: { orderId: originalOrder.id },
+      });
+
+      if (remainingItems.length === 0) {
+        // Si no quedan items, eliminar la orden original
+        await prisma.order.delete({
+          where: { id: originalOrder.id },
+        });
+      }
     
       ctx.response.status = 200;
       ctx.response.body = {
@@ -111,6 +123,18 @@ export const transferTicketHandler = async (ctx: Context) => {
       await prisma.orderItem.delete({
         where: { id: orderItem.id },
       });
+      
+      // Verificar si la orden original quedó sin items
+      const remainingItems = await prisma.orderItem.findMany({
+        where: { orderId: originalOrder.id },
+      });
+      
+      if (remainingItems.length === 0) {
+        // Si no quedan items, eliminar la orden original
+        await prisma.order.delete({
+          where: { id: originalOrder.id },
+        });
+      }
 
       ctx.response.status = 200;
       ctx.response.body = {
