@@ -6,18 +6,18 @@ import { PrismaClient } from "../../generated/client/deno/edge.ts"; // Path to g
 const app = new Application();
 const prisma = new PrismaClient();
 
-// Add prisma to app state
+// Añadimos el cliente Prisma al contexto de la aplicación
 app.use(async (ctx, next) => {
   ctx.state.prisma = prisma;
   await next();
 });
 
-// Use CORS for cross-origin requests
+// Usamos CORS para permitir solicitudes desde el frontend
 app.use(oakCors());
 
-// Use the router
+// Usamos el router definido en router.ts
 app.use(router.routes());
 app.use(router.allowedMethods());
-
+// Iniciamos el servidor en el puerto 8080
 console.log("Backend running on http://localhost:8080");
 await app.listen({ port: 8080 });

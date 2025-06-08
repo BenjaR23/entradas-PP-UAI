@@ -4,7 +4,7 @@ import browser from "npm:@emailjs/browser";
 
 export const checkInOrderItem = async (ctx: Context) => {
   try {
-    const {orderId, ticketId} = ctx.params;
+    const {orderId, ticketId} = ctx.params; // Obtenemos los parámetros de la URL, que deberían ser el orderId y el ticketId
 
 
 
@@ -23,7 +23,7 @@ export const checkInOrderItem = async (ctx: Context) => {
       return;
     }
 
-    console.log(`Checking in order item with Order ID: ${orderId} and Ticket ID: ${ticketId}`);
+    console.log(`Checking in order item with Order ID: ${orderId} and Ticket ID: ${ticketId}`); // Debug para ver los IDs que se están utilizando
 
 
     const updatedItem = await prisma.orderItem.updateMany({ // Actualizamos el item de la orden
@@ -92,11 +92,11 @@ export const checkInOrderItem = async (ctx: Context) => {
         }
       }
       await browser.send(data.service_id, data.template_id, data.template_params); // Enviamos el correo
-      console.log("Mail de advertencia enviado")
+      console.log("Mail de advertencia enviado") // Debug para ver si se ha enviado el correo
     }
     ctx.response.status = 200;
-    ctx.response.body = { success: true, updatedItem };
-  } catch (error) {
+    ctx.response.body = { success: true, updatedItem }; // Enviamos una respuesta de éxito con el item actualizado
+  } catch (error) { // En caso de error, se captura y se envía un mensaje de error
     console.error(error);
     ctx.response.status = 500;
     ctx.response.body = { error: "Error al hacer check-in del ticket." };

@@ -3,41 +3,41 @@ import Loader from '../components/Loader';
 import {toast} from 'react-toastify';
 
 const TicketReselling = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [orders, setOrders] = useState([]); // Estado para almacenar las órdenes en reventa
+  const [loading, setLoading] = useState(true); // Estado para manejar el estado de carga
+  const [error, setError] = useState(null); // Estado para manejar errores
 
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId'); // Obtenemos el ID del usuario desde el localStorage
 
 
 
-  useEffect(() => {
+  useEffect(() => { // Hacemos un fetch al backend para obtener las órdenes en reventa
     fetch("http://localhost:8080/orders/reselling")
       .then(res => {
-        if (!res.ok) throw new Error("No hay tickets en reventa.");
+        if (!res.ok) throw new Error("No hay tickets en reventa."); // Si la respuesta no es exitosa, lanzamos un error
         return res.json();
       })
       .then(data => {
-        setOrders(data);
-        setLoading(false);
+        setOrders(data); // Actualizamos el estado con las órdenes obtenidas
+        setLoading(false); // Cambiamos el estado de carga a false cuando los datos se han cargado correctamente
       })
       .catch(err => {
-        setError(err.message);
-        setLoading(false);
+        setError(err.message); // Si ocurre un error durante la petición, actualizamos el estado de error
+        setLoading(false); // Cambiamos el estado de carga a false si hay un error
       });
   }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <Loader />; // Mostramos un loader mientras se cargan los datos
+  if (error) return <p>Error: {error}</p>; // Mostramos un mensaje de error si ocurre algún problema al cargar los datos
 
 const handleResellPurchase = async (orderId, total) => {
   try {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId'); // Obtenemos el ID del usuario desde el localStorage
     if (!userId) {
-      alert("Usuario no identificado.");
+      alert("Usuario no identificado."); // Verificamos si el usuario está identificado, si no, mostramos un mensaje de alerta
       return;
     }
-
+    // Hacemos otro fetch al backend para comprar la orden en reventa, incluyendo el ID de la orden, el del usuario y el total de la compra en el cuerpo de la petición
     const response = await fetch("http://localhost:8080/orders/resell-purchase", {
       method: "POST",
       headers: {
@@ -50,20 +50,20 @@ const handleResellPurchase = async (orderId, total) => {
       }),
     });
 
-    if (!response.ok) throw new Error("Error al comprar la orden en reventa");
+    if (!response.ok) throw new Error("Error al comprar la orden en reventa"); // Si la respuesta no es exitosa, lanzamos un error
 
-    const result = await response.json();
-    toast.info("¡Compra de entrada revendida realizada con éxito!");
+    const result = await response.json(); // Esperamos la respuesta del backend y la convertimos a JSON
+    toast.info("¡Compra de entrada revendida realizada con éxito!"); // Si funciona, mostramos un mensaje de éxito
     setTimeout(() => {
-    location.reload();
+    location.reload(); // Recargamos la página para actualizar las órdenes en reventa
 }, 3000);
   } catch (error) {
-    alert(`Error: ${error.message}`);
+    alert(`Error: ${error.message}`); // Si ocurre un error, mostramos un mensaje de alerta con el error
   }
 };
 
 
-
+// Mostramos las órdenes en reventa disponibles, cada una con sus detalles y un botón para comprar la reventa
   return (
     <div className="reselling-container">
       <h1>Órdenes en Reventa</h1>

@@ -16,6 +16,8 @@ import TicketReselling from './pages/TicketReselling.jsx';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
+  // Definimos las rutas del sitio web
+  // Cada ruta tiene un path y un componente (las paginas) asociado
   return (
     <Router>
       <Navbar />

@@ -2,14 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 function AuthPage() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Creamos un estado para verificar si el usuario está logueado, y otro para almacenar los atributos del usuario.
     const [userAttributes, setUserAttributes] = useState({
         usermail: '',
         userID: '',
         userName: '',
     });
     const navigate = useNavigate();
-
+    // Para cerrar sesión, eliminamos el token del localStorage y actualizamos el estado de isLoggedIn y userAttributes, luego redirigimos al usuario a la página de inicio.
     const logout = () => {
         localStorage.removeItem('userToken');
         setIsLoggedIn(false);
@@ -22,6 +22,7 @@ function AuthPage() {
         window.location.reload()
     };
 
+    // Cambiar esto a que use UseJWTBoilerplate para verificar el token JWT por razones de seguridad ya que así revelamos menos información sobre como funciona la autenticación.
     useEffect(() => {
         const verifyToken = () => {
             const userToken = localStorage.getItem('userToken');
@@ -47,7 +48,8 @@ function AuthPage() {
         };
         verifyToken();
     }, []);
-
+    // Si el usuario ya ha ingresado con su cuenta, mostramos un mensaje de bienvenida y sus datos
+    // Si no, mostramos un mensaje de bienvenida y opciones para iniciar sesión o registrarse
     if (isLoggedIn) {
         return (
             <div className="flex flex-col items-center justify-center h-screen bg-gray-100">

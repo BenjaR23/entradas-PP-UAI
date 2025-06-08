@@ -14,5 +14,5 @@ function Footer() {
         </footer>
     )
 }
-
+// Incluimos un footer en la aplicación que contenga información sobre la empresa
 export default Footer;

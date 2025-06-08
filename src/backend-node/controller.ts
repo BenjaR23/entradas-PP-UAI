@@ -4,12 +4,12 @@ import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
-// Get all users
+// Función para obtener todos los usuarios
 export const getUsers = async (ctx: Context) => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany(); // Usamos Prisma para retornar todos los usuarios en la base de datos (en la tabla de usuarios)
     ctx.response.body = users;
-  } catch (error) {
+  } catch (error) { // Si hay un error al obtener los usuarios, se captura y se devuelve un error 500
     ctx.response.status = 500;
     ctx.response.body = { 
       error: "Failed to fetch users",
@@ -18,17 +18,17 @@ export const getUsers = async (ctx: Context) => {
   }
 };
 
-// Get all events with their tickets
+// Obtener todos los eventos, tickets asociados y recintos
 export const getEvents = async (ctx: Context) => {
   try {
-    const events = await prisma.event.findMany({
+    const events = await prisma.event.findMany({ // Usamos Prisma para retornar todos los eventos en la base de datos (en la tabla de eventos)
       include: {
-        tickets: true,
-        venue: true
+        tickets: true, // Incluimos los tickets asociados a cada evento
+        venue: true // Incluimos el recinto asociado a cada evento
       }
     });
-    ctx.response.body = events;
-  } catch (error) {
+    ctx.response.body = events; // Devolvemos los eventos encontrados en el cuerpo de la respuesta
+  } catch (error) { // Si hay un error al obtener los eventos, se captura y se devuelve un error 500
     ctx.response.status = 500;
     ctx.response.body = {
       error: "Failed to fetch events",
@@ -37,31 +37,31 @@ export const getEvents = async (ctx: Context) => {
   }
 };
 
-// Get event by ID (numeric)
+// Obtener un evento por ID
 export const getEventById = async (ctx: Context) => {
   try {
-    const id = parseInt(ctx.params.id); // Obtenemos el ID de la URL y lo convertimos a número
+    const id = parseInt(ctx.params.id); // Obtenemos el ID que está en el URL y lo convertimos a número
     
-    if (isNaN(id)) {
+    if (isNaN(id)) { // Si el ID no es un número, devolvemos un error 400 con el mensaje de que el ID debe ser un número
       ctx.response.status = 400;
       ctx.response.body = { error: "ID must be a number" };
       return;
     }
 
 
-    const event = await prisma.event.findUnique({ // Buscar evento en la base de datos donde el ID coincida con el ID dado
-      where: { id },
+    const event = await prisma.event.findUnique({ // Buscamos el evento en la base de datos usando Prisma (en la tabla de eventos)
+      where: { id }, // Donde el ID del evento sea igual al ID que recibimos en el URL
       include: {
-        tickets: true,
-        venue: true
+        tickets: true, // Incluimos los tickets asociados a este evento
+        venue: true // Incluimos el recinto asociado a este evento
       }
     });
-    console.log("Event found")
+    console.log("Event found") // Para hacer debug, imprimimos que se encontró el evento
     if (!event) { // En caso de que no se encuentre el evento, se tira un error 404
       ctx.response.status = 404;
       ctx.response.body = {
         error: `Event with ID ${id} not found`,
-        suggestion: "Try checking /events to see available events"
+        suggestion: "Try checking /events to see available events" // Sugerimos al usuario que revise la lista de eventos disponibles
       };
       return;
     }
@@ -92,7 +92,7 @@ export const getEventById = async (ctx: Context) => {
     };
 
   } catch (error) {
-    console.error("Error fetching event:", error); // Agregar para depurar
+    console.error("Error fetching event:", error); // Debug para ver si hay algún error al buscar el evento
     ctx.response.status = 500;
     ctx.response.body = {
       error: "Server error",
@@ -102,31 +102,31 @@ export const getEventById = async (ctx: Context) => {
 };
 
 
-// Get event by name
+// Buscar un evento por nombre
 export const getEventByName = async (ctx: Context) => {
   try {
-    const eventname = ctx.params.eventname;
+    const eventname = ctx.params.eventname; // Obtenemos el nombre del evento desde los parámetros de la URL
     const event = await prisma.event.findFirst({
       where: { 
         title: { 
-          contains: eventname,
-          mode: 'insensitive' // Case insensitive search
+          contains: eventname, // Buscamos eventos cuyo título contenga el nombre del evento proporcionado
+          mode: 'insensitive' // Hacemos la búsqueda insensible a mayúsculas y minúsculas
         } 
       },
       include: {
-        tickets: true,
-        venue: true
+        tickets: true, // Incluimos los tickets asociados al evento
+        venue: true // Incluimos el recinto asociado al evento
       }
     });
 
-    if (!event) {
+    if (!event) { // Si no se encuentra el evento, devolvemos un error 404 y un mensaje de que no se encontró
       ctx.response.status = 404;
       ctx.response.body = { error: "Event not found" };
       return;
     }
 
-    ctx.response.body = event;
-  } catch (error) {
+    ctx.response.body = event; // Si se encuentra, devolvemos los datos del evento en el cuerpo de la respuesta
+  } catch (error) { // Si hay un error al buscar el evento, se captura y se devuelve un error 500
     ctx.response.status = 500;
     ctx.response.body = {
       error: "Failed to fetch event",
@@ -135,113 +135,56 @@ export const getEventByName = async (ctx: Context) => {
   }
 };
 
-
-//  createPurchase (nuevo)
-export const createPurchase = async (ctx: Context) => {
-  try {
-    const { eventId, tickets, userId } = await ctx.request.body().value;
-
-    // Chequea cantidad
-  
-    const existingTickets = await prisma.orderItem.findMany({
-      where: {
-        order: {
-          userId,
-          status: "paid",
-        },
-        ticket: {
-          eventId,
-        },
-      },
-    });
-
-    const totalOwned = existingTickets.reduce((sum, item) => sum + item.quantity, 0);
-    const totalRequested = tickets.reduce((sum, item) => sum + item.quantity, 0);
-    // Verifica si el usuario ya tiene 4 tickets o más
-    if (totalOwned + totalRequested > 4) {
-      ctx.response.status = 400;
-      ctx.response.body = {
-        error: "Solo se pueden comprar 4 tickets por usuario.",
-        owned: totalOwned,
-        tryingToBuy: totalRequested,
-      };
-      return;
-    }
-    // Verifica si el evento existe
-    for (const ticket of tickets) {
-      await prisma.ticket.updateMany({
-        where: {
-          eventId: eventId,
-          type: ticket.type,
-          stock: { gte: ticket.quantity },
-        },
-        data: {
-          stock: { decrement: ticket.quantity },
-          sold: { increment: ticket.quantity },
-        },
-      });
-    }
-    // Crea la orden
-    ctx.response.status = 201;
-    ctx.response.body = { message: "Purchase successful" };
-  } catch (error) {
-    console.error(error);
-    ctx.response.status = 500;
-    ctx.response.body = {
-      error: "Error processing purchase",
-      details: error.message,
-    };
-  }
-};
-
+// Formatear el RUN para que tenga el formato correcto
 function formatRUN(rawRun: string): string | null {
-  // Remove all non-digit and non-'kK' characters
+  // Quitar espacios y caracteres no numéricos, excepto 'k' o 'K'
   const clean = rawRun.replace(/[^0-9kK]/g, '');
 
-  // Ensure minimum length of 2 (1 digit + check digit)
+  // Asegurarse de que el RUN tenga al menos 2 caracteres (número + dígito verificador)
   if (clean.length < 2) return null;
 
-  const numberPart = clean.slice(0, -1);
-  const checkDigit = clean.slice(-1).toUpperCase();
+  const numberPart = clean.slice(0, -1); // Extraemos la parte numérica del RUN (todo menos el último carácter)
+  const checkDigit = clean.slice(-1).toUpperCase(); // Extraemos el dígito verificador y lo convertimos a mayúsculas
 
-  // Add thousands separator
-  const reversed = numberPart.split('').reverse();
-  const chunks = [];
-  for (let i = 0; i < reversed.length; i += 3) {
+  const reversed = numberPart.split('').reverse(); // Invertimos la parte numérica del RUN para formatearlo
+  const chunks = []; // Creamos un array para almacenar los chunks de 3 dígitos
+  for (let i = 0; i < reversed.length; i += 3) { // Iteramos sobre la parte numérica del RUN en pasos de 3
+    // Tomamos 3 dígitos a la vez, los invertimos y los unimos para formar un chunk
     chunks.push(reversed.slice(i, i + 3).reverse().join(''));
   }
-  const formattedNumber = chunks.reverse().join('.');
+  const formattedNumber = chunks.reverse().join('.'); // Unimos los chunks de 3 dígitos con un punto (.) para formar el número formateado
 
-  return `${formattedNumber}-${checkDigit}`;
+  return `${formattedNumber}-${checkDigit}`; // Retornamos el RUN formateado con el número y el dígito verificador
+  // Ejemplo: "12345678-9" se convierte en "12.345.678-9"
 }
-
+// Obtener los tickets de un usuario por su RUN
 export const getTicketsbyUserRUN = async (ctx: Context) => {
   try {
-    const userRUN = ctx.params.RUN;
-    const parsedRUN = formatRUN(userRUN);
-    console.log("RUN:", parsedRUN);
+    const userRUN = ctx.params.RUN; // Tomamos el RUN del usuario de los parámetros de la URL
+    const parsedRUN = formatRUN(userRUN); // Usamos la función para tener el RUN en el formato correcto
+    console.log("RUN:", parsedRUN); // Para debugear, imprimimos el RUN formateado
 
-    if (!parsedRUN) {
+    if (!parsedRUN) { // Si el RUN no es válido, devolvemos un error 400
       ctx.response.status = 400;
       ctx.response.body = { error: "Invalid RUN format" };
       return;
     }
 
-    console.log("Searching for the tickets of the user with RUN:", parsedRUN); // Agregar para depurar
+    console.log("Searching for the tickets of the user with RUN:", parsedRUN); // Debug para ver que estamos buscando los tickets del usuario con el RUN correcto
     
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({ // Buscamos al usuario en la base de datos ocupando el RUN
       where: { RUN: parsedRUN }});
-    const userID = user?.id;
-    const orders = await prisma.order.findMany({
+    const userID = user?.id; // Setteamos el ID del usuario encontrado
+    const orders = await prisma.order.findMany({ // Buscamos las órdenes del usuario y ecluimos las órdenes que están pendientes o en reventa
       where: {
         userId: userID,
         NOT: {
           status: {
-            in: ["pending", "reselling"] // Exclude pending and reselling orders
+            in: ["pending", "reselling"]
           }
         }
       },
-      include: {
+      include: { // Incluimos los items de la orden y los tickets asociados a cada item (y los datos del evento asociado a cada ticket)
         items: {
           include: {
             ticket: {
@@ -254,7 +197,7 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
       },
     });
 
-    if (!orders) {
+    if (!orders) { // Si no se encuentran órdenes, devolvemos un error 404 con un mensaje de que no se encontraron tickets para el usuario con ese RUN
       ctx.response.status = 404;
       ctx.response.body = { 
         error: `Tickets for the user with RUN ${parsedRUN} have not found`,
@@ -262,17 +205,17 @@ export const getTicketsbyUserRUN = async (ctx: Context) => {
       return;
     }
 
-    ctx.response.body = orders;
-  } catch (error) {
-    console.error("Error fetching order list:", error); // Agregar para depurar
+    ctx.response.body = orders; // Si se encuentran órdenes, devolvemos las órdenes encontradas en el cuerpo de la respuesta
+  } catch (error) { // Si hay un error al buscar los tickets, se captura y se devuelve un error 500
+    console.error("Error fetching order list:", error); // Debug para ver si hay algún error al buscar los tickets
     ctx.response.status = 500;
-    ctx.response.body = {
+    ctx.response.body = { // Devolvemos un error 500 con un mensaje de que hubo un error en el servidor
       error: "Server error",
       details: error.message
     };
   };
 };
-
+// Obtener los cupones de un usuario por su RUN
 export const getCouponsbyUserRUN = async (ctx: Context) => {
 try {
     const userRUN = ctx.params.RUN; // Tomamos el RUN del usuario de los parámetros de la URL
@@ -342,10 +285,10 @@ try {
   };
 
   };
-
+// Obtener los tickets en reventa
 export const getResellingOrders = async (ctx: Context) => {
   try {
-    const orders = await prisma.order.findMany({
+    const orders = await prisma.order.findMany({ // Buscamos las órdenes en la base de datos con el estado "reselling" y incluimos los datos del usuario y los items de la orden
       where: { status: "reselling" },
       include: {
         user: true,
@@ -360,7 +303,7 @@ export const getResellingOrders = async (ctx: Context) => {
         },
       },
     });
-
+    // Si no se encuentran órdenes, devolvemos un error 404 con un mensaje de que no se encontraron órdenes de reventa
     if (!orders || orders.length === 0) {
       ctx.response.status = 404;
       ctx.response.body = { message: "No reselling orders found" };
@@ -368,6 +311,8 @@ export const getResellingOrders = async (ctx: Context) => {
     }
 
     ctx.response.status = 200;
+    // Mapeamos las órdenes para devolver solo la información necesaria, que sería el ID de la orden, los usuarios de los datos vendiendola, y los tickets de la orden con sus respectivos precios y cantidades
+    // También incluimos los datos del evento asociado a cada ticket
     ctx.response.body = orders.map(order => ({
       orderId: order.id,
       user: {
@@ -391,7 +336,7 @@ export const getResellingOrders = async (ctx: Context) => {
         },
       })),
     }));
-  } catch (error) {
+  } catch (error) { // En caso de que haya un error al buscar las órdenes de reventa, se captura y se devuelve un error 500
     console.error("Error fetching reselling orders:", error);
     ctx.response.status = 500;
     ctx.response.body = { 
@@ -400,32 +345,32 @@ export const getResellingOrders = async (ctx: Context) => {
     };
   }
 };
-
+// Procesar una compra de reventa
 export const resellPurchaseOrder = async (ctx: Context) => {
   try {
-    const body = ctx.request.body({ type: "json" });
-    const { orderId, userId, total } = await body.value;
+    const body = ctx.request.body({ type: "json" }); // Obtenemos el cuerpo de la solicitud como JSON
+    const { orderId, userId, total } = await body.value; // Desestructuramos el cuerpo para obtener los campos orderId, userId y total
 
-
+    // Si algunos de los campos requeridos no están presentes, devolvemos un error 400
     if (!orderId || !userId || !total) {
       ctx.response.status = 400;
       ctx.response.body = { error: "Faltan campos requeridos: orderId, userId o total" };
       return;
     }
 
-    // Actualiza la orden con el nuevo comprador
+    // Actualizamos la orden con el nuevo comprador
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
       data: {
-        userId: parseInt(userId),
-        total: total,
-        status: "completed", // asegúrate que este estado exista
+        userId: parseInt(userId), // Aseguramos que el userId sea un número entero y lo seteamos
+        total: total, // Seteamos el total de la orden
+        status: "completed", // Seteamos el estado de la orden a "completed" indicando que la compra se ha completado
       },
     });
 
     ctx.response.status = 200;
-    ctx.response.body = updatedOrder;
-  } catch (err) {
+    ctx.response.body = updatedOrder; // Devolvemos la orden actualizada en el cuerpo de la respuesta
+  } catch (err) { // Si hay un error al procesar la compra de reventa, se captura y se devuelve un error 500
     console.error("Error en resellPurchaseOrder:", err);
     ctx.response.status = 500;
     ctx.response.body = { error: "Error interno al procesar la compra de reventa" };

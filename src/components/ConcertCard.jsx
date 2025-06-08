@@ -5,11 +5,11 @@ function ConcertCard({ concert }) {
 
     return (
         <Link to={`/concert/${concert.id}`} key={concert.id} className="concert-card">
-        {/* Display concert name */}
+        {/* Mostrar nombre del concierto */}
         <h2>{concert.title}</h2>
-        {/* Display concert date */}
+        {/* Mostrar fecha */}
         <p>{concert.eventDate}</p>
-        {/* Display concert location */}
+        {/* Mostrar recinto */}
         <p>{concert.venueId}</p>
     </Link>
     );

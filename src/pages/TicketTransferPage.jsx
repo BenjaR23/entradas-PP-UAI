@@ -4,46 +4,47 @@ import useJWTBoilerplate from '../backend-node/client.ts';
 import TicketCard from '../components/TicketCard.jsx';
 import Loader from '../components/Loader.jsx';
 function TicketTransferPage() {
-    const navigate = useNavigate();
-    const [tickets, setTickets] = useState([]);
-    const [error, setError] = useState(null);
-    const [transferMode] = useState(true);
+    const navigate = useNavigate(); // Hook para navegación
+    const [tickets, setTickets] = useState([]); // Estado para almacenar los tickets
+    const [error, setError] = useState(null); // Estado para manejar errores
+    const [transferMode] = useState(true); // Estado para el modo de transferencia para el TicketCard 
     const [selectedTicketData, setSelectedTicketData] = useState(null); // Estado para ticket seleccionado
 
-    if (!localStorage.getItem('userToken')) {
+    if (!localStorage.getItem('userToken')) { // Si no hay token, redirigir al login
         navigate('/login');
     }
     
-    const user = useJWTBoilerplate(localStorage.getItem('userToken') || '');
+    const user = useJWTBoilerplate(localStorage.getItem('userToken') || ''); // Si hay token, verificamos al usuario y obtenemos sus datos
 
     useEffect(() => {
+        // Función para obtener los tickets del usuario
         const fetchUserTickets = async () => {
-            if (!user) return;
+            if (!user) return; // Si no hay usuario (o este no se ha cargado), no hacer nada
 
             try {
-                const response = await fetch(`http://localhost:8080/tickets/RUN/${user.userRUN}`);
+                const response = await fetch(`http://localhost:8080/tickets/RUN/${user.userRUN}`); // Obtenemos los tickets del usuario
                 
-                if (!response.ok) {
+                if (!response.ok) { // Si la respuesta no es OK, lanzar un error
                     throw new Error('Tickets no encontrados para el usuario');
                 }
 
-                const data = await response.json();
-                setTickets(data);
+                const data = await response.json(); // Procesamos la respuesta JSON
+                setTickets(data); // Actualizamos el estado con los tickets obtenidos
             } catch (error) {
-                setError(error.message);
+                setError(error.message); // Si hay un error, lo guardamos en el estado
             }
         };
 
-        fetchUserTickets();
+        fetchUserTickets(); // Corremos la función para obtener los tickets
     }, [user]);
 
-    const handleTransferClick = (orderId, ticketId) => {
+    const handleTransferClick = (orderId, ticketId) => { // Función para manejar el clic en el botón de transferencia
         navigate(`/transfer/${orderId}/${ticketId}`);
     };
 
 
-    if (error) return <p>Error: {error}</p>;
-    if (!tickets.length) return <Loader />;
+    if (error) return <p>Error: {error}</p>; // Si hay un error, mostrarlo
+    if (!tickets.length) return <Loader />; // Si no hay tickets o no se han cargado, mostrar el loader
 
     return (
         <div className="tickets-page">
