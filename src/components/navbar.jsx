@@ -46,6 +46,7 @@ function Navbar() {
         ) : (
           <>
             <Link to="/login" className="navbar-login" onClick={() => setMenuOpen(false)}>Login</Link>
+            <Link to="Register" className="navbar-register" onClick={() => setMenuOpen(false)}>Register</Link>
           </>
         )}
 

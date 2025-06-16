@@ -14,6 +14,7 @@ import { checkInOrderItem } from "./checkin.ts";
 import { transferTicketHandler } from   "./transfer.ts";
 import { getResellingOrders } from "./controller.ts";
 import { resellPurchaseOrder } from "./controller.ts";
+import { registerUser } from "./register.ts";
 
 
 const router = new Router(); // Creamos una instancia del router de Oak
@@ -48,5 +49,7 @@ router.patch("/transfer-ticket", transferTicketHandler); // Link para transferir
 router.get("/orders/reselling", getResellingOrders); // Link para obtener los tickets en reventa
 
 router.post("/orders/resell-purchase", resellPurchaseOrder); // Link para procesar una compra de reventa
+
+router.post("/register", registerUser);
 
 export { router };

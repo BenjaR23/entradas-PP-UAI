@@ -14,6 +14,7 @@ import TicketTransferPage from './pages/TicketTransferPage.jsx';
 import TicketDetailPage from './pages/TicketDetailPage.jsx';
 import TicketReselling from './pages/TicketReselling.jsx';
 import { ToastContainer } from 'react-toastify';
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 function App() {
   // Definimos las rutas del sitio web
@@ -26,6 +27,7 @@ function App() {
         <Route path="/concert/:id" element={<Concertpage />} />
         <Route path="/search/:query" element={<Searchpage />} />
         <Route path="/login" element={<Loginpage />} />
+        <Route path="/Register" element={<RegisterPage />}/>
         <Route path="/auth" element={<Authpage />} />
         <Route path="/heldtickets" element={<Ticketspage />} />
         <Route path="/heldcoupons" element={<Couponspage />} />
