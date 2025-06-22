@@ -18,6 +18,19 @@ app.use(oakCors());
 // Usamos el router definido en router.ts
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+app.use(async (ctx, next) => {
+  try {
+    await send (ctx, ctx.request.url.pathname, {
+      root : `${Deno.cwd()}/src/backend-node/public`,
+      index: "index.html",
+    });
+  } catch {
+    await next();
+  }
+}); 
+
+
 // Iniciamos el servidor en el puerto 8080
 console.log("Backend running on http://localhost:8080");
 await app.listen({ port: 8080 });
