@@ -162,6 +162,17 @@ The file includes a custom hook named useJWTBoilerplate that recieves the encryp
 This allows us to add authentication in any page we might need to use it for, and also allows the frontend to access important data from the user without leaving it stored in plain sight via localStorage.
 
 ## Backend
+### `src/backend-node/main.ts`
+This is the entry point of the backend. It sets up the Oak application, applies CORS configuration, registers middleware, injects the Prisma client into the context, links the router with the API routes, and finally starts the server on port 8080. 
+
+### `src/backend-node/router.ts`
+This file defines and organizes all API's routes of the backend using Oak's Router. It imports controller functions from controller.ts and maps them to their corresponding HTTP endpoints, grouping them by entity. It exports the configured router to be used in main.ts.
+
+### `src/backend-node/controller.ts`
+This file implements the core business logic behind each endpoint. It defines asynchronous handler functions that interact with the database via Prisma, perform validations, and return appropriate HTTP responses. Functions include login verification, event listing, ticket purchase and transfer, coupon fetching, and admin actions like check-in and capacity alerts.
+
+### `src/backend-node/client.ts`
+This file initializes and exports the PrismaClient to enable communication with the PostgreSQL database. It is used across other backend modules to perform database queries and mutations with full type safety based on the Prisma schema.
 # Credits
 
 - BenjaR23: Benjamín Octavio Rodríguez Fuentes 

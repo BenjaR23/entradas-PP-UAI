@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import QRCode from 'npm:qrcode';
+import  QRCode from "https://deno.land/x/qrcode/mod.ts";
 
 function QrCode({ orderId, RUN }) {
   const canvasRef = useRef(null);
