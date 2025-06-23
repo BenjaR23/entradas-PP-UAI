@@ -172,7 +172,57 @@ This file defines and organizes all API's routes of the backend using Oak's Rout
 This file implements the core business logic behind each endpoint. It defines asynchronous handler functions that interact with the database via Prisma, perform validations, and return appropriate HTTP responses. Functions include login verification, event listing, ticket purchase and transfer, coupon fetching, and admin actions like check-in and capacity alerts.
 
 ### `src/backend-node/client.ts`
-This file initializes and exports the PrismaClient to enable communication with the PostgreSQL database. It is used across other backend modules to perform database queries and mutations with full type safety based on the Prisma schema.
+This file initializes and exports the PrismaClient to enable communication with the database. It is used across other backend modules to perform database queries and mutations with full type safety based on the Prisma schema.
+
+## src/backend-node/router.ts
+This file defines the main API endpoints for the backend using the Oak Router. It routes incoming HTTP requests to their corresponding controller functions.
+
+### GET /
+Returns a simple confirmation message to verify the API is running.
+
+### GET /users
+Returns a list of all registered users.
+
+### GET /events
+Fetches all available events from the database.
+
+### GET /events/id/:id
+Returns a specific event by its database ID.
+
+### GET /events/:eventname
+Searches for events by name.
+
+### POST /login
+Handles user login by checking credentials and returns a JWT if successful.
+
+### POST /verify
+Verifies a provided JWT and returns the decoded payload if valid.
+
+### POST /purchase
+Processes a ticket purchase. Expects order and ticket data in the request body.
+
+### GET /tickets/RUN/:RUN
+Returns all orders and tickets associated with a user's RUN.
+
+### GET /coupons/:RUN
+Returns all available coupons for the user associated with the given RUN.
+
+### PATCH /order-items/:orderId/:ticketId/check-in
+Marks a specific ticket in an order as checked in. Admin-only route.
+
+### PATCH /transfer-ticket
+Handles transferring a ticket to another user or listing it for resale.
+
+### GET /orders/reselling
+Returns all active resale orders available in the system.
+
+### POST /orders/resell-purchase
+Processes the purchase of a resold ticket.
+
+### POST /register
+Registers a new user in the database.
+
+
 # Credits
 
 - BenjaR23: Benjamín Octavio Rodríguez Fuentes 
