@@ -1,0 +1,26 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/diegojimenez/Desktop/entradas-PP-UAI/src/backend-node/jwt.test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1106, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 274, "endOffset": 638, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 779, "endOffset": 1103, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 1000, "endOffset": 1036, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

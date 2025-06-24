@@ -1,0 +1,35 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/diegojimenez/Desktop/entradas-PP-UAI/src/backend-node/jwt.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 2338, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getSecretKey",
+      "ranges": [
+        { "startOffset": 395, "endOffset": 575, "count": 1 },
+        { "startOffset": 470, "endOffset": 533, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "generateToken",
+      "ranges": [
+        { "startOffset": 887, "endOffset": 1639, "count": 2 },
+        { "startOffset": 1053, "endOffset": 1065, "count": 1 },
+        { "startOffset": 1066, "endOffset": 1083, "count": 1 },
+        { "startOffset": 1084, "endOffset": 1095, "count": 1 },
+        { "startOffset": 1097, "endOffset": 1638, "count": 1 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "verifyToken",
+      "ranges": [{ "startOffset": 1667, "endOffset": 2336, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

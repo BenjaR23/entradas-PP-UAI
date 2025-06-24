@@ -2,7 +2,13 @@ import { JWTPayload, jwtVerify, SignJWT } from 'https://deno.land/x/jose@v6.0.10
 import { createSecretKey } from "node:crypto"; // Importamos createSecretKey para manejar la clave secreta de forma segura
 import process from "node:process"; // Importamos process para acceder a las variables de entorno
 
-const secret = createSecretKey(process.env.secretKey, 'utf-8'); // Creamos una clave secreta a partir de la variable de entorno
+function getSecretKey() {
+  const raw = process.env.secretKey;
+  if (!raw) throw new Error("Missing secretKey in environment variables.");
+  return createSecretKey(raw, 'utf-8');
+}
+
+const secret = getSecretKey(); // Creamos una clave secreta a partir de la variable de entorno
 
 // Definimos la interfaz para el payload del token
 interface UserPayload {
