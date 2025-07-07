@@ -1,9 +1,13 @@
 import { defineConfig } from 'vite'
-import deno from '@deno/vite-plugin'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [deno(), react()],
+  plugins: [
+    react({
+      jsxRuntime: 'automatic', // Esto está bien para React 19
+    }),
+  ],
   build: {
     outDir: 'dist',
     emptyOutDir: true,

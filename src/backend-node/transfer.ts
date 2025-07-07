@@ -1,5 +1,5 @@
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
-import { PrismaClient, Prisma } from "../../generated/client/deno/edge.ts";
+import { PrismaClient, Prisma } from "../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
 
 const prisma = new PrismaClient().$extends(withAccelerate());

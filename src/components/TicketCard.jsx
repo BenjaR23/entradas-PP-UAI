@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { backendURL } from '../../config.js';
 
 function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
   const [checkedItems, setCheckedItems] = useState({}); // Creamos un estado para los itemes marcados para check-in
@@ -23,7 +24,7 @@ function TicketCard({ order, isAdmin, transferMode = false, onTransferClick }) {
       // Usamos el orderId y ticketId para identificar el item específico
       // que se está marcando como checked-in, y lo actualizamos en la base de datos
       // Si la petición es exitosa, actualizamos el estado checkedItems
-      const response = await fetch(`http://localhost:8080/order-items/${orderId}/${ticketId}/check-in`, {
+      const response = await fetch(`${backendURL}/order-items/${orderId}/${ticketId}/check-in`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
       });

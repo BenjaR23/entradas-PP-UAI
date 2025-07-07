@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useJWTBoilerplate from '../backend-node/client.ts'; // Importar userJWTBoilerplate para verificar el token de usuario
 import Loader from '../components/Loader.jsx'; // Importar loader para mostrar mientras se cargan los cupones
 import CouponCard from '../components/CouponCard.jsx'; // Importar el componente CouponCard para mostrar los cupones
+import { backendURL } from '../../config.js';
 
 function CouponPage() {
     const navigate = useNavigate(); // Redirigir al usuario a la página de login si no está autenticado o su token no existe
@@ -18,7 +19,7 @@ function CouponPage() {
         if (!user || !user.userRUN) return;
         const fetchCoupons = async() => {
             try {
-                const response = await fetch(`http://localhost:8080/coupons/${user.userRUN}`) // Hacemos una solicitud a la API para obtener los cupones del usuario en base a su RUN
+                const response = await fetch(`${backendURL}/coupons/${user.userRUN}`) // Hacemos una solicitud a la API para obtener los cupones del usuario en base a su RUN
                 const couponData = await response.json() // Convertimos la respuesta a JSON
                 setCoupons(couponData) // Actualizamos el estado de los cupones con los datos obtenidos
             } catch (error) {

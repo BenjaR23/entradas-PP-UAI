@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ConcertCard from '../components/ConcertCard.jsx'; // Import the ConcertCard component to display concert details
 import Loader from '../components/Loader.jsx'; // Import Loader
+import { backendURL } from '../../config.js';
 
 function SearchPage() {
     const { query } = useParams(); // Usamos useParams para obtener el query de la URL
@@ -9,7 +10,7 @@ function SearchPage() {
     const [error, setError] = useState(null); // Creamos un estado para manejar errores durante la carga de datos
     useEffect(() => {
         // Usamos fetch para obtener los eventos desde el backend, filtrando por el query proporcionado en la URL
-        fetch(`http://localhost:8080/events/${query}`).then(res => {
+        fetch(`${backendURL}/events/${query}`).then(res => {
             // En caso de que la respuesta no sea exitosa, lanzamos un error y un recordatorio de que el backend debe estar corriendo
             if (!res.ok) throw new Error("Failed to fetch events! Make sure the backend is running!");
             // Si la respuesta es exitosa, convertimos la respuesta a JSON

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useJWTBoilerplate from '../backend-node/client.ts';
 import TicketCard from '../components/TicketCard.jsx';
 import Loader from '../components/Loader.jsx';
+import { backendURL } from '../../config.js';
 function TicketTransferPage() {
     const navigate = useNavigate(); // Hook para navegación
     const [tickets, setTickets] = useState([]); // Estado para almacenar los tickets
@@ -22,7 +23,7 @@ function TicketTransferPage() {
             if (!user) return; // Si no hay usuario (o este no se ha cargado), no hacer nada
 
             try {
-                const response = await fetch(`http://localhost:8080/tickets/RUN/${user.userRUN}`); // Obtenemos los tickets del usuario
+                const response = await fetch(`${backendURL}/tickets/RUN/${user.userRUN}`); // Obtenemos los tickets del usuario
                 
                 if (!response.ok) { // Si la respuesta no es OK, lanzar un error
                     throw new Error('Tickets no encontrados para el usuario');

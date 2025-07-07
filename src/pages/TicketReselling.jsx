@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loader from '../components/Loader';
 import {toast} from 'react-toastify';
+import { backendURL } from '../../config.js';
 
 const TicketReselling = () => {
   const [orders, setOrders] = useState([]); // Estado para almacenar las órdenes en reventa
@@ -12,7 +13,7 @@ const TicketReselling = () => {
 
 
   useEffect(() => { // Hacemos un fetch al backend para obtener las órdenes en reventa
-    fetch("http://localhost:8080/orders/reselling")
+    fetch(`${backendURL}/orders/reselling`)
       .then(res => {
         if (!res.ok) throw new Error("No hay tickets en reventa."); // Si la respuesta no es exitosa, lanzamos un error
         return res.json();
@@ -38,7 +39,7 @@ const handleResellPurchase = async (orderId, total) => {
       return;
     }
     // Hacemos otro fetch al backend para comprar la orden en reventa, incluyendo el ID de la orden, el del usuario y el total de la compra en el cuerpo de la petición
-    const response = await fetch("http://localhost:8080/orders/resell-purchase", {
+    const response = await fetch(`${backendURL}/orders/resell-purchase`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

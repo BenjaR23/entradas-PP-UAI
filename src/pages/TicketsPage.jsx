@@ -4,6 +4,7 @@ import useJWTBoilerplate from '../backend-node/client.ts'; // Importar el hook u
 import TicketCard from '../components/TicketCard.jsx'; // Importar el componente TicketCard para mostrar los tickets
 import Loader from '../components/Loader.jsx'; // Import Loader
 import UserQRPrompt from '../components/adminOnly/UserQRPrompt.jsx' // Importar el componente UserQRPrompt para que el admin elija que hacer
+import { backendURL } from '../../config.js';
 
 function TicketsPage() {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ function TicketsPage() {
             if (!user || adminChosenRUN === null) return; // Si no hay usuario, no hacer nada, y si el admin no ha elegido un RUN, no hacer nada (como los usuarios normales automaticamente se les asigna su propio ID, no hay problema)
 
           try {
-            const response = await fetch(`http://localhost:8080/tickets/RUN/${adminChosenRUN}`); // Hacer un GET a la API para obtener los tickets del usuario por el ID elegido por el admin o el propio ID del usuario
+            const response = await fetch(`${backendURL}/tickets/RUN/${adminChosenRUN}`); // Hacer un GET a la API para obtener los tickets del usuario por el ID elegido por el admin o el propio ID del usuario
             
             if (!response.ok) {
               throw new Error('Tickets no encontrados para el usuario'); // Si la respuesta no es ok, decir que no se encontraron tickets

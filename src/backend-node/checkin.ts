@@ -1,6 +1,12 @@
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
-import { prisma } from "../client.ts";
 import browser from "npm:@emailjs/browser";
+
+import { PrismaClient } from "../generated/client/deno/edge.ts";
+import { withAccelerate } from "npm:@prisma/extension-accelerate";
+
+const prisma = new PrismaClient().$extends(withAccelerate());
+
+
 
 export const checkInOrderItem = async (ctx: Context) => {
   try {

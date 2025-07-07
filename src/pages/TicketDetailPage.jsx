@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useJWTBoilerplate from '../backend-node/client.ts';
 import Loader from '../components/Loader.jsx';
+import { backendURL } from '../../config.js';
 
 function TicketDetailPage() {
     const { orderId, ticketId } = useParams(); // Obtenemos el orderId y ticketId de los parámetros de la URL
@@ -20,7 +21,7 @@ function TicketDetailPage() {
             if (!user) return;
 
             try {
-                const response = await fetch(`http://localhost:8080/tickets/RUN/${user.userRUN}`);
+                const response = await fetch(`${backendURL}/tickets/RUN/${user.userRUN}`);
                 if (!response.ok) throw new Error('Error al obtener tickets'); // Si la respuesta no es exitosa, lanzamos un error
 
                 const orders = await response.json(); // Obtenemos los tickets del usuario en formato JSON
@@ -53,7 +54,7 @@ function TicketDetailPage() {
         
         // Enviamos los datos al backend para realizar la transferencia del ticket usando PATCH para actualizar los datos de este en la base de datos.
         try {
-            const response = await fetch('http://localhost:8080/transfer-ticket', {
+            const response = await fetch(`${backendURL}/transfer-ticket`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

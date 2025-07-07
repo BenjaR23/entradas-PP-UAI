@@ -4,6 +4,7 @@ import Loader from '../components/Loader.jsx';
 import { toast } from 'react-toastify';
 import QrCode from '../components/adminOnly/QrCode.jsx';
 import useJWTBoilerplate from '../backend-node/client.ts'
+import { backendURL } from '../../config.js';
 
 function ConcertPage() {
   const { id } = useParams(); // Obtenemos el ID del evento desde los parámetros de la URL
@@ -22,7 +23,7 @@ function ConcertPage() {
     // Utiliza el ID del evento obtenido de los parámetros de la URL
     const fetchConcertAndTickets = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/events/id/${id}`);
+        const response = await fetch(`${backendURL}/events/id/${id}`);
         if (!response.ok) throw new Error('Evento no encontrado');
         const data = await response.json();
         setConcert(data);
@@ -66,7 +67,7 @@ function ConcertPage() {
       }
       // Realizamos la petición POST al backend para procesar la compra
       // Enviamos el ID del evento y las entradas seleccionadas en el cuerpo de la petición
-      const response = await fetch('http://localhost:8080/purchase', {
+      const response = await fetch(`${backendURL}/purchase`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

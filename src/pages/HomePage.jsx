@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'; // Importamos useEffect y useState 
 import Loader from '../components/Loader.jsx';
 import '../components/Loader.css';
 import ConcertCard from '../components/ConcertCard.jsx';
-
+import { backendURL } from '../../config.js';
 
 function HomePage() {
   const [concerts, setConcerts] = useState([]); // Creamos un estado para almacenar los conciertos
   const [error, setError] = useState(null); // Creamos un estado para manejar errores durante la carga de datos
 
   useEffect(() => { // Creamos un estado que nos consigue los eventos desde la base de datos.
-    fetch("http://localhost:8080/events")
+    fetch(`${backendURL}/events`)
       .then(res => {
         if (!res.ok) throw new Error("Failed to fetch concerts"); // Si la respuesta no es exitosa, lanzamos un error
         // Si la respuesta es exitosa, convertimos la respuesta a JSON

@@ -1,36 +1,58 @@
-import { Application } from "https://deno.land/x/oak@v12.6.0/mod.ts";
+import { Application, send } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { router } from "./router.ts";
-import { PrismaClient } from "../../generated/client/deno/edge.ts"; // Path to generated client
+import { PrismaClient } from "../generated/client/deno/edge.ts";
+
+const frontendOrigin = Deno.env.get("FRONTEND_ORIGIN") || "http://localhost:5173";
+
 
 const app = new Application();
 const prisma = new PrismaClient();
 
-// Añadimos el cliente Prisma al contexto de la aplicación
 app.use(async (ctx, next) => {
   ctx.state.prisma = prisma;
   await next();
 });
 
-// Usamos CORS para permitir solicitudes desde el frontend
-app.use(oakCors());
+// ✅ CORS Middleware
+app.use(oakCors({
+  origin: frontendOrigin,
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "OPTIONS"]
+}));
 
-// Usamos el router definido en router.ts
+// ✅ Static files
+app.use(async (ctx, next) => {
+  const path = ctx.request.url.pathname;
+  if (
+    !path.startsWith("/api") &&
+    !path.startsWith("/users") &&
+    !path.startsWith("/events") &&
+    !path.startsWith("/login") &&
+    !path.startsWith("/verify") &&
+    !path.startsWith("/purchase") &&
+    !path.startsWith("/register") &&
+    !path.startsWith("/tickets") &&
+    !path.startsWith("/coupons") &&
+    !path.startsWith("/orders")
+  ) {
+    try {
+      await send(ctx, path, {
+        root: `${Deno.cwd()}/dist`,
+        index: "index.html",
+      });
+    } catch {
+      await next();
+    }
+  } else {
+    await next();
+  }
+});
+
+// ✅ API Routes
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.use(async (ctx, next) => {
-  try {
-    await send (ctx, ctx.request.url.pathname, {
-      root : `${Deno.cwd()}/src/backend-node/public`,
-      index: "index.html",
-    });
-  } catch {
-    await next();
-  }
-}); 
+console.log("Backend running");
+await app.listen({ port: 8080, hostname: "0.0.0.0" });
 
-
-// Iniciamos el servidor en el puerto 8080
-console.log("Backend running on http://localhost:8080");
-await app.listen({ port: 8080 });

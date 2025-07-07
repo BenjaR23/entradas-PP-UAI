@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import '../login/LoginContainer.css'; // Reutiliza los estilos de login
 import ButtonLoader from '../ButtonLoader';
+import { backendURL } from '../../../config.js';
 
 function RegisterContainer() {
     const [name, setName] = useState('');
@@ -15,7 +16,7 @@ function RegisterContainer() {
     const navigate = useNavigate();
 
     async function registerUser(data) {
-        const response = await fetch('http://localhost:8080/register', {
+        const response = await fetch('${backendURL}/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),

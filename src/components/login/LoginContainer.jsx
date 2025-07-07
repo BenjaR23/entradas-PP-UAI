@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './LoginContainer.css';
 import ButtonLoader from '../ButtonLoader'; // Asegúrate que este sea tu loader
+import { backendURL } from '../../../config.js';
 
 function LoginContainer() {
     const [usermail, setusermail] = useState(''); // Estado para el correo del usuario
@@ -15,7 +16,7 @@ function LoginContainer() {
     // Función para verificar las credenciales del usuario haciendo un fetch al backend con los datos del usuario
     // Retorna un objeto con el mensaje de éxito o error y el token del usuario si el inicio de sesión es exitoso
     async function checkLogin(usermail, password) {
-        const response = await fetch('http://localhost:8080/login', {
+        const response = await fetch(`${backendURL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: usermail, password }),

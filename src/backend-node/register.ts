@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/client/deno/edge.ts";
+import { PrismaClient } from "../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
 import crypto from "node:crypto";
 import { generateToken } from "./jwt.ts";

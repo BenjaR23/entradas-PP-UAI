@@ -1,8 +1,7 @@
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
-import { PrismaClient } from "../../generated/client/deno/edge.ts";
+import { PrismaClient } from "../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
 import { JWTPayload, jwtVerify } from 'https://deno.land/x/jose@v6.0.10/index.ts';
-import { createSecretKey } from "node:crypto";
 import process from "node:process";
 
 interface UserPayload {
@@ -14,7 +13,8 @@ interface UserPayload {
   userRUN: string;
 }
 
-const secret = createSecretKey(process.env.secretKey, 'utf-8');
+const secret = new TextEncoder().encode(process.env.secretKey);
+
 
 const prisma = new PrismaClient().$extends(withAccelerate());
 
@@ -25,8 +25,11 @@ export const purchaseHandler = async (ctx: Context) => {
   const tokenheader = ctx.request.headers.get("Authorization")
   if (!tokenheader || !tokenheader.startsWith('Bearer ')) {
     console.log("Authorization header faltante o mal formado");
-    return null;
+    ctx.response.status = 401;
+    ctx.response.body = { error: "Authorization header missing or malformed" };
+    return;
   }
+
   const token = tokenheader.split(' ')[1];
   const { payload } = await jwtVerify(token, secret);
   const userPayload = payload as unknown as UserPayload;

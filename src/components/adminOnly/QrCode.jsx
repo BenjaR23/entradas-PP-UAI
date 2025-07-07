@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
-import  QRCode from "https://deno.land/x/qrcode/mod.ts";
+import QRCode from 'qrcode';
+import { backendURL } from '../../../config.js';
 
 function QrCode({ orderId, RUN }) {
   const canvasRef = useRef(null);
-  const url = `http://localhost:5173/checkin?orderId=${orderId}&RUN=${RUN}`;
+  const url = `${backendURL}/checkin?orderId=${orderId}&RUN=${RUN}`;
 
   useEffect(() => {
     if (canvasRef.current) {

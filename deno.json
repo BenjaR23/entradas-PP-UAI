@@ -1,9 +1,9 @@
 {
-  "nodeModulesDir":"auto",
+  "nodeModulesDir": true,
   "tasks": {
-    "dev": "deno run -A --node-modules-dir npm:vite & deno run -A --env-file src/backend-node/main.ts",
-    "build": "deno run -A --node-modules-dir npm:vite build",
-    "preview": "deno run -A --node-modules-dir npm:vite preview",
+    "dev": "vite dev & deno run -A src/backend-node/main.ts",
+    "build": "vite build",
+    "preview": "vite preview",
     "serve": "deno run --allow-net --allow-read jsr:@std/http@1/file-server dist/"
   },
   "compilerOptions": {
@@ -20,7 +20,7 @@
     "@vitejs/plugin-react": "npm:@vitejs/plugin-react@^4.3.4",
     "react": "npm:react@^19.0.0",
     "react-dom": "npm:react-dom@^19.0.0",
-    "importMap": "./import_map.json",
-    "vite": "npm:vite@^6.1.1"
+    "vite": "npm:vite@^6.1.1",
+    "importMap": "./import_map.json"
   }
 }

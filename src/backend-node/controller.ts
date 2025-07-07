@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/client/deno/edge.ts";
+import { PrismaClient } from "../generated/client/deno/edge.ts";
 import { withAccelerate } from "npm:@prisma/extension-accelerate";
 import { Context } from "https://deno.land/x/oak@v12.6.0/mod.ts";
 
